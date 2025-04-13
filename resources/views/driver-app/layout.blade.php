@@ -10,6 +10,7 @@
     <meta name="author" content="taxido">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="{{asset('assets/images/logo/favicon.png')}}" type="image/x-icon">
+
     @yield('title')
 
     <link rel="apple-touch-icon" href="{{asset('assets/images/logo/favicon.png')}}">
@@ -17,7 +18,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="taxido">
-    <meta name="msapplication-TileImage" content="assets/images/logo/favicon.png">
+    <meta name="msapplication-TileImage" content="{{asset('assets/images/logo/favicon.png')}}">
 
     <meta name="msapplication-TileColor" content="#FFFFFF">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,10 +32,8 @@
     <!-- bootstrap css -->
     <link rel="stylesheet" id="rtl-link" type="text/css" href="{{asset('assets/css/vendors/bootstrap.css')}}">
 
-
     <!-- Theme css -->
     <link rel="stylesheet" id="change-link" type="text/css" href="{{asset('assets/css/style.css')}}">
-
     @yield('style')
 
     @laravelPWA
@@ -47,6 +46,7 @@
 </head>
 
 <body>
+
 
 @yield('content')
 
@@ -65,7 +65,6 @@
 
 <!-- script js -->
 <script src="{{asset('assets/js/script.js')}}"></script>
-
 @yield('script')
 
 </body>

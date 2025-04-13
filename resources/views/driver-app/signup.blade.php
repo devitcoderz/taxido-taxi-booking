@@ -1,47 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="taxido">
-    <meta name="keywords" content="taxido">
-    <meta name="author" content="taxido">
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="assets/images/logo/favicon.png" type="image/x-icon">
+@extends('driver-app.layout')
+@section('title')
     <title>Taxido - Driver App </title>
+@endsection
 
-    <link rel="apple-touch-icon" href="assets/images/logo/favicon.png">
-    <meta name="title-color" content="#1F1F1F">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="taxido">
-    <meta name="msapplication-TileImage" content="assets/images/logo/favicon.png">
-    <meta name="msapplication-TileColor" content="#FFFFFF">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+@section('style')
 
-    <!--Google font-->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/GTWalsheimPro.css')}}">
+@endsection
 
-    <!-- iconsax css -->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/iconsax.css')}}">
-
-    <!-- bootstrap css -->
-    <link rel="stylesheet" id="rtl-link" type="text/css" href="{{asset('assets/css/vendors/bootstrap.css')}}">
-
-    <!-- Theme css -->
-    <link rel="stylesheet" id="change-link" type="text/css" href="{{asset('assets/css/style.css')}}">
-    @laravelPWA
-    <link rel="manifest" href="{{ asset('manifest.json') }}">
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register("{{ asset('sw.js') }}");
-        }
-    </script>
-</head>
-
-<body>
+@section('content')
     <!-- header starts -->
     <header id="header" class="auth-header">
         <div class="custom-container">
@@ -98,7 +64,7 @@
                         </div>
                     </div>
 
-                    <a href="driver-document-verify.blade.php" class="btn theme-btn w-100 auth-btn">Sign Up</a>
+                    <a href="{{url('driver/driver-document-verify')}}" class="btn theme-btn w-100 auth-btn">Sign Up</a>
                     <h6 class="content-color fw-normal my-3 text-center"> Already have
                         an account ? <a href="{{url('/login') }}" class="title-color fw-medium">Sign in</a> </h6>
                 </form>
@@ -107,20 +73,8 @@
     </div>
     <!-- signup page end -->
 
-    <!-- iconsax js -->
-    <script src="{{asset('assets/js/iconsax.js')}}"></script>
+@endsection
+@section('script')
 
-    <!-- sticky-header js -->
-    <script src="{{asset('assets/js/sticky-header.js')}}"></script>
 
-    <!-- bootstrap js -->
-    <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
-
-    <!-- template-setting js -->
-    <script src="{{asset('assets/js/template-setting.js')}}"></script>
-
-    <!-- script js -->
-    <script src="{{asset('assets/js/script.js')}}"></script>
-</body>
-
-</html>
+@endsection

@@ -1,46 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('driver-app.layout')
+@section('title')
+    <title>Taxido - Driver App </title>
+@endsection
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="taxido">
-    <meta name="keywords" content="taxido">
-    <meta name="author" content="taxido">
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="../../assets/images/logo/favicon.png" type="image/x-icon">
-    <title>taxido - Driver App </title>
-    <link rel="apple-touch-icon" href="../../assets/images/logo/favicon.png">
-    <meta name="title-color" content="#1F1F1F">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="taxido">
-    <meta name="msapplication-TileImage" content="../../assets/images/logo/favicon.png">
+@section('style')
 
-    <meta name="msapplication-TileColor" content="#FFFFFF">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- swiper css -->
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/swiper-bundle.min.css')}}">
 
-    <!--Google font-->
-    <link rel="stylesheet" type="text/css" href="../../assets/css/GTWalsheimPro.css">
+@endsection
 
-    <!-- iconsax css -->
-    <link rel="stylesheet" type="text/css" href="../../assets/css/vendors/iconsax.css">
-
-    <!-- bootstrap css -->
-    <link rel="stylesheet" id="rtl-link" type="text/css" href="../../assets/css/vendors/bootstrap.css">
-
-
-    <!-- Theme css -->
-    <link rel="stylesheet" id="change-link" type="text/css" href="../../assets/css/style.css">
-</head>
-
-<body>
+@section('content')
     <!-- header starts -->
     <header id="header" class="main-header inner-page-header">
         <div class="custom-container">
             <div class="header-panel">
-                <a href="setting.blade.php">
+                <a href="{{url('driver/setting')}}">
                     <i class="iconsax icon-btn" data-icon="chevron-left"> </i>
                 </a>
                 <h3>App setting</h3>
@@ -113,7 +88,7 @@
                         <li class="w-100">
                             <div class="form-check mt-0 pb-3">
                                 <label class="form-check-label" for="fixed01"><img class="flag"
-                                        src="../../assets/images/icons/flag8.svg" alt=""> US dollar</label>
+                                        src="{{asset('assets/images/icons/flag8.svg')}}" alt=""> US dollar</label>
                                 <input class="form-check-input" type="radio" name="flexRadioDefault" id="fixed01"
                                     checked>
                             </div>
@@ -122,7 +97,7 @@
                         <li class="w-100">
                             <div class="form-check mt-3 pb-3">
                                 <label class="form-check-label" for="fixed02"><img class="flag"
-                                        src="../../assets/images/icons/flag5.svg" alt=""> INR</label>
+                                        src="{{asset('assets/images/icons/flag5.svg')}}" alt=""> INR</label>
                                 <input class="form-check-input" type="radio" checked name="flexRadioDefault"
                                     id="fixed02">
                             </div>
@@ -131,7 +106,7 @@
                         <li class="w-100">
                             <div class="form-check mt-3 pb-3">
                                 <label class="form-check-label" for="fixed03"><img class="flag"
-                                        src="../../assets/images/icons/flag3.svg" alt=""> Euro</label>
+                                        src="{{asset('assets/images/icons/flag3.svg')}}" alt=""> Euro</label>
                                 <input class="form-check-input" type="radio" name="flexRadioDefault" id="fixed03">
                             </div>
                         </li>
@@ -139,7 +114,7 @@
                         <li class="w-100">
                             <div class="form-check mt-3 pb-3 border-0">
                                 <label class="form-check-label" for="fixed04"><img class="flag"
-                                        src="../../assets/images/icons/flag7.svg" alt=""> Pound</label>
+                                        src="{{asset('assets/images/icons/flag7.svg')}}" alt=""> Pound</label>
                                 <input class="form-check-input" type="radio" name="flexRadioDefault" id="fixed04">
                             </div>
                         </li>
@@ -147,7 +122,7 @@
                 </div>
 
                 <div class="modal-footer pt-0">
-                    <a href="setting.blade.php" class="btn theme-btn w-100 mt-0">Update</a>
+                    <a href="{{url('driver/setting')}}" class="btn theme-btn w-100 mt-0">Update</a>
                 </div>
             </div>
         </div>
@@ -167,15 +142,14 @@
                         <li class="w-100">
                             <div class="form-check mt-0 pb-3">
                                 <label class="form-check-label" for="fixed1"><img class="flag"
-                                        src="../../assets/images/icons/flag2.svg" alt="">English</label>
-                                <input class="form-check-input" type="radio" checked name="flexRadioDefault" id="fixed1"
-                                    checked>
+                                        src="{{asset('assets/images/icons/flag2.svg')}}" alt="">English</label>
+                                <input class="form-check-input" type="radio" checked name="flexRadioDefault" id="fixed1">
                             </div>
                         </li>
                         <li class="w-100">
                             <div class="form-check mt-3 pb-3">
                                 <label class="form-check-label" for="fixed2"><img class="flag"
-                                        src="../../assets/images/icons/flag1.svg" alt="">Arabic</label>
+                                        src="{{asset('assets/images/icons/flag1.svg')}}" alt="">Arabic</label>
                                 <input class="form-check-input" type="radio" name="flexRadioDefault" id="fixed2">
                             </div>
                         </li>
@@ -183,7 +157,7 @@
                         <li class="w-100">
                             <div class="form-check mt-3 pb-3">
                                 <label class="form-check-label" for="fixed3"><img class="flag"
-                                        src="../../assets/images/icons/flag4.svg" alt=""> French</label>
+                                        src="{{asset('assets/images/icons/flag4.svg')}}" alt=""> French</label>
                                 <input class="form-check-input" type="radio" name="flexRadioDefault" id="fixed3">
                             </div>
                         </li>
@@ -191,7 +165,7 @@
                         <li class="w-100">
                             <div class="form-check mt-3 pb-3 border-0">
                                 <label class="form-check-label" for="fixed4"><img class="flag"
-                                        src="../../assets/images/icons/flag6.svg" alt=""> Spanish</label>
+                                        src="{{asset('assets/images/icons/flag6.svg')}}" alt=""> Spanish</label>
                                 <input class="form-check-input" type="radio" name="flexRadioDefault" id="fixed4">
                             </div>
                         </li>
@@ -199,27 +173,13 @@
                 </div>
 
                 <div class="modal-footer pt-0">
-                    <a href="setting.blade.php" class="btn theme-btn w-100 mt-0">Update</a>
+                    <a href="{{url('driver/setting')}}" class="btn theme-btn w-100 mt-0">Update</a>
                 </div>
             </div>
         </div>
     </div>
     <!-- Change language modal end -->
+@endsection
+@section('script')
 
-    <!-- iconsax js -->
-    <script src="../../assets/js/iconsax.js"></script>
-
-    <!-- bootstrap js -->
-    <script src="../../assets/js/bootstrap.bundle.min.js"></script>
-
-    <!-- sticky-header js -->
-    <script src="../../assets/js/sticky-header.js"></script>
-
-    <!-- template-setting js -->
-    <script src="../../assets/js/template-setting.js"></script>
-
-    <!-- script js -->
-    <script src="../../assets/js/script.js"></script>
-</body>
-
-</html>
+@endsection

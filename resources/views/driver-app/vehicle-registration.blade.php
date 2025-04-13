@@ -1,50 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('driver-app.layout')
+@section('title')
+    <title>Taxido - Driver App </title>
+@endsection
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="taxido">
-    <meta name="keywords" content="taxido">
-    <meta name="author" content="taxido">
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="../../assets/images/logo/favicon.png" type="image/x-icon">
-    <title>taxido - Driver App </title>
-    <link rel="apple-touch-icon" href="../../assets/images/logo/favicon.png">
-    <meta name="title-color" content="#1F1F1F">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="taxido">
-    <meta name="msapplication-TileImage" content="../../assets/images/logo/favicon.png">
+@section('style')
 
-    <meta name="msapplication-TileColor" content="#FFFFFF">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+@endsection
 
-    <!--Google font-->
-    <link rel="stylesheet" type="text/css" href="../../assets/css/GTWalsheimPro.css">
-
-    <!-- iconsax css -->
-    <link rel="stylesheet" type="text/css" href="../../assets/css/vendors/iconsax.css">
-
-    <!-- bootstrap css -->
-    <link rel="stylesheet" id="rtl-link" type="text/css" href="../../assets/css/vendors/bootstrap.css">
-
-
-    <!-- Theme css -->
-    <link rel="stylesheet" id="change-link" type="text/css" href="../../assets/css/style.css">
-</head>
-
-<body>
+@section('content')
     <!-- header starts -->
     <header id="header" class="auth-header inner-page-header white-background pb-3">
         <div class="custom-container">
             <div class="header-panel">
-                <a href="driver-document-verify.blade.php">
+                <a href="{{url('driver/driver-document-verify')}}">
                     <i class="iconsax icon-btn" data-icon="chevron-left"> </i>
                 </a>
-                <img class="img-fluid logo" src="../../assets/images/logo/driver/driver-logo.png" alt="logo">
-                <img class="img-fluid logo-dark" src="../../assets/images/logo/driver/driver-logo-dark.png" alt="logo">
+                <img class="img-fluid logo" src="{{asset('assets/images/logo/driver/driver-logo.png')}}" alt="logo">
+                <img class="img-fluid logo-dark" src="{{asset('assets/images/logo/driver/driver-logo-dark.png')}}" alt="logo">
             </div>
         </div>
     </header>
@@ -68,28 +40,28 @@
                 <li>
                     <input type="radio" class="btn-check" name="options" id="btn-check-1">
                     <label class="btn vehicle-type-button" for="btn-check-1"> <img class="img-fluid vehicle-img"
-                            src="../../assets/images/svg/bike-img2.svg" alt="bike">
+                            src="{{asset('assets/images/svg/bike-img2.svg')}}" alt="bike">
                         Bike
                     </label>
                 </li>
                 <li>
                     <input type="radio" class="btn-check" name="options" id="btn-check-2">
                     <label class="btn vehicle-type-button" for="btn-check-2"> <img class="img-fluid vehicle-img"
-                            src="../../assets/images/svg/car-img2.svg" alt="car">
+                            src="{{asset('assets/images/svg/car-img2.svg')}}" alt="car">
                         Car
                     </label>
                 </li>
                 <li>
                     <input type="radio" class="btn-check" name="options" id="btn-check-3">
                     <label class="btn vehicle-type-button" for="btn-check-3"> <img class="img-fluid vehicle-img"
-                            src="../../assets/images/svg/van-img2.svg" alt="van">
+                            src="{{asset('assets/images/svg/van-img2.svg')}}" alt="van">
                         Van
                     </label>
                 </li>
                 <li>
                     <input type="radio" class="btn-check" name="options" id="btn-check-4">
                     <label class="btn vehicle-type-button" for="btn-check-4"> <img class="img-fluid vehicle-img"
-                            src="../../assets/images/svg/bus-img2.svg" alt="bus">
+                            src="{{asset('assets/images/svg/bus-img2.svg')}}" alt="bus">
                         Bus
                     </label>
                 </li>
@@ -180,7 +152,7 @@
     </section>
     <div class="fixed-btn">
         <div class="custom-container">
-            <a href="driver-bank-details.blade.php" class="btn theme-btn w-100 mt-0 auth-btn">Next</a>
+            <a href="{{url('driver/driver-bank-details')}}" class="btn theme-btn w-100 mt-0 auth-btn">Next</a>
         </div>
     </div>
 
@@ -188,20 +160,8 @@
     <section class="panel-space"></section>
     <!-- panel-space end -->
 
-    <!-- iconsax js -->
-    <script src="../../assets/js/iconsax.js"></script>
+@endsection
+@section('script')
 
-    <!-- bootstrap js -->
-    <script src="../../assets/js/bootstrap.bundle.min.js"></script>
 
-    <!-- sticky-header js -->
-    <script src="../../assets/js/sticky-header.js"></script>
-
-    <!-- template-setting js -->
-    <script src="../../assets/js/template-setting.js"></script>
-
-    <!-- script js -->
-    <script src="../../assets/js/script.js"></script>
-</body>
-
-</html>
+@endsection

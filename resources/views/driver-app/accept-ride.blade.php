@@ -1,46 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('driver-app.layout')
+@section('title')
+    <title>Taxido - Driver App </title>
+@endsection
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="taxido">
-    <meta name="keywords" content="taxido">
-    <meta name="author" content="taxido">
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="../../assets/images/logo/favicon.png" type="image/x-icon">
-    <title>taxido - Driver App </title>
-    <link rel="apple-touch-icon" href="../../assets/images/logo/favicon.png">
-    <meta name="title-color" content="#1F1F1F">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="taxido">
-    <meta name="msapplication-TileImage" content="../../assets/images/logo/favicon.png">
-
-    <meta name="msapplication-TileColor" content="#FFFFFF">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <!--Google font-->
-    <link rel="stylesheet" type="text/css" href="../../assets/css/GTWalsheimPro.css">
-
-    <!-- iconsax css -->
-    <link rel="stylesheet" type="text/css" href="../../assets/css/vendors/iconsax.css">
-
-    <!-- bootstrap css -->
-    <link rel="stylesheet" id="rtl-link" type="text/css" href="../../assets/css/vendors/bootstrap.css">
+@section('style')
 
 
-    <!-- Theme css -->
-    <link rel="stylesheet" id="change-link" type="text/css" href="../../assets/css/style.css">
-</head>
+@endsection
 
-<body>
+@section('content')
     <!-- header starts -->
     <header id="header" class="main-header inner-page-header position-absolute bg-transparent">
         <div class="custom-container">
             <div class="header-panel p-0">
-                <a href="home.blade.php">
+                <a href="{{url('driver/home')}}">
                     <i class="iconsax icon-btn" data-icon="chevron-left"> </i>
                 </a>
             </div>
@@ -53,8 +26,8 @@
     <div class="theme-content-bg ride-content-bg">
         <div class="my-ride-box">
             <div class="my-ride-head">
-                <a href="accept-ride-confirmed.blade.php" class="my-ride-img">
-                    <img class="img-fluid profile-img" src="../../assets/images/profile/p4.png" alt="p5">
+                <a href="{{url('driver/accept-ride-confirmed')}}" class="my-ride-img">
+                    <img class="img-fluid profile-img" src="{{asset('assets/images/profile/p4.png')}}" alt="p5">
                 </a>
 
                 <div class="my-ride-content flex-column">
@@ -64,7 +37,7 @@
                         </a>
                         <div class="flex-align-center">
                             <div class="flex-align-center gap-1 pe-2">
-                                <img class="star" src="../../assets/images/svg/star.svg" alt="star">
+                                <img class="star" src="{{asset('assets/images/svg/star.svg')}}" alt="star">
                                 <h5 class="fw-normal title-color p-0">4.8</h5>
                             </div>
                             <h5 class="fw-mediun theme-color price ps-2 pe-0">$256</h5>
@@ -76,7 +49,7 @@
             <div class="my-ride-details">
                 <div class="ride-info">
                     <div class="flex-align-center gap-1">
-                        <img class="icon img-fluid" src="../../assets/images/svg/location-fill.svg" alt="location">
+                        <img class="icon img-fluid" src="{{asset('assets/images/svg/location-fill.svg')}}" alt="location">
                         <h6 class="fw-normal title-color">1 km</h6>
                     </div>
                     <h6 class="fw-normal title-color">15 May’25 at 10:15 AM</h6>
@@ -84,7 +57,7 @@
                 <ul class="ride-location-listing">
                     <li class="border-0 shadow-none">
                         <div class="location-box">
-                            <img class="icon bg-transparent" src="../../assets/images/svg/location-fill.svg"
+                            <img class="icon bg-transparent" src="{{asset('assets/images/svg/location-fill.svg')}}"
                                 alt="location">
                             <h5 class="fw-light title-color px-0">17, Yonge St, Toronto, Canada</h5>
                         </div>
@@ -92,7 +65,7 @@
 
                     <li class="border-0 shadow-none">
                         <div class="location-box">
-                            <img class="icon bg-transparent" src="../../assets/images/svg/gps.svg" alt="gps">
+                            <img class="icon bg-transparent" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
                             <h5 class="fw-light title-color px-0 border-0">20, Yonge St, Toronto, Canada
                             </h5>
                         </div>
@@ -110,27 +83,15 @@
 
         </div>
 
-        <a href="accept-ride-confirmed.blade.php" class="btn theme-btn w-100 mt-3">Accept Fare on $256</a>
+        <a href="{{url('driver/accept-ride-confirmed')}}" class="btn theme-btn w-100 mt-3">Accept Fare on $256</a>
     </div>
-
+@endsection
+@section('script')
     <!-- map js -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGCQvcXUsXwCdYArPXo72dLZ31WS3WQRw"></script>
-    <script src="../../assets/js/custom-map.js"></script>
+    <script src="{{asset('assets/js/custom-map.js')}}"></script>
 
     <!-- iconsax js -->
-    <script src="../../assets/js/iconsax.js"></script>
+    <script src="{{asset('assets/js/quantity.js')}}"></script>
 
-    <!-- bootstrap js -->
-    <script src="../../assets/js/bootstrap.bundle.min.js"></script>
-
-    <!-- iconsax js -->
-    <script src="../../assets/js/quantity.js"></script>
-
-    <!-- template-setting js -->
-    <script src="../../assets/js/template-setting.js"></script>
-
-    <!-- script js -->
-    <script src="../../assets/js/script.js"></script>
-</body>
-
-</html>
+@endsection
