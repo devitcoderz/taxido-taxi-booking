@@ -156,6 +156,46 @@ class AuthController extends Controller
         return redirect('/driver/login');
     }
 
+    public function sendotp(Request $request)
+    {
+        $user = Driver::where('phone', $request->phone)->first();
+
+        if ($user) {
+
+            $verificationCode = rand(10000, 99999);
+            $message = "Your verification code is: $verificationCode";
+
+            $account_sid = env('TWILIO_SID_KEY');
+            $auth_token = env('TWILIO_AUTH_TOKEN');
+            $twilio_number =  env('TWILIO_NUMBER');
+
+            $client = new Client($account_sid, $auth_token);
+            $client->messages->create(
+                '+'.$request->phone,
+                array(
+                    'from' => $twilio_number,
+                    'body' => $message
+                )
+            );
+            session(['verification_code' => $verificationCode]);
+
+            $expiresAt = Carbon::now()->addMinutes(5);
+            Otp::create([
+                'user_id' => $user->id, // or however you're identifying the user
+                'otp' => $verificationCode,
+                'expires_at' => $expiresAt,
+            ]);
+
+            return view('driver-app.otp',['user_id'=>$user->id]);
+        }
+        else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Please register yourself'
+            ]);
+        }
+    }
+
     public function verify_otp(Request $request)
     {
 
