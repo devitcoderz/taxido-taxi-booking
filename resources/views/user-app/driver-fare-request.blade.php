@@ -27,169 +27,39 @@
     <!-- driver request section starts -->
     <section class="pt-0 driver-request section-b-space">
         <div class="custom-container">
-            <ul class="driver-list">
-                <li>
-                    <div class="driver-box">
-                        <div class="profile-head">
-                            <div class="flex-align-center gap-2">
-                                <img class="img-fluid profile-img" src="{{asset('assets/images/profile/p8.png')}}"
-                                    alt="profile">
-                                <h5>Tesla car</h5>
-                            </div>
-                            <h4 class="fw-medium success-color">$100</h4>
-                        </div>
-                        <div class="flex-spacing mt-2">
-                            <h5 class="fw-normal title-color">Jonathan Higgins</h5>
-                            <h6 class="fw-normal content-color">4 min</h6>
-                        </div>
-                        <div class="flex-spacing mt-2">
-                            <div class="flex-align-center gap-1">
-                                <img class="star" src="{{asset('assets/images/svg/star.svg')}}" alt="star">
-                                <h5 class="fw-normal title-color">4.8</h5>
-                                <span class="content-color fw-normal">(127)</span>
-                            </div>
-                            <h6 class="fw-normal content-color">4 km</h6>
-                        </div>
+            <ul class="driver-list" id="driverFareList">
+{{--                <li>--}}
+{{--                    <div class="driver-box">--}}
+{{--                        <div class="profile-head">--}}
+{{--                            <div class="flex-align-center gap-2">--}}
+{{--                                <img class="img-fluid profile-img" src="{{asset('assets/images/profile/p8.png')}}"--}}
+{{--                                    alt="profile">--}}
+{{--                                <h5>Tesla car</h5>--}}
+{{--                            </div>--}}
+{{--                            <h4 class="fw-medium success-color">$100</h4>--}}
+{{--                        </div>--}}
+{{--                        <div class="flex-spacing mt-2">--}}
+{{--                            <h5 class="fw-normal title-color">Jonathan Higgins</h5>--}}
+{{--                            <h6 class="fw-normal content-color">4 min</h6>--}}
+{{--                        </div>--}}
+{{--                        <div class="flex-spacing mt-2">--}}
+{{--                            <div class="flex-align-center gap-1">--}}
+{{--                                <img class="star" src="{{asset('assets/images/svg/star.svg')}}" alt="star">--}}
+{{--                                <h5 class="fw-normal title-color">4.8</h5>--}}
+{{--                                <span class="content-color fw-normal">(127)</span>--}}
+{{--                            </div>--}}
+{{--                            <h6 class="fw-normal content-color">4 km</h6>--}}
+{{--                        </div>--}}
 
-                        <div class="grid-btn mt-2">
-                            <a href="#alert" data-bs-toggle="offcanvas" class="btn gray-btn w-100 m-0">Skip</a>
-                            <a href="{{url('user/accept-ride-details')}}" class="btn theme-btn w-100 m-0">Accept</a>
-                        </div>
-                        <div class="progress mt-2" role="progressbar">
-                            <div class="progress-bar w-0"></div>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="driver-box">
-                        <div class="profile-head">
-                            <div class="flex-align-center gap-2">
-                                <img class="img-fluid profile-img" src="{{asset('assets/images/profile/p8.png')}}"
-                                    alt="profile">
-                                <h5>Tesla car</h5>
-                            </div>
-                            <h4 class="fw-medium success-color">$150</h4>
-                        </div>
-                        <div class="flex-spacing mt-2">
-                            <h5 class="fw-normal title-color">Jonathan Higgins</h5>
-                            <h6 class="fw-normal content-color">6 min</h6>
-                        </div>
-                        <div class="flex-spacing mt-2">
-                            <div class="flex-align-center gap-1">
-                                <img class="star" src="{{asset('assets/images/svg/star.svg')}}" alt="star">
-                                <h5 class="fw-normal title-color">4.4</h5>
-                                <span class="content-color fw-normal">(122)</span>
-                            </div>
-                            <h6 class="fw-normal content-color">2 km</h6>
-                        </div>
-
-                        <div class="grid-btn mt-2">
-                            <a href="#alert" data-bs-toggle="offcanvas" class="btn gray-btn w-100 m-0">Skip</a>
-                            <a href="{{url('user/accept-ride-details')}}" class="btn theme-btn w-100 m-0">Accept</a>
-                        </div>
-                        <div class="progress mt-2" role="progressbar">
-                            <div class="progress-bar w-25"></div>
-                        </div>
-                    </div>
-                </li>
-
-                <li>
-                    <div class="driver-box">
-                        <div class="profile-head">
-                            <div class="flex-align-center gap-2">
-                                <img class="img-fluid profile-img" src="{{asset('assets/images/profile/p8.png')}}"
-                                    alt="profile">
-                                <h5>Tesla car</h5>
-                            </div>
-                            <h4 class="fw-medium success-color">$120</h4>
-                        </div>
-                        <div class="flex-spacing mt-2">
-                            <h5 class="fw-normal title-color">Jonathan Higgins</h5>
-                            <h6 class="fw-normal content-color">6 min</h6>
-                        </div>
-                        <div class="flex-spacing mt-2">
-                            <div class="flex-align-center gap-1">
-                                <img class="star" src="{{asset('assets/images/svg/star.svg')}}" alt="star">
-                                <h5 class="fw-normal title-color">4.5</h5>
-                                <span class="content-color fw-normal">(110)</span>
-                            </div>
-                            <h6 class="fw-normal content-color">2 km</h6>
-                        </div>
-
-                        <div class="grid-btn mt-2">
-                            <a href="#alert" data-bs-toggle="offcanvas" class="btn gray-btn w-100 m-0">Skip</a>
-                            <a href="{{url('user/accept-ride-details')}}" class="btn theme-btn w-100 m-0">Accept</a>
-                        </div>
-                        <div class="progress mt-2" role="progressbar">
-                            <div class="progress-bar w-50"></div>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="driver-box">
-                        <div class="profile-head">
-                            <div class="flex-align-center gap-2">
-                                <img class="img-fluid profile-img" src="{{asset('assets/images/profile/p8.png')}}"
-                                    alt="profile">
-                                <h5>Tesla car</h5>
-                            </div>
-                            <h4 class="fw-medium success-color">$80</h4>
-                        </div>
-                        <div class="flex-spacing mt-2">
-                            <h5 class="fw-normal title-color">Jonathan Higgins</h5>
-                            <h6 class="fw-normal content-color">3 min</h6>
-                        </div>
-                        <div class="flex-spacing mt-2">
-                            <div class="flex-align-center gap-1">
-                                <img class="star" src="{{asset('assets/images/svg/star.svg')}}" alt="star">
-                                <h5 class="fw-normal title-color">4.1</h5>
-                                <span class="content-color fw-normal">(125)</span>
-                            </div>
-                            <h6 class="fw-normal content-color">3 km</h6>
-                        </div>
-
-                        <div class="grid-btn mt-2">
-                            <a href="#alert" data-bs-toggle="offcanvas" class="btn gray-btn w-100 m-0">Skip</a>
-                            <a href="{{url('user/accept-ride-details')}}" class="btn theme-btn w-100 m-0">Accept</a>
-                        </div>
-                        <div class="progress mt-2" role="progressbar">
-                            <div class="progress-bar w-75"></div>
-                        </div>
-                    </div>
-                </li>
-
-                <li>
-                    <div class="driver-box">
-                        <div class="profile-head">
-                            <div class="flex-align-center gap-2">
-                                <img class="img-fluid profile-img" src="{{asset('assets/images/profile/p8.png')}}"
-                                    alt="profile">
-                                <h5>Tesla car</h5>
-                            </div>
-                            <h4 class="fw-medium success-color">$60</h4>
-                        </div>
-                        <div class="flex-spacing mt-2">
-                            <h5 class="fw-normal title-color">Jonathan Higgins</h5>
-                            <h6 class="fw-normal content-color">6 min</h6>
-                        </div>
-                        <div class="flex-spacing mt-2">
-                            <div class="flex-align-center gap-1">
-                                <img class="star" src="{{asset('assets/images/svg/star.svg')}}" alt="star">
-                                <h5 class="fw-normal title-color">4.4</h5>
-                                <span class="content-color fw-normal">(127)</span>
-                            </div>
-                            <h6 class="fw-normal content-color">6 km</h6>
-                        </div>
-
-                        <div class="grid-btn mt-2">
-                            <a href="#alert" data-bs-toggle="offcanvas" class="btn gray-btn w-100 m-0">Skip</a>
-                            <a href="{{url('user/accept-ride-details')}}" class="btn theme-btn w-100 m-0">Accept</a>
-                        </div>
-                        <div class="progress mt-2" role="progressbar">
-                            <div class="progress-bar w-100"></div>
-                        </div>
-                    </div>
-                </li>
+{{--                        <div class="grid-btn mt-2">--}}
+{{--                            <a href="#alert" data-bs-toggle="offcanvas" class="btn gray-btn w-100 m-0">Skip</a>--}}
+{{--                            <a href="{{url('user/accept-ride-details')}}" class="btn theme-btn w-100 m-0">Accept</a>--}}
+{{--                        </div>--}}
+{{--                        <div class="progress mt-2" role="progressbar">--}}
+{{--                            <div class="progress-bar w-0"></div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </li>--}}
             </ul>
         </div>
     </section>
@@ -292,5 +162,72 @@
         <!-- map js -->
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGCQvcXUsXwCdYArPXo72dLZ31WS3WQRw"></script>
         <script src="{{asset('assets/js/custom-map.js')}}"></script>
+
+        <script>
+            const userId = {{ Auth::guard('user')->id() }};
+            const userRequestId = {{ $userriderequest_id }};
+
+            getDriverFareRequest();
+
+            setInterval(() => {
+                console.log("Timeout triggered");  // Debug
+                getDriverFareRequest();
+            }, 2000);
+
+            function getDriverFareRequest() {
+                $.ajax({
+                    url: `/user/get-driver-fare-request?userriderequest_id=${userRequestId}`,
+                    method: 'GET',
+                    success: function(response) {
+                        if (response && response.length) {
+                            let html = '';
+
+                            response.forEach(item => {
+                                html += `
+                        <li>
+                            <div class="driver-box">
+                                <div class="profile-head">
+                                    <div class="flex-align-center gap-2">
+                                        <img class="img-fluid profile-img" src="${item.driver?.profile ? '/storage/' + item.driver.profile : '/assets/images/profile/p8.png'}" alt="profile">
+                                        <h5>${item.driver?.vehicle_type}</h5>
+                                    </div>
+                                    <h4 class="fw-medium success-color">$${item.requested_fare}</h4>
+                                </div>
+                                <div class="flex-spacing mt-2">
+                                    <h5 class="fw-normal title-color">${item.driver?.name ?? 'Unknown Driver'}</h5>
+                                    <h6 class="fw-normal content-color">4 min</h6>
+                                </div>
+                                <div class="flex-spacing mt-2">
+                                    <div class="flex-align-center gap-1">
+                                        <img class="star" src="/assets/images/svg/star.svg" alt="star">
+                                        <h5 class="fw-normal title-color">4.8</h5>
+                                        <span class="content-color fw-normal">(127)</span>
+                                    </div>
+                                    <h6 class="fw-normal content-color">4 km</h6>
+                                </div>
+                                <div class="grid-btn mt-2">
+                                    <a href="#alert" data-bs-toggle="offcanvas" class="btn gray-btn w-100 m-0">Skip</a>
+                                    <a href="/user/accept-ride-details?driverfarerequest_id=${item.id}&driver_id=${item.driver_id}" class="btn theme-btn w-100 m-0">Accept</a>
+                                </div>
+                                <div class="progress mt-2" role="progressbar">
+                                    <div class="progress-bar w-0"></div>
+                                </div>
+                            </div>
+                        </li>
+                    `;
+                            });
+
+                            $('#driverFareList').html(html);
+                        } else {
+                            $('#driverFareList').html('<li><p>No fare requests available.</p></li>');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error("Error fetching fare requests:", xhr.responseText);
+                    }
+                });
+            }
+
+        </script>
 
 @endsection

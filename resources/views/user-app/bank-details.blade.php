@@ -18,52 +18,55 @@
         </div>
     </header>
     <!-- header end -->
-
+    @php
+        $user = \Illuminate\Support\Facades\Auth::guard('user')->user();
+    @endphp
     <!-- bank details section starts -->
     <section class="section-b-space">
-        <div class="custom-container">
-            <form class="theme-form mt-0 pt-2">
-                <div class="form-group mt-0">
-                    <label class="form-label mb-2" for="Inputname">Bank Name</label>
-                    <input type="text" class="form-control white-background" id="Inputname"
-                        placeholder="Enter bank name">
-                </div>
-                <div class="form-group ">
-                    <label class="form-label mb-2" for="Inputholder">Holder Name</label>
-                    <input type="text" class="form-control white-background" id="Inputholder"
-                        placeholder="Enter holder name">
-                </div>
-                <div class="form-group">
-                    <label class="form-label mb-2" for="Inputnumner">Account No.</label>
-                    <input type="number" class="form-control white-background" id="Inputnumner"
-                        placeholder="Enter your account no">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label mb-2" for="Inputbranch">Branch Name</label>
-                    <input type="text" class="form-control white-background" id="Inputbranch"
-                        placeholder="Enter branch name">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label mb-2" for="Inputcode">IFSC code</label>
-                    <input type="email" class="form-control white-background" id="Inputcode"
-                        placeholder="Enter ifsc code">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label mb-2" for="Inputswift">Swift code</label>
-                    <input type="email" class="form-control white-background" id="Inputswift"
-                        placeholder="Enter swift code">
-                </div>
-            </form>
-        </div>
-
-        <div class="fixed-btn">
+        <form class="theme-form mt-0 pt-2" action="{{ route('user.user_bank_details') }}" method="post">
+            @csrf
             <div class="custom-container">
-                <a href="{{url('user/setting')}}" class="btn theme-btn w-100 auth-btn mt-0">Update</a>
+                    <div class="form-group mt-0">
+                        <label class="form-label mb-2" for="Inputname">Bank Name</label>
+                        <input type="text" class="form-control white-background" name="bank_name" value="{{ $user->bank_name }}" id="Inputname"
+                            placeholder="Enter bank name">
+                    </div>
+                    <div class="form-group ">
+                        <label class="form-label mb-2" for="Inputholder">Holder Name</label>
+                        <input type="text" class="form-control white-background" name="holder_name" value="{{ $user->holder_name }}" id="Inputholder"
+                            placeholder="Enter holder name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label mb-2" for="Inputnumner">Account No.</label>
+                        <input type="number" class="form-control white-background" name="account_number" value="{{ $user->account_number }}" id="Inputnumner"
+                            placeholder="Enter your account no">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label mb-2" for="Inputbranch">Branch Name</label>
+                        <input type="text" class="form-control white-background" name="branch_name" value="{{ $user->branch_name }}" id="Inputbranch"
+                            placeholder="Enter branch name">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label mb-2" for="Inputcode">IFSC code</label>
+                        <input type="text" class="form-control white-background" name="ifsc_code" value="{{ $user->ifsc_code }}" id="Inputcode"
+                            placeholder="Enter ifsc code">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label mb-2" for="Inputswift">Swift code</label>
+                        <input type="text" class="form-control white-background" name="swift_code" value="{{ $user->swift_code }}" id="Inputswift"
+                            placeholder="Enter swift code">
+                    </div>
             </div>
-        </div>
+
+            <div class="fixed-btn">
+                <div class="custom-container">
+                    <button type="submit" class="btn theme-btn w-100 auth-btn mt-0">Update</button>
+                </div>
+            </div>
+        </form>
     </section>
     <!-- bank details section starts -->
 

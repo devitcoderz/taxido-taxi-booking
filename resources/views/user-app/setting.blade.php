@@ -21,18 +21,20 @@
         </div>
     </header>
     <!-- header end -->
-
+    @php
+        $user = \Illuminate\Support\Facades\Auth::guard('user')->user();
+    @endphp
     <!-- profile section starts -->
     <section class="setting-section">
         <div class="custom-container">
             <div class="profile-section white-background rounded-2 p-3">
                 <div class="flex-align-center gap-2">
                     <div class="profile-image m-0">
-                        <img class="img-fluid profile-pic" src="{{asset('assets/images/profile/p8.png')}}" alt="p8">
+                        <img class="img-fluid profile-pic" src="{{ $user->profile ? asset('storage/'.$user->profile) : asset('assets/images/profile/p8.png') }}" alt="p8">
                     </div>
                     <div class="profile-content">
-                        <h3 class="profile-name">Jonathan Higgins</h3>
-                        <h6 class="fw-normal content-color mt-1">jonathan01@gmail.com</h6>
+                        <h3 class="profile-name">{{ $user->name }}</h3>
+                        <h6 class="fw-normal content-color mt-1">{{ $user->email }}</h6>
                     </div>
                 </div>
                 <div class="wallet-part">

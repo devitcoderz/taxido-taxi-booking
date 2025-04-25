@@ -5,11 +5,14 @@
             <img class="img-fluid logo-dark" src="{{asset('assets/images/logo/user/user-logo-dark.png')}}" alt="logo">
         </div>
     </div>
+    @php
+        $user = \Illuminate\Support\Facades\Auth::guard('user')->user();
+    @endphp
     <div class="offcanvas-body">
         <a href="{{url('user/profile-setting')}}" class="profile-part flex-align-center gap-2">
             <img class="img-fluid profile-pic" src="{{asset('assets/images/profile/p8.png')}}" alt="p8">
             <div>
-                <h3>Jonathan Higgins</h3>
+                <h3>{{ $user->name }}</h3>
                 <span>Edit Account</span>
             </div>
         </a>

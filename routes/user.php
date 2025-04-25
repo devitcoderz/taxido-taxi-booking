@@ -1,0 +1,183 @@
+<?php
+
+
+use App\Http\Controllers\User\AuthController;
+use Illuminate\Support\Facades\Route;
+
+Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
+
+    Route::get('/accept-ride-details', [\App\Http\Controllers\User\RidesbookedController::class, 'accept_ride_details'])->name('accept_ride_details');
+
+    Route::get('/add-new-location', function (){
+        return view('user-app.add-new-location');
+    });
+
+    Route::get('/add-new-rider', function (){
+        return view('user-app.add-new-rider');
+    });
+
+    Route::get('/app-setting', function (){
+        return view('user-app.app-setting');
+    });
+
+    Route::get('/bank-details', function (){
+        return view('user-app.bank-details');
+    });
+
+    Route::post('user-bank-details', [\App\Http\Controllers\User\AuthController::class, 'user_bank_details'])->name('user_bank_details');
+
+    Route::get('/cancel-ride-details', function (){
+        return view('user-app.cancel-ride-details');
+    });
+
+    Route::get('/category', function (){
+        return view('user-app.category');
+    });
+
+    Route::get('/chatting', function (){
+        return view('user-app.chatting');
+    });
+
+    Route::get('/choose-rider', function (){
+        return view('user-app.choose-rider');
+    });
+
+    Route::get('/complete-ride-details', function (){
+        return view('user-app.complete-ride-details');
+    });
+
+    Route::get('/coupon', function (){
+        return view('user-app.coupon');
+    });
+
+    Route::get('/date-time-schedule', function (){
+        return view('user-app.date-time-schedule');
+    });
+
+    Route::get('/driver-details', function (){
+        return view('user-app.driver-details');
+    });
+
+    Route::post('/driver-fare-request', [\App\Http\Controllers\User\UserriderequestController::class, 'driver_fare_request'])->name('driver_fare_request');
+    Route::get('/get-driver-fare-request', [\App\Http\Controllers\User\UserriderequestController::class, 'get_driver_fare_request'])->name('get_driver_fare_request');
+
+
+    Route::get('/driver-review', function (){
+        return view('user-app.driver-review');
+    });
+
+    Route::get('/empty-notification', function (){
+        return view('user-app.empty-notification');
+    });
+
+    Route::get('/finding-driver', function (){
+        return view('user-app.finding-driver');
+    });
+
+    Route::get('/forgot-password', function (){
+        return view('user-app.forgot-password');
+    });
+
+    Route::get('/home', function (){
+        return view('user-app.home');
+    });
+
+    Route::get('/index', function (){
+        return view('user-app.index');
+    });
+
+    Route::get('/location', function (){
+        return view('user-app.location');
+    });
+
+    Route::get('/login', function (){
+        return view('user-app.login');
+    })->middleware(\App\Http\Middleware\RedirectIfAuthenticated::class);
+
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('/login-with-number', function (){
+        return view('user-app.login-with-number');
+    });
+
+    Route::get('/my-rides', function (){
+        return view('user-app.my-rides');
+    });
+
+    Route::get('/notification', function (){
+        return view('user-app.notification');
+    });
+
+    Route::get('/otp', function (){
+        return view('user-app.otp');
+    });
+
+    Route::get('/outstation', function (){
+        return view('user-app.outstation');
+    });
+
+    Route::get('/page-listing', function (){
+        return view('user-app.page-listing');
+    });
+
+    Route::get('/payment-details', function (){
+        return view('user-app.payment-details');
+    });
+
+    Route::get('/payment-method', function (){
+        return view('user-app.payment-method');
+    });
+
+    Route::get('/pending-ride-details', function (){
+        return view('user-app.pending-ride-details');
+    });
+
+    Route::get('/profile-setting', function (){
+        return view('user-app.profile-setting');
+    });
+
+    Route::post('/update_profile',[\App\Http\Controllers\User\AuthController::class,'update_profile'])->name('update_profile');
+
+    Route::get('/rental', function (){
+        return view('user-app.rental');
+    });
+
+    Route::get('/rental-selact-ride', function (){
+        return view('user-app.rental-selact-ride');
+    });
+
+    Route::get('/rental-vehicle-details', function (){
+        return view('user-app.rental-vehicle-details');
+    });
+
+    Route::get('/reset-password', function (){
+        return view('user-app.reset-password');
+    });
+
+    Route::get('/saved-location', function (){
+        return view('user-app.saved-location');
+    });
+
+    Route::get('/search-location', function (){
+        return view('user-app.search-location');
+    });
+
+    Route::post('/selact-ride', [\App\Http\Controllers\User\UserriderequestController::class, 'selact_ride'])->name('selact_ride');
+
+    Route::get('/setting', function (){
+        return view('user-app.setting');
+    });
+
+    Route::get('/signup', function (){
+        return view('user-app.signup');
+    })->middleware(\App\Http\Middleware\RedirectIfAuthenticated::class);
+
+    Route::post('/signup', [AuthController::class, 'register'])->name('register');
+
+    Route::get('/verification', function (){
+        return view('user-app.varification');
+    });
+
+});

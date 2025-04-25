@@ -28,6 +28,8 @@
     </header>
     <!-- header end -->
 
+    <form method="post" action="{{ route('user.selact_ride') }}">
+        @csrf
     <!-- location section starts -->
     <section class="location-section pt-0">
         <div class="custom-container">
@@ -35,14 +37,15 @@
                 <li>
                     <div class="location-box">
                         <img class="icon" src="{{asset('assets/images/svg/location-fill.svg')}}" alt="location">
-                        <input type="text" id="inputpickup" class="form-control" placeholder="Pickup location">
+                        <input type="text" id="inputpickup" class="form-control" placeholder="Pickup location" name="pickup_location">
+                        <ul id="suggestions" class="suggestions"></ul>
                     </div>
                 </li>
                 <li>
                     <div class="location-box">
                         <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
                         <input type="text" id="inputdestination" class="form-control border-0"
-                            placeholder="Enter destination">
+                            placeholder="Enter destination" name="destination_location">
                         <i class="iconsax add-stop" data-icon="add"></i>
                     </div>
                 </li>
@@ -137,12 +140,12 @@
 
         <div class="fixed-btn">
             <div class="custom-container">
-                <a href="#ride" data-bs-toggle="offcanvas" class="btn theme-btn w-100">Done</a>
+                <button type="submit" class="btn theme-btn w-100">Done</button>
             </div>
         </div>
     </section>
     <!-- recent search list end -->
-
+    </form>
     <!-- ride-offcanvas starts -->
     <div class="offcanvas ride-offcanvas" tabindex="-1" id="ride">
         <div class="offcanvas-body p-0">
@@ -154,7 +157,7 @@
                     My Self</label>
                 <input class="form-check-input" type="radio" name="flexRadioDefault" id="fixed1" checked="">
             </div>
-            <a href="choose-rider.blade.php" class="choose-contact">
+            <a href="{{ url('user/choose-rider') }}" class="choose-contact">
                 <div class="flex-align-center gap-2">
                     <img class="img-fluid user-icon" src="{{asset('assets/images/svg/user-octagon.svg')}}" alt="user">
                     <h5>Choose another contact</h5>
@@ -164,8 +167,8 @@
             </a>
         </div>
         <div class="offcanvas-footer flex-align-center flex-nowrap gap-3 border-0 pt-3 px-0 pb-0">
-            <a href="selact-ride.blade.php" class="btn gray-btn title-color w-100 mt-0">Skip</a>
-            <a href="selact-ride.blade.php" class="btn theme-btn w-100 mt-0">Continue</a>
+            <a href="{{ url('user/selact-ride') }}" class="btn gray-btn title-color w-100 mt-0">Skip</a>
+            <a href="{{ url('user/selact-ride') }}" class="btn theme-btn w-100 mt-0">Continue</a>
         </div>
     </div>
     <!-- ride-offcanvas end -->
@@ -177,5 +180,58 @@
     @endsection
 
     @section('script')
+        <script src="https://cdn.jsdelivr.net/npm/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
 
+        <script>
+            // window.Helpers.initCustomOptionCheck();
+            $.ajaxSetup({
+                headers:{
+                    'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            const accessToken = '{{ config('services.mapbox.access_token') }}';
+            const mapboxClient = mapboxSdk({ accessToken });
+
+            const addressInput = document.getElementById('inputpickup');
+            // const billingAddressInput = document.getElementById('billing_address');
+            const suggestionsList = document.getElementById('suggestions');
+
+            const clearSuggestions = () => {
+                suggestionsList.innerHTML = '';
+            };
+
+            addressInput.addEventListener('input', () => {
+                const query = addressInput.value;
+                if (query.length > 2) {
+                    mapboxClient.geocoding.forwardGeocode({
+                        query,
+                        autocomplete: true,
+                        limit: 5
+                    })
+                        .send()
+                        .then(response => {
+                            clearSuggestions();
+                            if (response && response.body && response.body.features) {
+                                const suggestions = response.body.features;
+
+                                suggestions.forEach(suggestion => {
+                                    const li = document.createElement('li');
+                                    li.textContent = suggestion.place_name;
+                                    li.addEventListener('click', () => {
+                                        // billingAddressInput.value = '';
+                                        addressInput.value = suggestion.place_name;
+                                        // billingAddressInput.value = suggestion.place_name;
+                                        clearSuggestions();
+                                    });
+                                    suggestionsList.appendChild(li);
+                                });
+                            }
+                        });
+                } else {
+                    clearSuggestions();
+                }
+            });
+
+        </script>
 @endsection

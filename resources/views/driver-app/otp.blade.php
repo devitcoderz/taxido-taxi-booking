@@ -1,50 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('driver-app.layout')
+@section('title')
+    <title>Taxido - Driver App </title>
+@endsection
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="taxido">
-    <meta name="keywords" content="taxido">
-    <meta name="author" content="taxido">
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="../../assets/images/logo/favicon.png" type="image/x-icon">
-    <title>taxido - Driver App </title>
-    <link rel="apple-touch-icon" href="../../assets/images/logo/favicon.png">
-    <meta name="title-color" content="#1F1F1F">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="taxido">
-    <meta name="msapplication-TileImage" content="../../assets/images/logo/favicon.png">
+@section('style')
 
-    <meta name="msapplication-TileColor" content="#FFFFFF">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- swiper css -->
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/swiper-bundle.min.css')}}">
 
-    <!--Google font-->
-    <link rel="stylesheet" type="text/css" href="../../assets/css/GTWalsheimPro.css">
+@endsection
 
-    <!-- iconsax css -->
-    <link rel="stylesheet" type="text/css" href="../../assets/css/vendors/iconsax.css">
-
-    <!-- bootstrap css -->
-    <link rel="stylesheet" id="rtl-link" type="text/css" href="../../assets/css/vendors/bootstrap.css">
-
-
-    <!-- Theme css -->
-    <link rel="stylesheet" id="change-link" type="text/css" href="../../assets/css/style.css">
-</head>
-
-<body>
+@section('content')
     <!-- header starts -->
     <header id="header" class="auth-header">
         <div class="custom-container">
             <div class="header-panel">
-                <a href="login.blade.php">
+                <a href="{{url('driver/login')}}">
                     <i class="iconsax icon-btn" data-icon="chevron-left"> </i>
                 </a>
-                <img class="img-fluid logo" src="../../assets/images/logo/driver/driver-logo.png" alt="logo">
-                <img class="img-fluid logo-dark" src="../../assets/images/logo/driver/driver-logo-dark.png" alt="logo">
+                <img class="img-fluid logo" src="{{asset('assets/images/logo/driver/driver-logo.png')}}" alt="logo">
+                <img class="img-fluid logo-dark" src="{{asset('assets/images/logo/driver/driver-logo-dark.png')}}" alt="logo">
             </div>
         </div>
     </header>
@@ -62,7 +37,10 @@
                 </div>
 
                 <h4 class="title-color fw-medium otp-name">OTP</h4>
-                <form class="otp-form">
+                <form class="otp-form" action="{{route('driver.verify_otp')}}" method="post">
+                    <input type="hidden" name="user_id" value="{{ $user_id }}">
+                    <input type="hidden" name="otp" id="full_otp">
+                    @csrf
                     <div class="form-input dark-border-gradient">
                         <input type="number" class="form-control active" placeholder="0" id="five1"
                             onkeyup="onKeyUpEvent(1, event)" onfocus="onFocusEvent(1)">
@@ -83,8 +61,8 @@
                         <input type="number" class="form-control" placeholder="0" id="five5"
                             onkeyup="onKeyUpEvent(5, event)" onfocus="onFocusEvent(5)">
                     </div>
+                <button type="submit" class="btn theme-btn w-100 auth-btn">Verify</button>
                 </form>
-                <a href="home.blade.php" class="btn theme-btn w-100 auth-btn">Verify</a>
                 <h6 class="title-color fw-semibold mt-3 text-center"> <span class="content-color fw-medium">Not Received
                         Yet ? </span> <a href="otp.blade.php" class="title-color fw-medium">Resend it</a> </h6>
             </div>
@@ -92,23 +70,22 @@
     </div>
     <!-- otp page end -->
 
-    <!-- iconsax js -->
-    <script src="../../assets/js/iconsax.js"></script>
-
-    <!-- sticky-header js -->
-    <script src="../../assets/js/sticky-header.js"></script>
-
-    <!-- bootstrap js -->
-    <script src="../../assets/js/bootstrap.bundle.min.js"></script>
-
+@endsection
+@section('script')
     <!-- otp js -->
-    <script src="../../assets/js/otp.js"></script>
+    <script src="{{asset('assets/js/otp.js')}}"></script>
 
-    <!-- template-setting js -->
-    <script src="../../assets/js/template-setting.js"></script>
+    <script>
+        document.querySelector('.otp-form').addEventListener('submit', function(e) {
+            const otp = [
+                document.getElementById('five1').value,
+                document.getElementById('five2').value,
+                document.getElementById('five3').value,
+                document.getElementById('five4').value,
+                document.getElementById('five5').value
+            ].join('');
 
-    <!-- script js -->
-    <script src="../../assets/js/script.js"></script>
-</body>
-
-</html>
+            document.getElementById('full_otp').value = otp;
+        });
+    </script>
+@endsection

@@ -42,7 +42,7 @@
                     </div>
                 @endif
 
-                <form class="auth-form mt-0" method="post" action="{{route('login')}}">
+                <form class="auth-form mt-0" method="post" action="{{route('user.login')}}">
                     @csrf
                     <div class="form-group">
                         <label class="form-label mb-2" for="Inputemail">Email</label>

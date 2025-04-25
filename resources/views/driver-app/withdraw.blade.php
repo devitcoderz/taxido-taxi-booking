@@ -1,46 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('driver-app.layout')
+@section('title')
+    <title>Taxido - Driver App </title>
+@endsection
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="taxido">
-    <meta name="keywords" content="taxido">
-    <meta name="author" content="taxido">
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="../../assets/images/logo/favicon.png" type="image/x-icon">
-    <title>taxido - Driver App </title>
-    <link rel="apple-touch-icon" href="../../assets/images/logo/favicon.png">
-    <meta name="title-color" content="#1F1F1F">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="taxido">
-    <meta name="msapplication-TileImage" content="../../assets/images/logo/favicon.png">
+@section('style')
 
-    <meta name="msapplication-TileColor" content="#FFFFFF">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+@endsection
 
-    <!--Google font-->
-    <link rel="stylesheet" type="text/css" href="../../assets/css/GTWalsheimPro.css">
-
-    <!-- iconsax css -->
-    <link rel="stylesheet" type="text/css" href="../../assets/css/vendors/iconsax.css">
-
-    <!-- bootstrap css -->
-    <link rel="stylesheet" id="rtl-link" type="text/css" href="../../assets/css/vendors/bootstrap.css">
-
-
-    <!-- Theme css -->
-    <link rel="stylesheet" id="change-link" type="text/css" href="../../assets/css/style.css">
-</head>
-
-<body>
+@section('content')
     <!-- header starts -->
     <header id="header" class="main-header inner-page-header">
         <div class="custom-container">
             <div class="header-panel">
-                <a href="wallet.blade.php">
+                <a href="{{url('driver/wallet')}}">
                     <i class="iconsax icon-btn" data-icon="chevron-left"> </i>
                 </a>
                 <h3>Withdraw</h3>
@@ -88,7 +60,7 @@
 
         <div class="fixed-btn">
             <div class="custom-container">
-                <a href="wallet.blade.php" class="btn theme-btn w-100 mt-0 auth-btn">Withdraw Amount</a>
+                <a href="{{url('driver/wallet')}}" class="btn theme-btn w-100 mt-0 auth-btn">Withdraw Amount</a>
             </div>
         </div>
     </section>
@@ -98,20 +70,8 @@
     <section class="panel-space"></section>
     <!-- panel-space end -->
 
-    <!-- iconsax js -->
-    <script src="../../assets/js/iconsax.js"></script>
+@endsection
+@section('script')
 
-    <!-- bootstrap js -->
-    <script src="../../assets/js/bootstrap.bundle.min.js"></script>
 
-    <!-- sticky-header js -->
-    <script src="../../assets/js/sticky-header.js"></script>
-
-    <!-- template-setting js -->
-    <script src="../../assets/js/template-setting.js"></script>
-
-    <!-- script js -->
-    <script src="../../assets/js/script.js"></script>
-</body>
-
-</html>
+@endsection
