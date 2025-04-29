@@ -285,12 +285,12 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
-                    <img class="img-fluid icon" src="assets/images/svg/logout.svg" alt="alert">
+                    <img class="img-fluid icon" src="{{asset('assets/images/svg/logout.svg')}}" alt="alert">
                     <h4>Come Back Soon</h4>
                     <p>Are you sure You want to Logout?</p>
                 </div>
                 <div class="modal-footer">
-                    <a href="setting.blade.php" class="btn gray-btn w-50 m-0" data-bs-dismiss="modal">Stay, logged in</a>
+                    <a href="{{ url('user/setting') }}" class="btn gray-btn w-50 m-0" data-bs-dismiss="modal">Stay, logged in</a>
                     <a href="{{url('user/logout')}}" class="btn theme-btn w-50 m-0">Yes, Logout </a>
                 </div>
             </div>

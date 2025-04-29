@@ -34,11 +34,13 @@
                     <h6>Create a secure and memorable new password.</h6>
                 </div>
 
-                <form class="auth-form mt-0">
+                <form class="auth-form mt-0" method="post" action="{{ route('user.update_password') }}">
+                    @csrf
+                    <input type="hidden" name="user_id" value="{{ $user_id }}">
                     <div class="form-group">
                         <label class="form-label mb-2" for="Inputpassword1">Password</label>
                         <div class="position-relative">
-                            <input type="password" class="form-control" id="Inputpassword1"
+                            <input type="password" name="password" class="form-control" id="Inputpassword1"
                                 placeholder="Enter password">
                             <i class="iconsax icon" data-icon="lock-2"></i>
                         </div>
@@ -50,7 +52,7 @@
                     <div class="form-group">
                         <label class="form-label mb-2" for="Inputpassword2">Password</label>
                         <div class="position-relative">
-                            <input type="password" class="form-control" id="Inputpassword2"
+                            <input type="password" name="confirm_password" class="form-control" id="Inputpassword2"
                                 placeholder="Enter password">
                             <i class="iconsax icon" data-icon="lock-2"></i>
                         </div>
@@ -59,13 +61,12 @@
                             <i class="iconsax eye-icon icon-eye-splash" data-icon="eye-slash"></i>
                         </div>
                     </div>
+                    <div class="fixed-btn">
+                        <div class="custom-container">
+                            <button type="submit" class="btn theme-btn w-100">Send</button>
+                        </div>
+                    </div>
                 </form>
-            </div>
-
-            <div class="fixed-btn">
-                <div class="custom-container">
-                    <a href="{{url('user/login')}}" class="btn theme-btn w-100">Send</a>
-                </div>
             </div>
         </div>
     </div>

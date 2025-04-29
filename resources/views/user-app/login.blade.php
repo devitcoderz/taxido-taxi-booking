@@ -80,7 +80,7 @@
                     </div>
 
                     <div class="flex-align-center gap-3">
-                        <a href="https://www.google.co.in/" class="btn theme-btn google-btn w-50 flex-center gap-2">
+                        <a href="{{ url('user/auth/google') }}" class="btn theme-btn google-btn w-50 flex-center gap-2">
                             <img class="img-fluid google" src="{{asset('assets/images/svg/google.svg')}}" alt="google" /> with
                             Google</a>
 

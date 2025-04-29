@@ -35,7 +35,10 @@
                 </div>
 
                 <h4 class="title-color fw-medium otp-name">OTP</h4>
-                <form class="otp-form">
+                <form class="otp-form" action="{{route('user.verify_otp')}}" method="post">
+                    <input type="hidden" name="user_id" value="{{ $user_id }}">
+                    <input type="hidden" name="otp" id="full_otp">
+                    @csrf
                     <div class="form-input dark-border-gradient">
                         <input type="number" class="form-control active" placeholder="0" id="five1"
                             onkeyup="onKeyUpEvent(1, event)" onfocus="onFocusEvent(1)">
@@ -56,10 +59,10 @@
                         <input type="number" class="form-control" placeholder="0" id="five5"
                             onkeyup="onKeyUpEvent(5, event)" onfocus="onFocusEvent(5)">
                     </div>
-                </form>
-                <a href="{{url('user/location')}}" class="btn theme-btn w-100 auth-btn">Verify</a>
+                <button type="submit" class="btn theme-btn w-100 auth-btn">Verify</button>
                 <h6 class="title-color fw-semibold mt-3 text-center"> <span class="content-color fw-medium">Not Received
                         Yet ? </span> <a href="otp.blade.php" class="title-color fw-medium">Resend it</a> </h6>
+                </form>
             </div>
         </div>
     </div>
@@ -71,5 +74,19 @@
 
         <!-- otp js -->
         <script src="{{asset('assets/js/otp.js')}}"></script>
+
+        <script>
+            document.querySelector('.otp-form').addEventListener('submit', function(e) {
+                const otp = [
+                    document.getElementById('five1').value,
+                    document.getElementById('five2').value,
+                    document.getElementById('five3').value,
+                    document.getElementById('five4').value,
+                    document.getElementById('five5').value
+                ].join('');
+
+                document.getElementById('full_otp').value = otp;
+            });
+        </script>
 
 @endsection

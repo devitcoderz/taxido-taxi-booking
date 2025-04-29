@@ -14,10 +14,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Twilio\Rest\Client;
 
-//use Twilio\Rest\Client;
-
-// Adjust to your user model location
-
 class AuthController extends Controller
 {
     // Display the login/register form
@@ -138,7 +134,7 @@ class AuthController extends Controller
         ]);
 
         // Attempt login
-        if (Auth::guard('driver')->attempt($credentials)) {
+        if (Auth::guard('driver')->attempt($credentials, true)) {
             $request->session()->regenerate();
 
             // Redirect to /profile after successful login
@@ -165,18 +161,18 @@ class AuthController extends Controller
             $verificationCode = rand(10000, 99999);
             $message = "Your verification code is: $verificationCode";
 
-            $account_sid = env('TWILIO_SID_KEY');
-            $auth_token = env('TWILIO_AUTH_TOKEN');
-            $twilio_number =  env('TWILIO_NUMBER');
-
-            $client = new Client($account_sid, $auth_token);
-            $client->messages->create(
-                '+'.$request->phone,
-                array(
-                    'from' => $twilio_number,
-                    'body' => $message
-                )
-            );
+//            $account_sid = env('TWILIO_SID_KEY');
+//            $auth_token = env('TWILIO_AUTH_TOKEN');
+//            $twilio_number =  env('TWILIO_NUMBER');
+//
+//            $client = new Client($account_sid, $auth_token);
+//            $client->messages->create(
+//                '+'.$request->phone,
+//                array(
+//                    'from' => $twilio_number,
+//                    'body' => $message
+//                )
+//            );
             session(['verification_code' => $verificationCode]);
 
             $expiresAt = Carbon::now()->addMinutes(5);
@@ -207,7 +203,7 @@ class AuthController extends Controller
 
         if ($otp) {
             $user = Driver::where('id', $request->user_id)->first();
-            Auth::guard('driver')->login($user);
+            Auth::guard('driver')->login($user, true);
             return redirect('/driver/home');
         } else {
             dd('invalid otp');

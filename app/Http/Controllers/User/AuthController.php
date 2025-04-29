@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Otp;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 // Adjust to your user model location
@@ -72,7 +75,7 @@ class AuthController extends Controller
         ]);
 
         // Attempt login
-        if (Auth::guard('user')->attempt($credentials)) {
+        if (Auth::guard('user')->attempt($credentials, true)) {
             $request->session()->regenerate();
 
             // Redirect to /profile after successful login
@@ -83,6 +86,65 @@ class AuthController extends Controller
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ]);
+    }
+
+    public function sendotp(Request $request)
+    {
+        $user = User::where('phone', $request->phone)->first();
+
+        if ($user) {
+
+            $verificationCode = rand(10000, 99999);
+            $message = "Your verification code is: $verificationCode";
+
+//            $account_sid = env('TWILIO_SID_KEY');
+//            $auth_token = env('TWILIO_AUTH_TOKEN');
+//            $twilio_number =  env('TWILIO_NUMBER');
+//
+//            $client = new Client($account_sid, $auth_token);
+//            $client->messages->create(
+//                '+'.$request->phone,
+//                array(
+//                    'from' => $twilio_number,
+//                    'body' => $message
+//                )
+//            );
+            session(['verification_code' => $verificationCode]);
+
+            $expiresAt = Carbon::now()->addMinutes(5);
+            Otp::create([
+                'user_id' => $user->id, // or however you're identifying the user
+                'otp' => $verificationCode,
+                'expires_at' => $expiresAt,
+            ]);
+
+            return view('user-app.otp',['user_id'=>$user->id]);
+        }
+        else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Please register yourself'
+            ]);
+        }
+    }
+
+    public function verify_otp(Request $request)
+    {
+
+        $otp = Otp::where('user_id', $request->user_id)
+            ->where('otp', $request->otp)
+            ->where('expires_at', '>', Carbon::now())
+            ->latest()
+            ->first();
+
+        if ($otp) {
+            $user = User::where('id', $request->user_id)->first();
+            Auth::guard('user')->login($user, true);
+            return redirect('/user/home');
+        } else {
+            dd('invalid otp');
+            return redirect()->back()->with('error', 'Invalid OTP');
+        }
     }
 
     public function logout(){
@@ -116,4 +178,77 @@ class AuthController extends Controller
         $user->save();
         return redirect()->back()->with('success', 'Bank Details updated successfully');
     }
+
+    public function verification(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required',
+        ]);
+
+        $user = User::where('phone', $request->phone)->first();
+        if ($user) {
+
+            $verificationCode = rand(10000, 99999);
+
+            $expiresAt = Carbon::now()->addMinutes(5);
+            Otp::create([
+                'user_id' => $user->id, // or however you're identifying the user
+                'otp' => $verificationCode,
+                'expires_at' => $expiresAt,
+            ]);
+
+//            $message = "Your Reset Password verification code is: $verificationCode";
+//            $account_sid = env('TWILIO_SID_KEY');
+//            $auth_token = env('TWILIO_AUTH_TOKEN');
+//            $twilio_number =  env('TWILIO_NUMBER');
+//
+//            $client = new Client($account_sid, $auth_token);
+//            $client->messages->create(
+//                '+'.$request->phone,
+//                array(
+//                    'from' => $twilio_number,
+//                    'body' => $message
+//                )
+//            );
+
+//            Mail::raw('Your verification code is: ' . $verificationCode, function ($message) use ($request) {
+//                $message->to($request->email)
+//                    ->subject('Your Verification Code');
+//            });
+            return view('user-app.varification')->with(['success' => 'OTP sent to your phone', 'user_id' => $user->id]);
+
+        }
+        else{
+            return redirect()->back()->with('error', 'Invalid Phone');
+        }
+    }
+
+    public function reset_password(Request $request){
+        $otp = Otp::where('user_id', $request->user_id)
+            ->where('otp', $request->otp)
+            ->where('expires_at', '>', Carbon::now())
+            ->latest()
+            ->first();
+
+        if ($otp) {
+            $user = User::where('id', $request->user_id)->first();
+            Auth::guard('user')->login($user, true);
+            return view('user-app.reset-password')->with(['success' => 'Please enter your new password', 'user_id' => $user->id]);
+        } else {
+            return redirect()->back()->with('error', 'Invalid OTP');
+        }
+    }
+
+    public function update_password(Request $request){
+        $request->validate([
+            'password' => 'required|string|min:6',
+            'confirm_password' => 'required|same:password',
+        ]);
+
+        $user = User::where('id', $request->user_id)->first();
+        $user->password = $request->password;
+        $user->save();
+        return redirect()->route('user.login')->with('success', 'Password updated successfully');
+    }
+
 }

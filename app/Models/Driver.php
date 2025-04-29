@@ -32,5 +32,6 @@ class Driver extends Authenticatable
         'branch_name',
         'ifsc_code',
         'profile',
+        'google_id'
     ];
 }

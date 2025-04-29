@@ -40,6 +40,18 @@ return [
     ],
     'mapbox' => [
         'access_token' => env('MAPBOX_ACCESS_TOKEN')
-    ]
+    ],
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => '',
+    ],
+
+    'google_driver' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_DRIVER_REDIRECT_URI'),
+    ],
+
 
 ];
