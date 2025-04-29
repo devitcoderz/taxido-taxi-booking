@@ -9,7 +9,7 @@
         <a href="{{url('driver/profile-setting')}}" class="profile-part flex-align-center gap-2">
             <img class="img-fluid profile-pic" src="{{asset('assets/images/profile/p8.png')}}" alt="p8">
             <div>
-                <h3>Jonathan Higgins</h3>
+                <h3>{{ \Illuminate\Support\Facades\Auth::guard('driver')->user()->name }}</h3>
                 <span>Edit Account</span>
             </div>
         </a>

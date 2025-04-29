@@ -27,11 +27,11 @@
 
     <div class="ride-content-bg">
         <div class="profile-head mt-0">
-            <img class="img-fluid profile-img" src="{{asset('assets/images/profile/p4.png')}}" alt="profile">
+            <img class="img-fluid profile-img" src="{{ $ridesbooked->driver->profile ? asset('storage/'.$ridesbooked->driver->profile) : asset('assets/images/profile/p4.png')}}" alt="profile">
             <div class="profile-content">
                 <div>
                     <div class="flex-align-center gap-1">
-                        <h5>Peter Thornton</h5>
+                        <h5>{{ $ridesbooked->driver->name }}</h5>
                     </div>
 
                     <div class="flex-align-center gap-1">
@@ -56,14 +56,14 @@
             <li class="border-0 shadow-none">
                 <div class="location-box">
                     <img class="icon" src="{{asset('assets/images/svg/location-fill.svg')}}" alt="location">
-                    <h5 class="fw-light title-color">17, Yonge St, Toronto, Canada</h5>
+                    <h5 class="fw-light title-color">{{ $ridesbooked->pickup_location }}</h5>
                 </div>
             </li>
 
             <li class="border-0 shadow-none">
                 <div class="location-box">
                     <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                    <h5 class="fw-light title-color border-0">20, Thori St, Toronto, Canada
+                    <h5 class="fw-light title-color border-0">{{ $ridesbooked->destination_location }}
                     </h5>
                 </div>
             </li>
@@ -72,13 +72,13 @@
         <div class="amount-part">
             <div class="total flex-spacing">
                 <h4 class="fw-medium title-color">Total Fare </h4>
-                <span class="fw-medium theme-color">$256</span>
+                <span class="fw-medium theme-color">${{ $ridesbooked->fare }}</span>
             </div>
             <div class="location-part fare-amount">
                 <div class="flex-align-center gap-2">
                     <i class="iconsax dollar-icon" data-icon="dollar-square"> </i>
                     <div>
-                        <h5 class="fw-medium title-color">Cash</h5>
+                        <h5 class="fw-medium title-color">{{ $ridesbooked->payment_method }}</h5>
                         <h6 class="fw-normal content-color">Pay when the ride end</h6>
                     </div>
                 </div>

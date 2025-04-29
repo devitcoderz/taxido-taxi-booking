@@ -8,7 +8,7 @@
     <meta name="description" content="taxido">
     <meta name="keywords" content="taxido">
     <meta name="author" content="taxido">
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
     <link rel="icon" href="{{asset('assets/images/logo/favicon.png')}}" type="image/x-icon">
 
     @yield('title')
@@ -34,9 +34,9 @@
 
     <!-- Theme css -->
     <link rel="stylesheet" id="change-link" type="text/css" href="{{asset('assets/css/style.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     @yield('style')
 
-    @laravelPWA
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <script>
         if ('serviceWorker' in navigator) {
@@ -65,8 +65,27 @@
 
 <!-- script js -->
 <script src="{{asset('assets/js/script.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 @yield('script')
 
+<script>
+    @if(Session::has('success'))
+    toastr.success("{{ Session::get('success') }}");
+    @endif
+
+    @if(Session::has('error'))
+    toastr.error("{{ Session::get('error') }}");
+    @endif
+
+    @if(Session::has('info'))
+    toastr.info("{{ Session::get('info') }}");
+    @endif
+
+    @if(Session::has('warning'))
+    toastr.warning("{{ Session::get('warning') }}");
+    @endif
+</script>
 </body>
 
 </html>

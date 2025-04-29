@@ -32,7 +32,8 @@
                     <h6>Hey, You have been missed !</h6>
                 </div>
 
-                <form class="auth-form">
+                <form class="auth-form" action="{{url('driver/otp')}}" method="post">
+                    @csrf
                     <div class="form-group mt-0">
                         <label class="form-label" for="validationDefault01">Mobile Number</label>
                         <div class="d-flex gap-2">
@@ -51,7 +52,7 @@
                             </div>
                             <div class="form-group position-relative mt-0 w-100">
                                 <input type="number" class="form-control" id="validationDefault01"
-                                    placeholder="Enter your number" required>
+                                    placeholder="Enter your number" required name="phone">
                                 <i class="iconsax icon" data-icon="phone"></i>
                             </div>
                         </div>
@@ -62,7 +63,7 @@
                     </div>
 
                     <div class="flex-align-center gap-3">
-                        <a href="https://www.google.co.in/" class="btn theme-btn google-btn w-50 flex-center gap-2">
+                        <a href="{{ url('driver/auth/google') }}" class="btn theme-btn google-btn w-50 flex-center gap-2">
                             <img class="img-fluid google" src="{{asset('assets/images/svg/google.svg')}}" alt="google" /> with
                             Google</a>
 
@@ -71,9 +72,9 @@
                             Apple</a>
                     </div>
 
-                    <a href="{{url('driver/otp')}}" class="btn theme-btn w-100 auth-btn">Get OTP</a>
+                    <button type="submit" class="btn theme-btn w-100 auth-btn">Get OTP</button>
                     <h6 class="content-color fw-normal my-3 text-center"> New User ?
-                        <a href="{{url('/signup')}}" class="title-color fw-medium">Sign up</a>
+                        <a href="{{url('driver/signup')}}" class="title-color fw-medium">Sign up</a>
                     </h6>
                 </form>
             </div>

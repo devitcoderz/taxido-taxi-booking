@@ -32,9 +32,10 @@
                     <h6>Hey, You have been missed !</h6>
                 </div>
 
-                <form class="auth-form">
+                <form class="auth-form" action="{{url('user/otp')}}" method="post">
+                    @csrf
                     <div class="flex-align-center gap-3">
-                        <a href="https://www.google.co.in/" class="btn theme-btn google-btn w-50 flex-center gap-2">
+                        <a href="{{ url('user/auth/google') }}" class="btn theme-btn google-btn w-50 flex-center gap-2">
                             <img class="img-fluid google" src="{{asset('assets/images/svg/google.svg')}}" alt="google" /> with
                             Google</a>
 
@@ -68,14 +69,14 @@
                                 </ul>
                             </div>
                             <div class="form-group position-relative mt-0 w-100">
-                                <input type="number" class="form-control" id="validationDefault01"
+                                <input type="number" name="phone" class="form-control" id="validationDefault01"
                                     placeholder="Enter your number" required>
                                 <i class="iconsax icon" data-icon="phone"></i>
                             </div>
                         </div>
                     </div>
 
-                    <a href="{{url('user/otp')}}" class="btn theme-btn w-100 auth-btn">Get OTP</a>
+                    <button type="submit" class="btn theme-btn w-100 auth-btn">Get OTP</button>
                     <h6 class="content-color fw-normal my-3 text-center"> New User ?
                         <a href="{{url('user/signup')}}" class="title-color fw-medium">Sign up</a>
                     </h6>

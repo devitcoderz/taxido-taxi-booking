@@ -20,18 +20,20 @@
         </div>
     </header>
     <!-- header end -->
-
+    @php
+        $driver = \Illuminate\Support\Facades\Auth::guard('driver')->user();
+    @endphp
     <!-- profile section starts -->
     <section class="setting-section">
         <div class="custom-container">
             <div class="profile-section white-background rounded-2 p-3">
                 <div class="flex-align-center gap-2">
                     <div class="profile-image m-0">
-                        <img class="img-fluid profile-pic" src="{{asset('assets/images/profile/p8.png')}}" alt="p8">
+                        <img class="img-fluid profile-pic" src="{{ $driver->profile ? asset('storage/'.$driver->profile) : asset('assets/images/profile/p8.png') }}" alt="p8">
                     </div>
                     <div class="profile-content">
-                        <h3 class="profile-name">Jonathan Higgins</h3>
-                        <h6 class="fw-normal content-color mt-1">jonathan01@gmail.com</h6>
+                        <h3 class="profile-name">{{ $driver->name }}</h3>
+                        <h6 class="fw-normal content-color mt-1">{{ $driver->email}}</h6>
                     </div>
                 </div>
                 <div class="wallet-part">
@@ -101,7 +103,7 @@
             <div class="profile-list">
                 <ul class="setting-listing">
                     <li class="w-100">
-                        <a href="{{url('driver/driver-registration-document')}}" class="setting-box">
+                        <a href="{{url('driver/driver-document-verify')}}" class="setting-box">
                             <div class="setting-icon">
                                 <i class="iconsax icon" data-icon="document-upload"> </i>
                             </div>
@@ -113,7 +115,7 @@
                     </li>
 
                     <li class="w-100">
-                        <a href="{{url('driver/driver-vehicle-details')}}" class="setting-box">
+                        <a href="{{url('driver/vehicle-registeration')}}" class="setting-box">
                             <div class="setting-icon">
                                 <i class="iconsax icon" data-icon="car"> </i>
                             </div>
@@ -124,7 +126,7 @@
                         </a>
                     </li>
                     <li class="w-100">
-                        <a href="driver-bank-registration-details.blade.php" class="setting-box">
+                        <a href="{{url('driver/driver-bank-details')}}" class="setting-box">
                             <div class="setting-icon">
                                 <i class="iconsax icon" data-icon="bank"> </i>
                             </div>
@@ -137,7 +139,7 @@
                 </ul>
             </div>
 
-            <a href="../user-app/index.blade.php" class="driver-banner-part">
+            <a href="{{ url('user/index') }}" class="driver-banner-part">
                 <div class="driver-img">
                     <img class="img-fluid driver-icon" src="{{asset('assets/images/svg/user-vector-img.svg')}}" alt="">
                 </div>
@@ -215,8 +217,8 @@
                     <p>Are you sure You want to Logout?</p>
                 </div>
                 <div class="modal-footer">
-                    <a href="setting.blade.php" class="btn gray-btn w-50 m-0" data-bs-dismiss="modal">Stay, logged in</a>
-                    <a href="login.blade.php" class="btn theme-btn w-50 m-0">Yes, Logout </a>
+                    <a href="{{url('driver/setting')}}" class="btn gray-btn w-50 m-0" data-bs-dismiss="modal">Stay, logged in</a>
+                    <a href="{{url('driver/logout')}}"  class="btn theme-btn w-50 m-0">Yes, Logout </a>
                 </div>
             </div>
         </div>

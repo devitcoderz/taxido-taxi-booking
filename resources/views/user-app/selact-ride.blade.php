@@ -5,7 +5,7 @@
 @endsection
 
 @section('style')
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endsection
 
 @section('content')
@@ -75,17 +75,24 @@
             ride. you can bid your price below.
         </p>
 
-        <form class="theme-form px-20">
+        <form class="theme-form px-20" method="post" action="{{ route('user.driver_fare_request') }}">
+            @csrf
+            <input type="hidden" name="pickup_location" value="{{ $request->pickup_location }}">
+            <input type="hidden" name="destination_location" value="{{ $request->destination_location }}">
             <div class="form-group">
                 <label class="form-label mb-2" for="Inputstreet">Offer your fare</label>
-                <input type="text" class="form-control" id="Inputstreet" placeholder="Enter fare amount">
+                <input type="text" class="form-control" id="Inputstreet" placeholder="Enter fare amount" name="fare">
+            </div>
+            <div class="form-group">
+                <label class="form-label mb-2" for="delivery_date">Select Date and Time</label>
+                <input type="text" class="form-control" id="delivery_date" name="delivery_date">
             </div>
 
             <h5 class="p-0 mt-3 mb-2 fw-medium title-color">Payment Method</h5>
             <div class="order-type">
                 <div class="flex-spacing gap-3 w-100">
                     <div class="form-check form-check3">
-                        <input class="form-check-input" type="radio" name="RadioDefault" id="fixed45" checked>
+                        <input class="form-check-input" type="radio" value="cash" name="payment_method" id="fixed45" checked>
                         <label class="form-check-label box-background" for="fixed45">
                             <span class="check-box"></span>
                             <span class="name">Cash</span>
@@ -93,7 +100,7 @@
                     </div>
 
                     <div class="form-check form-check3">
-                        <input class="form-check-input" type="radio" name="RadioDefault" id="fixed469">
+                        <input class="form-check-input" value="online" type="radio" name="payment_method" id="fixed469">
                         <label class="form-check-label box-background" for="fixed469">
                             <span class="check-box"></span>
                             <span class="name">Online-Payment</span>
@@ -101,12 +108,14 @@
                     </div>
                 </div>
             </div>
+
+            <div class="custom-container">
+                <button type="submit" class="btn theme-btn w-100 my-3 auth-btn">Book Ride</button>
+            </div>
         </form>
-        <div class="custom-container">
-            <a href="driver-fare-request.blade.php" class="btn theme-btn w-100 my-3 auth-btn">Book Ride</a>
-        </div>
     </div>
     <!-- Select ride section end -->
+
 
     <!-- vehicle offcanvas starts -->
     <div class="offcanvas offcanvas-bottom ride-offcanvas" tabindex="-1" id="vehicle-details">
@@ -150,5 +159,12 @@
         <!-- map js -->
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGCQvcXUsXwCdYArPXo72dLZ31WS3WQRw"></script>
         <script src="{{asset('assets/js/custom-map.js')}}"></script>
-
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script>
+            flatpickr("#delivery_date", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                minDate: "today"  // Optional: disables past dates
+            });
+        </script>
 @endsection

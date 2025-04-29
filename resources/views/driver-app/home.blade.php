@@ -218,133 +218,65 @@
     <!-- upcoming ride section end -->
 
     <!-- active offer section starts -->
-    <section>
+    <section class="upcoming-ride-section">
         <div class="custom-container">
             <div class="title">
-                <h3>Today’s Offer</h3>
+                <h4>Today’s Offer</h4>
             </div>
-
-
-            <ul class="offer-listing">
-                <li class="w-100">
-                    <div class="offer-box">
-                        <div class="offer-head">
-                            <a href="{{url('driver/accept-ride')}}" class="profile-part">
-                                <img class=" img-fluid profile-pic" src="{{asset('assets/images/profile/p5.png')}}" alt="p5">
-                                <h6 class="fw-medium">Johnson Smith</h6>
+            <ul class="my-ride-list driver-ride-list mt-0">
+                @foreach($userriderequests as $userriderequest)
+                <li>
+                    <div class="my-ride-box">
+                        <div class="my-ride-head">
+                            <a href="{{route('driver.accept_ride',['id'=>$userriderequest->id])}}" class="my-ride-img">
+                                <img class="img-fluid profile-img" src="{{ $userriderequest->user->profile ? asset('storage/'.$userriderequest->user->profile) : asset('assets/images/profile/p5.png') }}" alt="p5">
                             </a>
-                        </div>
 
-                        <div class="offer-content">
-                            <h6 class="fw-normal title-color">Up to 10 km from Wankover city area <span
-                                    class="fw-semibold">
-                                    (30% OFF) </span>
-                            </h6>
-                            <div class="flex-spacing flex-wrap gap-2 mt-sm-3 mt-2">
-                                <div class="flex-align-center">
-                                    <ul class="ride-info-list">
-                                        <li class="info-content">
-                                            <i class="iconsax icon" data-icon="car"> </i>
-                                            <span>sedan</span>
-                                        </li>
-                                        <li class="info-content">
-                                            <i class="iconsax icon" data-icon="user-1"> </i>
-                                            <span>4 person</span>
-                                        </li>
-                                    </ul>
+                            <div class="my-ride-content flex-column">
+                                <div class="flex-spacing">
+                                    <a href="{{route('driver.accept_ride',['id'=>$userriderequest->id])}}">
+                                        <h5 class="title-color fw-medium">{{ $userriderequest->user->name }}</h5>
+                                    </a>
+                                    <div class="flex-align-center">
+                                        <div class="flex-align-center gap-1 pe-2">
+                                            <img class="star" src="{{asset('assets/images/svg/star.svg')}}" alt="star">
+                                            <h5 class="fw-normal title-color p-0">4.8</h5>
+                                        </div>
+                                        <h5 class="fw-mediun theme-color price ps-2 pe-0">${{ $userriderequest->fare }}</h5>
+                                    </div>
                                 </div>
-                                <h6 class="validity"> Valid : 20/4/2025</h6>
                             </div>
                         </div>
 
-                        <div class="active-part">
-                            <h6 class="fw-normal title-color">Active Status</h6>
-                            <div class="switch-btn">
-                                <input type="checkbox" checked>
+                        <div class="my-ride-details">
+                            <div class="ride-info">
+                                <div class="flex-align-center gap-1">
+                                    <img class="icon img-fluid" src="{{asset('assets/images/svg/location-fill.svg')}}"
+                                         alt="location">
+                                    <h6 class="fw-normal title-color">{{ $userriderequest->distance }} km</h6>
+                                </div>
+                                <h6 class="fw-normal title-color">{{ $userriderequest->delivery_date }}</h6>
                             </div>
+                            <ul class="ride-location-listing">
+                                <li class="border-0 shadow-none box-background">
+                                    <div class="location-box bg-transparent">
+                                        <img class="icon" src="{{asset('assets/images/svg/location-fill.svg')}}"
+                                             alt="location">
+                                        <h5 class="fw-light title-color">{{ $userriderequest->pickup_location }}</h5>
+                                    </div>
+                                </li>
+
+                                <li class="border-0 shadow-none box-background">
+                                    <div class="location-box bg-transparent">
+                                        <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
+                                        <h5 class="fw-light title-color border-0">{{ $userriderequest->destination_location }}</h5>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </li>
-
-                <li class="w-100">
-                    <div class="offer-box">
-                        <div class="offer-head">
-                            <a href="{{url('driver/accept-ride')}}" class=" profile-part">
-                                <img class=" img-fluid profile-pic" src="{{asset('assets/images/profile/p6.png')}}" alt="p6">
-                                <h6 class="fw-medium">Johnson Smith</h6>
-                            </a>
-                        </div>
-
-                        <div class="offer-content">
-                            <h6 class="fw-normal title-color">Up to 10 km from Wankover city area <span
-                                    class="fw-semibold">
-                                    (20% OFF) </span>
-                            </h6>
-                            <div class="flex-spacing flex-wrap gap-2 mt-sm-3 mt-2">
-                                <div class="flex-align-center">
-                                    <ul class="ride-info-list">
-                                        <li class="info-content">
-                                            <i class="iconsax icon" data-icon="car"> </i>
-                                            <span>sedan</span>
-                                        </li>
-                                        <li class="info-content">
-                                            <i class="iconsax icon" data-icon="user-1"> </i>
-                                            <span>4 person</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <h6 class="validity"> Valid : 14/4/2025</h6>
-                            </div>
-                        </div>
-
-                        <div class="active-part">
-                            <h6 class="fw-normal title-color">Active Status</h6>
-                            <div class="switch-btn">
-                                <input type="checkbox" checked>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="w-100">
-                    <div class="offer-box">
-                        <div class="offer-head">
-                            <a href="{{url('driver/accept-ride')}}" class=" profile-part">
-                                <img class=" img-fluid profile-pic" src="{{asset('assets/images/profile/p4.png')}}" alt="p4">
-                                <h6 class="fw-medium">Johnson Smith</h6>
-                            </a>
-                        </div>
-
-                        <div class="offer-content">
-                            <h6 class="fw-normal title-color">Up to 10 km from Wankover city area <span
-                                    class="fw-semibold">
-                                    (30% OFF) </span>
-                            </h6>
-                            <div class="flex-spacing flex-wrap gap-2 mt-sm-3 mt-2">
-                                <div class="flex-align-center">
-                                    <ul class="ride-info-list">
-                                        <li class="info-content">
-                                            <i class="iconsax icon" data-icon="car"> </i>
-                                            <span>sedan</span>
-                                        </li>
-                                        <li class="info-content">
-                                            <i class="iconsax icon" data-icon="user-1"> </i>
-                                            <span>4 person</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <h6 class="validity"> Valid : 20/4/2025</h6>
-                            </div>
-                        </div>
-
-                        <div class="active-part">
-                            <h6 class="fw-normal title-color">Active Status</h6>
-                            <div class="switch-btn">
-                                <input type="checkbox" checked>
-                            </div>
-                        </div>
-                    </div>
-                </li>
+                @endforeach
             </ul>
         </div>
     </section>

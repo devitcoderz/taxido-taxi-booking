@@ -63,7 +63,7 @@
             </div>
 
             <form class="msger-inputarea">
-                <input type="text" name="" class="msger-input" placeholder="Enter your message..." />
+                <input type="text" name="message" id="message" class="msger-input" placeholder="Enter your message..." />
                 <img class="img-fluid smile" src="{{asset('assets/images/svg/smile.svg')}}" alt="">
                 <i class="iconsax mic" data-icon="mic-2"> </i>
 
@@ -87,5 +87,33 @@
 
         <!-- chatting js -->
         <script src="{{asset('assets/js/chatting-chat.js')}}"></script>
+        <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.11.3/dist/echo.iife.js"></script>
+        <script>
+
+            window.Pusher = Pusher;
+
+            window.Echo = new Echo({
+                broadcaster: 'pusher',
+                key: '2f007c1b1d78c17cbcb5',
+                cluster: 'ap2',
+                encrypted: true,
+                // For local dev with Soketi:
+                // wsHost: window.location.hostname,
+                // wsPort: 6001,
+                // forceTLS: false,
+                // disableStats: true,
+            });
+
+            const receiverType = 'App\\Models\\Driver'; // or Driver
+            const receiverId = '1';
+
+            window.Echo.private(`chat.${receiverType}.${receiverId}`)
+                .listen('MessageSent', (e) => {
+                    console.log('New message:', e.message);
+                    // Update chat UI here
+                });
+
+        </script>
 
 @endsection

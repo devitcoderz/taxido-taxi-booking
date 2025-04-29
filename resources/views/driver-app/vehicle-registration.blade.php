@@ -23,6 +23,7 @@
     <!-- header end -->
 
     <!-- header starts -->
+    <form method="POST" class="auth-form" action="{{route('driver.vehicle-registration')}}" enctype="multipart/form-data">
     <section class="auth-content-bg">
         <div class="custom-container">
             <ul class="line-design">
@@ -67,11 +68,20 @@
                 </li>
             </ul>
 
-            <form class="auth-form">
+            @php
+                $user_id = $user_id ?? (Auth::guard('driver')->check() ? Auth::guard('driver')->id() : null);
+            @endphp
+
+            @if($user_id)
+                <input type="hidden" name="user_id" value="{{ $user_id }}">
+            @else
+                <script>window.location.href = "{{ url('driver/signup') }}";</script>
+            @endif
+                @csrf
                 <div class="form-group mt-0">
                     <label class="form-label mb-2" for="Inputname">Vehicle Name</label>
                     <div class="position-relative">
-                        <input type="text" class="form-control white-background" id="Inputname"
+                        <input type="text" class="form-control white-background" name="vehicle_name" id="Inputname"
                             placeholder="Enter vehicle name">
                         <i class="iconsax icon" data-icon="car"></i>
                     </div>
@@ -80,7 +90,7 @@
 
                     <label class="form-label mb-2" for="Inputdate">Registration Date</label>
                     <div class="position-relative">
-                        <input type="date" class="form-control white-background" id="Inputdate">
+                        <input type="date" class="form-control white-background" name="registeration_date" id="Inputdate">
                         <i class="iconsax icon" data-icon="calendar-1"></i>
                     </div>
                 </div>
@@ -88,7 +98,7 @@
                 <div class="form-group">
                     <label class="form-label mb-2" for="InputVehicle">Select Vehicle Type</label>
                     <div class="position-relative">
-                        <input type="text" class="form-control white-background" id="InputVehicle"
+                        <input type="text" class="form-control white-background" name="vehicle_type" id="InputVehicle"
                             placeholder="Enter vehicle type">
                         <i class="iconsax icon" data-icon="car"></i>
                     </div>
@@ -97,7 +107,7 @@
                 <div class="form-group">
                     <label class="form-label mb-2" for="InputColor">Vehicle Color</label>
                     <div class="position-relative">
-                        <input type="text" class="form-control white-background" id="InputColor"
+                        <input type="text" class="form-control white-background" name="vehicle_color" id="InputColor"
                             placeholder="Enter vehicle color">
                         <i class="iconsax icon" data-icon="color-filter"></i>
                     </div>
@@ -106,12 +116,12 @@
                 <div class="form-group">
                     <label class="form-label mb-2" for="Inputseats">Maximum Seats</label>
                     <div class="position-relative">
-                        <input type="number" class="form-control white-background" id="Inputseats"
+                        <input type="number" class="form-control white-background" name="max_seats" id="Inputseats"
                             placeholder="Enter maximum seats">
                         <i class="iconsax icon" data-icon="users"></i>
                     </div>
                 </div>
-            </form>
+
         </div>
     </section>
 
@@ -122,40 +132,40 @@
                 <label class="form-check-label" for="check1">
                     Max, 2 in the back
                 </label>
-                <input class="form-check-input" type="checkbox" value="" id="check1" checked>
+                <input class="form-check-input" type="checkbox" name="rule[]" value="Max, 2 in the back" id="check1" checked>
             </div>
             <div class="form-check mb-2">
                 <label class="form-check-label" for="check2">
                     Food is not allowed to be eaten in cars.
                 </label>
-                <input class="form-check-input" type="checkbox" value="" id="check2">
+                <input class="form-check-input" type="checkbox" value="Food is not allowed to be eaten in cars." name="rule[]" id="check2">
             </div>
             <div class="form-check mb-2">
                 <label class="form-check-label" for="check3">
                     I apologize, but this is not a pet
                 </label>
-                <input class="form-check-input" type="checkbox" value="" id="check3">
+                <input class="form-check-input" type="checkbox" value="I apologize, but this is not a pet" name="rule[]" id="check3">
             </div>
             <div class="form-check mb-2">
                 <label class="form-check-label" for="check4">
                     Please, no smoking in the car
                 </label>
-                <input class="form-check-input" type="checkbox" value="" id="check4">
+                <input class="form-check-input" type="checkbox" value="Please, no smoking in the car" name="rule[]" id="check4">
             </div>
             <div class="form-check mb-0">
                 <label class="form-check-label" for="check5">
                     No alcohol closed/open
                 </label>
-                <input class="form-check-input" type="checkbox" value="" id="check5">
+                <input class="form-check-input" type="checkbox" value="No alcohol closed/open" name="rule[]" id="check5">
             </div>
         </div>
     </section>
     <div class="fixed-btn">
         <div class="custom-container">
-            <a href="{{url('driver/driver-bank-details')}}" class="btn theme-btn w-100 mt-0 auth-btn">Next</a>
+            <button type="submit" class="btn theme-btn w-100 mt-0 auth-btn">Next</a>
         </div>
     </div>
-
+    </form>
     <!-- panel-space start -->
     <section class="panel-space"></section>
     <!-- panel-space end -->

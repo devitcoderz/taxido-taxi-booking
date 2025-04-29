@@ -17,13 +17,15 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+
+    protected $guard = 'user';
     protected $fillable = [
         'name',
         'phone',
-        'referral_code',
-        'reffer_by',
         'email',
         'password',
+        'profile',
+        'google_id'
     ];
 
     /**

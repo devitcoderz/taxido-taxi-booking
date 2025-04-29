@@ -26,9 +26,30 @@ msgerForm.addEventListener("submit", (event) => {
 
   appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText);
   msgerInput.value = "";
-
-  botResponse();
+    send_message();
+  // botResponse();
 });
+
+function send_message() {
+
+    let message = 'sgdfgdf';
+    if (!message) return;
+
+    $.ajax({
+        url: '/driver/chat', // or `/user/chat`, depending on your side
+        method: 'POST',
+        data: {
+            message: message,
+        },
+        success: function (response) {
+            $('#message').val(''); // clear input
+            console.log('sent');
+        },
+        error: function (xhr) {
+            console.error("Message send failed:", xhr.responseText);
+        }
+    });
+}
 
 function appendMessage(name, img, side, text) {
   //   Simple solution for small apps

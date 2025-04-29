@@ -39,11 +39,21 @@
                 <h6>Explore your life by joining with Ride.</h6>
             </div>
 
-            <form class="auth-form">
+            <form method="POST" class="auth-form" action="{{route('driver.driver_bank_details')}}" enctype="multipart/form-data">
+                @php
+                    $user_id = $user_id ?? (Auth::guard('driver')->check() ? Auth::guard('driver')->id() : null);
+                @endphp
+
+                @if($user_id)
+                    <input type="hidden" name="user_id" value="{{ $user_id }}">
+                @else
+                    <script>window.location.href = "{{ url('driver/signup') }}";</script>
+                @endif
+                @csrf
                 <div class="form-group mt-0">
                     <label class="form-label mb-2" for="Inputname">Bank Name</label>
                     <div class="position-relative">
-                        <input type="text" class="form-control white-background" id="Inputname"
+                        <input type="text" class="form-control white-background" name="bank_name" id="Inputname"
                             placeholder="Enter bank name">
                         <i class="iconsax icon" data-icon="bank"></i>
                     </div>
@@ -51,7 +61,7 @@
                 <div class="form-group ">
                     <label class="form-label mb-2" for="Inputholder">Holder Name</label>
                     <div class="position-relative">
-                        <input type="text" class="form-control white-background" id="Inputholder"
+                        <input type="text" class="form-control white-background" name="holder_name" id="Inputholder"
                             placeholder="Enter holder name">
                         <i class="iconsax icon" data-icon="user-1"></i>
                     </div>
@@ -59,7 +69,7 @@
                 <div class="form-group">
                     <label class="form-label mb-2" for="Inputnumner">Account No.</label>
                     <div class="position-relative">
-                        <input type="number" class="form-control white-background" id="Inputnumner"
+                        <input type="number" class="form-control white-background" name="account_number" id="Inputnumner"
                             placeholder="Enter your account no">
                         <i class="iconsax icon" data-icon="wallet-2"></i>
                     </div>
@@ -68,7 +78,7 @@
                 <div class="form-group">
                     <label class="form-label mb-2" for="Inputbranch">Branch Name</label>
                     <div class="position-relative">
-                        <input type="text" class="form-control white-background" id="Inputbranch"
+                        <input type="text" class="form-control white-background" name="branch_name" id="Inputbranch"
                             placeholder="Enter branch name">
                         <i class="iconsax icon" data-icon="building-1"></i>
                     </div>
@@ -77,18 +87,18 @@
                 <div class="form-group">
                     <label class="form-label mb-2" for="Inputcode">IFSC code</label>
                     <div class="position-relative">
-                        <input type="email" class="form-control white-background" id="Inputcode"
+                        <input type="email" class="form-control white-background" name="ifsc_code" id="Inputcode"
                             placeholder="Enter ifsc code">
                         <i class="iconsax icon" data-icon="code-2"></i>
                     </div>
                 </div>
-            </form>
 
             <div class="fixed-btn">
                 <div class="custom-container">
-                    <a href="{{url('driver/login')}}" class="btn theme-btn w-100 mt-0 auth-btn">Next</a>
+                    <button type="submit" class="btn theme-btn w-100 mt-0 auth-btn">Next</button>
                 </div>
             </div>
+            </form>
         </div>
     </section>
     <!-- bank details section end -->

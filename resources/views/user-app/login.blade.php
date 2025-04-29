@@ -42,7 +42,7 @@
                     </div>
                 @endif
 
-                <form class="auth-form mt-0" method="post" action="{{route('login')}}">
+                <form class="auth-form mt-0" method="post" action="{{route('user.login')}}">
                     @csrf
                     <div class="form-group">
                         <label class="form-label mb-2" for="Inputemail">Email</label>
@@ -80,7 +80,7 @@
                     </div>
 
                     <div class="flex-align-center gap-3">
-                        <a href="https://www.google.co.in/" class="btn theme-btn google-btn w-50 flex-center gap-2">
+                        <a href="{{ url('user/auth/google') }}" class="btn theme-btn google-btn w-50 flex-center gap-2">
                             <img class="img-fluid google" src="{{asset('assets/images/svg/google.svg')}}" alt="google" /> with
                             Google</a>
 

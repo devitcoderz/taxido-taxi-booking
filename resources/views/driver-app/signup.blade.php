@@ -31,11 +31,22 @@
                     <h6>Explore your life by joining with Ride.</h6>
                 </div>
 
-                <form class="auth-form">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form class="auth-form" method="POST" action="{{route('driver.register')}}">
+                    @csrf
                     <div class="form-group mt-0">
                         <label class="form-label mb-2" for="Inputname">User Name</label>
                         <div class="position-relative">
-                            <input type="text" class="form-control" id="Inputname" placeholder="Enter your name">
+                            <input type="text" class="form-control" id="Inputname" placeholder="Enter your name" name="name">
                             <i class="iconsax icon" data-icon="user-2"></i>
                         </div>
                     </div>
@@ -43,7 +54,7 @@
                     <div class="form-group">
                         <label class="form-label mb-2" for="Inputnumner">Mobile Number</label>
                         <div class="position-relative">
-                            <input type="number" class="form-control" id="Inputnumner" placeholder="Enter your number">
+                            <input type="number" class="form-control" id="Inputnumner" placeholder="Enter your number" name="phone">
                             <i class="iconsax icon" data-icon="phone"></i>
                         </div>
                     </div>
@@ -51,22 +62,34 @@
                     <div class="form-group">
                         <label class="form-label mb-2" for="Inputemail">Email</label>
                         <div class="position-relative">
-                            <input type="email" class="form-control" id="Inputemail" placeholder="Enter your email">
+                            <input type="email" class="form-control" id="Inputemail" placeholder="Enter your email" name="email">
                             <i class="iconsax icon" data-icon="mail"></i>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label mb-2" for="Inputid">Referral ID</label>
+                        <label class="form-label mb-2" for="Inputpassword">Password</label>
                         <div class="position-relative">
-                            <input type="email" class="form-control" id="Inputid" placeholder="Enter referral id">
-                            <i class="iconsax icon" data-icon="profile-card"></i>
+                            <input type="password" class="form-control" name="password" id="Inputpassword" placeholder="Enter password">
+                            <i class="iconsax icon" data-icon="lock-2"></i>
+                        </div>
+                        <div class="show-hide toggler">
+                            <i class="iconsax eye-icon icon-eye" data-icon="eye"></i>
+                            <i class="iconsax eye-icon icon-eye-splash" data-icon="eye-slash"></i>
                         </div>
                     </div>
 
-                    <a href="{{url('driver/driver-document-verify')}}" class="btn theme-btn w-100 auth-btn">Sign Up</a>
+{{--                    <div class="form-group">--}}
+{{--                        <label class="form-label mb-2" for="Inputid">Referral ID</label>--}}
+{{--                        <div class="position-relative">--}}
+{{--                            <input type="email" class="form-control" id="Inputid" placeholder="Enter referral id">--}}
+{{--                            <i class="iconsax icon" data-icon="profile-card"></i>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+
+                    <button type="submit" class="btn theme-btn w-100 auth-btn">Sign Up</button>
                     <h6 class="content-color fw-normal my-3 text-center"> Already have
-                        an account ? <a href="{{url('/login') }}" class="title-color fw-medium">Sign in</a> </h6>
+                        an account ? <a href="{{url('driver/login') }}" class="title-color fw-medium">Sign in</a> </h6>
                 </form>
             </div>
         </div>
@@ -76,5 +99,7 @@
 @endsection
 @section('script')
 
+    <!-- password hide/show js -->
+    <script src="{{asset('assets/js/password-show.js ')}}"></script>
 
 @endsection

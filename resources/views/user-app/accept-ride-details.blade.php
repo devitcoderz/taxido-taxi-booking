@@ -5,7 +5,17 @@
     @endsection
 
     @section('style')
+{{--        <script src="https://js.pusher.com/beams/2.1.0/push-notifications-cdn.js"></script>--}}
+{{--        <script>--}}
+{{--            const beamsClient = new PusherPushNotifications.Client({--}}
+{{--                instanceId: '0af32e5a-264b-43c5-b0ce-826d71dd6ecb',--}}
+{{--            });--}}
 
+{{--            beamsClient.start()--}}
+{{--                .then(() => beamsClient.addDeviceInterest('hello'))--}}
+{{--                .then(() => console.log('Successfully registered and subscribed!'))--}}
+{{--                .catch(console.error);--}}
+{{--        </script>--}}
     @endsection
 
 @section('content')
@@ -39,12 +49,12 @@
 
     <div class="ride-content-bg">
         <div class="profile-head mt-0">
-            <img class="img-fluid profile-img" src="{{asset('assets/images/profile/p8.png')}}" alt="profile">
+            <img class="img-fluid profile-img" src="{{ $ridesbooked->driver->profile ? asset('storage/'.$ridesbooked->driver->profile) : asset('assets/images/profile/p8.png')}}" alt="profile">
             <div class="profile-content">
                 <div>
                     <div class="flex-align-center gap-1">
                         <a href="{{url('user/driver-details')}}" class="flex-align-center gap-2">
-                            <h5>Jonathan Higgins</h5><i class="iconsax icon" data-icon="info-circle"> </i>
+                            <h5>{{ $ridesbooked->driver->name }}</h5><i class="iconsax icon" data-icon="info-circle"> </i>
                         </a>
                     </div>
                     <div class="flex-align-center gap-1">
@@ -55,7 +65,7 @@
                 </div>
 
                 <div class="flex-align-center gap-2">
-                    <a href="chatting.blade.php" class="comm-icon">
+                    <a href="{{ url('user/chatting') }}" class="comm-icon">
                         <img class="img-fluid icon-btn" src="{{asset('assets/images/svg/messages-fill.svg')}}" alt="messages">
                     </a>
                     <a href="tel:+4733378901" class="comm-icon">
@@ -68,10 +78,10 @@
         <div class="vehicle-info">
             <div>
                 <div class="flex-align-center gap-1">
-                    <h4 class="fw-medium title-color">CLMV069</h4>
+                    <h4 class="fw-medium title-color">{{ $ridesbooked->driver->vehicle_color }}</h4>
                     <i class="iconsax icon" data-icon="car"> </i>
                 </div>
-                <h5 class="fw-normal content-color mt-1">Blue Tesla Diesel Taxi</h5>
+                <h5 class="fw-normal content-color mt-1">{{ $ridesbooked->driver->vehicle_type }}</h5>
             </div>
             <div>
                 <ul class="pin-code">
@@ -88,9 +98,9 @@
             <div class="flex-align-center gap-2">
                 <img class="img-fluid icon" src="{{asset('assets/images/svg/location-fill.svg')}}" alt="location-fill">
                 <div>
-                    <h5 class="fw-medium title-color">Toronto</h5>
+                    <h5 class="fw-medium title-color">{{ $ridesbooked->destination_location }}</h5>
                     <div class="flex-align-center gap-3 mt-1">
-                        <h6 class="content-color fw-normal">4:36pm</h6>
+                        <h6 class="content-color fw-normal">{{ $ridesbooked->delivery_date }}</h6>
                         <h6 class="content-color fw-normal location">Drop off</h6>
                     </div>
                 </div>
@@ -102,7 +112,7 @@
 
         <div class="amount-part">
             <div class="total flex-spacing">
-                <h4 class="fw-medium title-color">Total Fare <span class="fw-medium">$100</span></h4>
+                <h4 class="fw-medium title-color">Total Fare <span class="fw-medium">${{ $ridesbooked->fare }}</span></h4>
                 <a href="#share" data-bs-toggle="modal" class="flex-align-center gap-1">
                     <img class="share-icon" src="{{asset('assets/images/svg/forward.svg')}}" alt="forward">
                     <h6 class="fw-normal title-color">Share Trip</h6>
@@ -112,7 +122,7 @@
                 <div class="flex-align-center gap-2">
                     <i class="iconsax dollar-icon" data-icon="dollar-square"> </i>
                     <div>
-                        <h5 class="fw-medium title-color">Cash</h5>
+                        <h5 class="fw-medium title-color">{{ $ridesbooked->payment_method }}</h5>
                         <h6 class="fw-normal content-color">Pay when the ride end</h6>
                     </div>
                 </div>

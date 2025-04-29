@@ -1,6 +1,7 @@
 @extends('driver-app.layout')
 @section('title')
     <title>Taxido - Driver App </title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 
 @section('style')
@@ -68,7 +69,7 @@
             </div>
 
             <form class="msger-inputarea">
-                <input type="text" class="msger-input" placeholder="Enter your message..." />
+                <input type="text" name="message" id="send_message" class="msger-input" placeholder="Enter your message..." />
                 <img class="img-fluid smile" id="results" src="{{asset('assets/images/svg/smile.svg')}}" alt="">
                 <i class="iconsax mic" data-icon="mic-2"> </i>
 
@@ -85,6 +86,17 @@
     <!-- panel-space end -->
 @endsection
 @section('script')
+@endsection
+    <script>
+        $(document).ready(function (){
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        })
+    </script>
     <!-- chatting js -->
     <script src="{{asset('assets/js/chatting-chat.js')}}"></script>
+
 @endsection
