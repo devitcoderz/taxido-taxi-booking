@@ -86,6 +86,7 @@
     <!-- panel-space end -->
 @endsection
 @section('script')
+@endsection
     <script>
         $(document).ready(function (){
             $.ajaxSetup({
