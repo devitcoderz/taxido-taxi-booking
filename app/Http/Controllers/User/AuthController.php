@@ -97,18 +97,18 @@ class AuthController extends Controller
             $verificationCode = rand(10000, 99999);
             $message = "Your verification code is: $verificationCode";
 
-//            $account_sid = env('TWILIO_SID_KEY');
-//            $auth_token = env('TWILIO_AUTH_TOKEN');
-//            $twilio_number =  env('TWILIO_NUMBER');
-//
-//            $client = new Client($account_sid, $auth_token);
-//            $client->messages->create(
-//                '+'.$request->phone,
-//                array(
-//                    'from' => $twilio_number,
-//                    'body' => $message
-//                )
-//            );
+            $account_sid = env('TWILIO_SID_KEY');
+            $auth_token = env('TWILIO_AUTH_TOKEN');
+            $twilio_number =  env('TWILIO_NUMBER');
+
+            $client = new Client($account_sid, $auth_token);
+            $client->messages->create(
+                '+'.$request->phone,
+                array(
+                    'from' => $twilio_number,
+                    'body' => $message
+                )
+            );
             session(['verification_code' => $verificationCode]);
 
             $expiresAt = Carbon::now()->addMinutes(5);
@@ -197,19 +197,19 @@ class AuthController extends Controller
                 'expires_at' => $expiresAt,
             ]);
 
-//            $message = "Your Reset Password verification code is: $verificationCode";
-//            $account_sid = env('TWILIO_SID_KEY');
-//            $auth_token = env('TWILIO_AUTH_TOKEN');
-//            $twilio_number =  env('TWILIO_NUMBER');
-//
-//            $client = new Client($account_sid, $auth_token);
-//            $client->messages->create(
-//                '+'.$request->phone,
-//                array(
-//                    'from' => $twilio_number,
-//                    'body' => $message
-//                )
-//            );
+            $message = "Your Reset Password verification code is: $verificationCode";
+            $account_sid = env('TWILIO_SID_KEY');
+            $auth_token = env('TWILIO_AUTH_TOKEN');
+            $twilio_number =  env('TWILIO_NUMBER');
+
+            $client = new Client($account_sid, $auth_token);
+            $client->messages->create(
+                '+'.$request->phone,
+                array(
+                    'from' => $twilio_number,
+                    'body' => $message
+                )
+            );
 
 //            Mail::raw('Your verification code is: ' . $verificationCode, function ($message) use ($request) {
 //                $message->to($request->email)
