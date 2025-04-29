@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
+ Route::get('/', function (){
+        return view('user-app.login');
+    })->middleware(\App\Http\Middleware\RedirectIfAuthenticated::class);
+
 Route::group(['prefix' => 'driver'], function (){
 
     Route::get('/accept-ride', function (){
