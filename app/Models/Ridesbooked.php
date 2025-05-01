@@ -18,7 +18,6 @@ class Ridesbooked extends Model
         'delivery_date',
         'distance',
         'status'
-
     ];
 
     public function user(){

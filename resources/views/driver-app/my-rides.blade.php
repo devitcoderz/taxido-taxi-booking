@@ -58,241 +58,193 @@
             <div class="tab-content ride-content" id="TabContent">
                 <div class="tab-pane fade active show" id="pending-tab">
                     <ul class="my-ride-list driver-ride-list">
-                        <li class="white-background">
-                            <div class="my-ride-box">
-                                <div class="my-ride-head">
-                                    <a href="{{url('driver/pending-ride-details')}}" class="my-ride-img">
-                                        <img class="img-fluid profile-img" src="{{asset('assets/images/profile/p5.png')}}"
-                                            alt="p5">
-                                    </a>
+                        @foreach($pending_rides as $pending_ride)
+                            <li class="white-background">
+                                <div class="my-ride-box">
+                                    <div class="my-ride-head">
+                                        <a href="{{url('driver/pending-ride-details')}}" class="my-ride-img">
+                                            <img class="img-fluid profile-img" src="{{ $pending_ride->user->profile ? asset('storage/'.$pending_ride->user->profile) : asset('assets/images/profile/p5.png')}}"
+                                                 alt="p5">
+                                        </a>
 
-                                    <div class="my-ride-content flex-column">
-                                        <div class="flex-spacing">
-                                            <a href="{{url('driver/pending-ride-details')}}">
-                                                <h6 class="title-color fw-medium">Peter Thornton</h6>
-                                            </a>
-                                            <h5 class="fw-mediun success-color">$256</h5>
-                                        </div>
-                                        <div class="flex-align-center gap-3">
-                                            <div class="flex-align-center gap-1">
-                                                <img class="star" src="{{asset('assets/images/svg/star.svg')}}" alt="star">
-                                                <h5 class="fw-normal title-color">4.8</h5>
-                                                <span class="content-color fw-normal">(127)</span>
+                                        <div class="my-ride-content flex-column">
+                                            <div class="flex-spacing">
+                                                <a href="{{url('driver/pending-ride-details')}}">
+                                                    <h6 class="title-color fw-medium">{{ $pending_ride->user->name }}</h6>
+                                                </a>
+                                                <h5 class="fw-mediun success-color">${{ $pending_ride->fare }}</h5>
                                             </div>
-                                            <div class="flex-align-center gap-1">
-                                                <i class="iconsax icon" data-icon="route-1"> </i>
-                                                <h6 class="fw-normal title-color">3 km</h6>
+                                            <div class="flex-align-center gap-3">
+                                                <div class="flex-align-center gap-1">
+                                                    <img class="star" src="{{asset('assets/images/svg/star.svg')}}" alt="star">
+                                                    <h5 class="fw-normal title-color">4.8</h5>
+                                                    <span class="content-color fw-normal">(127)</span>
+                                                </div>
+                                                <div class="flex-align-center gap-1">
+                                                    <i class="iconsax icon" data-icon="route-1"> </i>
+                                                    <h6 class="fw-normal title-color">{{ $pending_ride->distance }} km</h6>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="my-ride-details">
-                                    <div class="ride-info">
-                                        <h6 class="fw-normal title-color">15 May’25 at 10:15 AM</h6>
-                                        <div class="flex-align-center gap-2">
-                                            <a href="{{url('driver/chatting')}}">
-                                                <img class="img-fluid communication-icon"
-                                                    src="{{asset('assets/images/svg/messages-fill.svg')}}" alt="messages">
-                                            </a>
-                                            <a href="tel:+4733378901">
-                                                <img class="img-fluid communication-icon"
-                                                    src="{{asset('assets/images/svg/call-fill.svg')}}" alt="call">
-                                            </a>
                                         </div>
                                     </div>
-                                    <ul class="ride-location-listing">
-                                        <li class="border-0 shadow-none">
-                                            <div class="location-box">
-                                                <img class="icon" src="{{asset('assets/images/svg/location-fill.svg')}}"
-                                                    alt="location">
-                                                <h5 class="fw-light title-color">17, Yonge St, Toronto, Canada</h5>
-                                            </div>
-                                        </li>
 
-                                        <li class="border-0 shadow-none">
-                                            <div class="location-box">
-                                                <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                                                <h5 class="fw-light title-color border-0">20, Yonge St, Toronto, Canada
-                                                </h5>
+                                    <div class="my-ride-details">
+                                        <div class="ride-info">
+                                            <h6 class="fw-normal title-color">{{ $pending_ride->delivery_date }}</h6>
+                                            <div class="flex-align-center gap-2">
+                                                <a href="{{url('driver/chatting')}}">
+                                                    <img class="img-fluid communication-icon"
+                                                         src="{{asset('assets/images/svg/messages-fill.svg')}}" alt="messages">
+                                                </a>
+                                                <a href="tel:{{ $pending_ride->user->phone }}">
+                                                    <img class="img-fluid communication-icon"
+                                                         src="{{asset('assets/images/svg/call-fill.svg')}}" alt="call">
+                                                </a>
                                             </div>
-                                        </li>
-                                    </ul>
+                                        </div>
+                                        <ul class="ride-location-listing">
+                                            <li class="border-0 shadow-none">
+                                                <div class="location-box">
+                                                    <img class="icon" src="{{asset('assets/images/svg/location-fill.svg')}}"
+                                                         alt="location">
+                                                    <h5 class="fw-light title-color">{{ $pending_ride->pickup_location }}</h5>
+                                                </div>
+                                            </li>
+
+                                            <li class="border-0 shadow-none">
+                                                <div class="location-box">
+                                                    <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
+                                                    <h5 class="fw-light title-color border-0">{{ $pending_ride->destination_location }}
+                                                    </h5>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <a href="{{url('driver/ride-verification')}}" class="btn theme-btn w-100 mt-3">Pickup Customer</a>
+
                                 </div>
-                                <a href="{{url('driver/ride-verification')}}" class="btn theme-btn w-100 mt-3">Pickup Customer</a>
-
-                            </div>
-                        </li>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
 
                 <div class="tab-pane fade" id="complete-tab">
                     <ul class="my-ride-list driver-ride-list">
-                        <li class="white-background">
-                            <div class="my-ride-box">
-                                <div class="my-ride-head">
-                                    <a href="{{url('driver/complete-ride-details')}}" class="my-ride-img">
-                                        <img class="img-fluid profile-img" src="{{asset('assets/images/profile/p5.png')}}"
-                                            alt="p5">
-                                    </a>
+                        @foreach($completed_rides as $completed_ride)
+                            <li class="white-background">
+                                <div class="my-ride-box">
+                                    <div class="my-ride-head">
+                                        <a href="{{url('driver/complete-ride-details')}}" class="my-ride-img">
+                                            <img class="img-fluid profile-img" src="{{ $completed_ride->user->profile ? asset('storage/'.$completed_ride->user->profile) : asset('assets/images/profile/p5.png')}}"
+                                                 alt="p5">
+                                        </a>
 
-                                    <div class="my-ride-content flex-column">
-                                        <div class="flex-spacing">
-                                            <a href="{{url('driver/complete-ride-details')}}">
-                                                <h6 class="title-color fw-medium">Aathryn Murphy</h6>
-                                            </a>
-                                            <h5 class="fw-mediun success-color">$220</h5>
+                                        <div class="my-ride-content flex-column">
+                                            <div class="flex-spacing">
+                                                <a href="{{url('driver/complete-ride-details')}}">
+                                                    <h6 class="title-color fw-medium">{{ $completed_ride->user->name }}</h6>
+                                                </a>
+                                                <h5 class="fw-mediun success-color">${{ $completed_ride->fare }}</h5>
+                                            </div>
+                                            <div class="flex-align-center gap-3">
+                                                <div class="flex-align-center gap-1">
+                                                    <img class="star" src="{{asset('assets/images/svg/star.svg')}}" alt="star">
+                                                    <h5 class="fw-normal title-color">4.6</h5>
+                                                    <span class="content-color fw-normal">(65)</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="flex-align-center gap-3">
+                                    </div>
+
+                                    <div class="my-ride-details">
+                                        <div class="ride-info">
+                                            <h6 class="fw-normal title-color">{{ $completed_ride->delivery_date }}</h6>
                                             <div class="flex-align-center gap-1">
-                                                <img class="star" src="{{asset('assets/images/svg/star.svg')}}" alt="star">
-                                                <h5 class="fw-normal title-color">4.6</h5>
-                                                <span class="content-color fw-normal">(65)</span>
+                                                <i class="iconsax icon" data-icon="route-1"> </i>
+                                                <h6 class="fw-normal title-color">{{ $completed_ride->distance }} km</h6>
                                             </div>
                                         </div>
+                                        <ul class="ride-location-listing">
+                                            <li class="border-0 shadow-none">
+                                                <div class="location-box">
+                                                    <img class="icon" src="{{asset('assets/images/svg/location-fill.svg')}}"
+                                                         alt="location">
+                                                    <h5 class="fw-light title-color">{{ $completed_ride->pickup_location }}</h5>
+                                                </div>
+                                            </li>
+
+                                            <li class="border-0 shadow-none">
+                                                <div class="location-box">
+                                                    <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
+                                                    <h5 class="fw-light title-color border-0">{{ $completed_ride->destination_location }}
+                                                    </h5>
+                                                </div>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
-
-                                <div class="my-ride-details">
-                                    <div class="ride-info">
-                                        <h6 class="fw-normal title-color">4 May’25 at 9:10 AM</h6>
-                                        <div class="flex-align-center gap-1">
-                                            <i class="iconsax icon" data-icon="route-1"> </i>
-                                            <h6 class="fw-normal title-color">2 km</h6>
-                                        </div>
-                                    </div>
-                                    <ul class="ride-location-listing">
-                                        <li class="border-0 shadow-none">
-                                            <div class="location-box">
-                                                <img class="icon" src="{{asset('assets/images/svg/location-fill.svg')}}"
-                                                    alt="location">
-                                                <h5 class="fw-light title-color">12, custber St, ottawa, Canada</h5>
-                                            </div>
-                                        </li>
-
-                                        <li class="border-0 shadow-none">
-                                            <div class="location-box">
-                                                <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                                                <h5 class="fw-light title-color border-0">86, custber St, Toronto,
-                                                    Canada
-                                                </h5>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="white-background">
-                            <div class="my-ride-box">
-                                <div class="my-ride-head">
-                                    <a href="{{url('driver/complete-ride-details')}}" class="my-ride-img">
-                                        <img class="img-fluid profile-img" src="{{asset('assets/images/profile/p4.png')}}"
-                                            alt="p5">
-                                    </a>
-
-                                    <div class="my-ride-content flex-column">
-                                        <div class="flex-spacing">
-                                            <a href="complete-ride-details.blade.php">
-                                                <h6 class="title-color fw-medium">Templeton Peck</h6>
-                                            </a>
-                                            <h5 class="fw-mediun success-color">$180</h5>
-                                        </div>
-                                        <div class="flex-align-center gap-3">
-                                            <div class="flex-align-center gap-1">
-                                                <img class="star" src="{{asset('assets/images/svg/star.svg')}}" alt="star">
-                                                <h5 class="fw-normal title-color">4.2</h5>
-                                                <span class="content-color fw-normal">(17)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="my-ride-details">
-                                    <div class="ride-info">
-                                        <h6 class="fw-normal title-color">18 May’25 at 4:40 PM</h6>
-                                        <div class="flex-align-center gap-1">
-                                            <i class="iconsax icon" data-icon="route-1"> </i>
-                                            <h6 class="fw-normal title-color">1 km</h6>
-                                        </div>
-                                    </div>
-                                    <ul class="ride-location-listing">
-                                        <li class="border-0 shadow-none">
-                                            <div class="location-box">
-                                                <img class="icon" src="{{asset('assets/images/svg/location-fill.svg')}}"
-                                                    alt="location">
-                                                <h5 class="fw-light title-color">32, monstry cir, ottawa, Canada</h5>
-                                            </div>
-                                        </li>
-
-                                        <li class="border-0 shadow-none">
-                                            <div class="location-box">
-                                                <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                                                <h5 class="fw-light title-color border-0">35, custber St, ottawa, Canada
-                                                </h5>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
 
                 <div class="tab-pane fade" id="cancel-tab">
                     <ul class="my-ride-list driver-ride-list">
-                        <li class="white-background">
-                            <div class="my-ride-box">
-                                <div class="my-ride-head">
-                                    <a href="{{url('driver/cancel-ride-details')}}" class="my-ride-img">
-                                        <img class="img-fluid profile-img" src="{{asset('assets/images/profile/p5.png')}}"
-                                            alt="p5">
-                                    </a>
+                        @foreach($cancelled_rides as $cancelled_ride)
+                            <li class="white-background">
+                                <div class="my-ride-box">
+                                    <div class="my-ride-head">
+                                        <a href="{{url('driver/cancel-ride-details')}}" class="my-ride-img">
+                                            <img class="img-fluid profile-img" src="{{ $cancelled_ride->user->profile ? asset('storage/'.$cancelled_ride->user->profile) : asset('assets/images/profile/p5.png')}}"
+                                                 alt="p5">
+                                        </a>
 
-                                    <div class="my-ride-content flex-column">
-                                        <div class="flex-spacing">
-                                            <a href="{{url('driver/cancel-ride-details')}}">
-                                                <h6 class="title-color fw-medium">Peter Thornton</h6>
-                                            </a>
-                                            <h5 class="fw-mediun success-color">$256</h5>
+                                        <div class="my-ride-content flex-column">
+                                            <div class="flex-spacing">
+                                                <a href="{{url('driver/cancel-ride-details')}}">
+                                                    <h6 class="title-color fw-medium">{{ $cancelled_ride->user->name }}</h6>
+                                                </a>
+                                                <h5 class="fw-mediun success-color">${{ $cancelled_ride->fare }}</h5>
+                                            </div>
+                                            <div class="flex-align-center gap-3">
+                                                <div class="flex-align-center gap-1">
+                                                    <img class="star" src="{{asset('assets/images/svg/star.svg')}}" alt="star">
+                                                    <h5 class="fw-normal title-color">4.8</h5>
+                                                    <span class="content-color fw-normal">(127)</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="flex-align-center gap-3">
+                                    </div>
+
+                                    <div class="my-ride-details">
+                                        <div class="ride-info">
+                                            <h6 class="fw-normal title-color">{{ $cancelled_ride->delivery_date }}</h6>
                                             <div class="flex-align-center gap-1">
-                                                <img class="star" src="{{asset('assets/images/svg/star.svg')}}" alt="star">
-                                                <h5 class="fw-normal title-color">4.8</h5>
-                                                <span class="content-color fw-normal">(127)</span>
+                                                <i class="iconsax icon" data-icon="route-1"> </i>
+                                                <h6 class="fw-normal title-color">{{ $cancelled_ride->distance }} km</h6>
                                             </div>
                                         </div>
+                                        <ul class="ride-location-listing">
+                                            <li class="border-0 shadow-none">
+                                                <div class="location-box">
+                                                    <img class="icon" src="{{asset('assets/images/svg/location-fill.svg')}}"
+                                                         alt="location">
+                                                    <h5 class="fw-light title-color">{{ $cancelled_ride->pinkup_location }}</h5>
+                                                </div>
+                                            </li>
+
+                                            <li class="border-0 shadow-none">
+                                                <div class="location-box">
+                                                    <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
+                                                    <h5 class="fw-light title-color border-0">{{ $cancelled_ride->destination_location }}
+                                                    </h5>
+                                                </div>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
-
-                                <div class="my-ride-details">
-                                    <div class="ride-info">
-                                        <h6 class="fw-normal title-color">5 May’25 at 2:10 PM</h6>
-                                        <div class="flex-align-center gap-1">
-                                            <i class="iconsax icon" data-icon="route-1"> </i>
-                                            <h6 class="fw-normal title-color">1 km</h6>
-                                        </div>
-                                    </div>
-                                    <ul class="ride-location-listing">
-                                        <li class="border-0 shadow-none">
-                                            <div class="location-box">
-                                                <img class="icon" src="{{asset('assets/images/svg/location-fill.svg')}}"
-                                                    alt="location">
-                                                <h5 class="fw-light title-color">20, suberin St, Toronto, Canada</h5>
-                                            </div>
-                                        </li>
-
-                                        <li class="border-0 shadow-none">
-                                            <div class="location-box">
-                                                <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                                                <h5 class="fw-light title-color border-0">12, custber St, ottawa, Canada
-                                                </h5>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>

@@ -86,17 +86,11 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
         return view('user-app.add-new-rider');
     });
 
-    Route::get('/cancel-ride-details', function (){
-        return view('user-app.cancel-ride-details');
-    });
-
     Route::get('/choose-rider', function (){
         return view('user-app.choose-rider');
     });
 
-    Route::get('/complete-ride-details', function (){
-        return view('user-app.complete-ride-details');
-    });
+    Route::get('ride-details',[\App\Http\Controllers\User\RideController::class,'ride_details'])->name('ride_details');
 
     Route::get('/coupon', function (){
         return view('user-app.coupon');
@@ -135,9 +129,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
         return view('user-app.location');
     });
 
-    Route::get('/my-rides', function (){
-        return view('user-app.my-rides');
-    });
+    Route::get('my-rides',[\App\Http\Controllers\User\RideController::class, 'my_rides'])->name('my_rides');
 
     Route::get('/notification', function (){
         return view('user-app.notification');
@@ -161,10 +153,6 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
 
     Route::get('/payment-method', function (){
         return view('user-app.payment-method');
-    });
-
-    Route::get('/pending-ride-details', function (){
-        return view('user-app.pending-ride-details');
     });
 
     Route::get('/rental', function (){

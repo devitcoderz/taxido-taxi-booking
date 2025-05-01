@@ -50,9 +50,7 @@ Route::group(['prefix' => 'driver', 'as' => 'driver.'], function (){
         return view('driver-app.accept-ride-details');
     });
 
-    Route::get('/active-ride', function (){
-        return view('driver-app.active-ride');
-    });
+    Route::get('active-ride',[\App\Http\Controllers\Driver\RideController::class,'active_rides'])->name('active_rides');
 
     Route::get('/app-setting', function (){
         return view('driver-app.app-setting');
@@ -95,9 +93,7 @@ Route::group(['prefix' => 'driver', 'as' => 'driver.'], function (){
         return view('driver-app.index');
     });
 
-    Route::get('/my-rides', function (){
-        return view('driver-app.my-rides');
-    });
+    Route::get('my-rides',[\App\Http\Controllers\Driver\RideController::class,'my_rides'])->name('my_rides');
 
     Route::get('/notification', function (){
         return view('driver-app.notification');
