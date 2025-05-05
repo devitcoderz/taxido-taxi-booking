@@ -33,6 +33,33 @@ class AuthController extends Controller
     public function register(Request $request)
     {
 
+        if ($request->otp == session('verification_code')) {
+            try {
+                $userData = json_decode($request->input('user_data'), true);
+                // Create the user
+                $user = User::create([
+                    'name' => $userData['name'],
+                    'phone' => $userData['phone'],
+                    'email' => $userData['email'],
+                    'password' => Hash::make($userData['password']),
+                ]);
+
+                Auth::guard('user')->login($user);
+
+                return redirect()->to('user/home')->with('success', 'Registration successful!');
+            }
+            catch (\Exception $e) {
+                Log::error('User Registration Error: ' . $e->getMessage());
+                return back()->with('error', 'Something went wrong! Please try again.');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Invalid OTP');
+        }
+    }
+
+    public function verify_otp(Request $request)
+    {
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'phone' => 'required|string',
@@ -46,24 +73,39 @@ class AuthController extends Controller
 
         $validated = $validator->validated(); // Store validated data
 
+        $user = User::where('phone', $validated["phone"])->first();
 
-        try {
-            // Create the user
-            $user = User::create([
-                'name' => $validated['name'],
-                'phone' => $validated['phone'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-            ]);
-
-            Auth::guard('user')->login($user);
-
-            return redirect()->to('user/home')->with('success', 'Registration successful!');
-        } catch (\Exception $e) {
-            Log::error('User Registration Error: ' . $e->getMessage());
-            return back()->with('error', 'Something went wrong! Please try again.');
+        if ($user) {
+            return redirect()->back()->with('error', 'Already Registered. Please login yourself');
         }
+        else {
 
+                $verificationCode = rand(10000, 99999);
+                $message = "Your verification code is: $verificationCode";
+
+                $account_sid = env('TWILIO_SID_KEY');
+                $auth_token = env('TWILIO_AUTH_TOKEN');
+                $twilio_number =  env('TWILIO_NUMBER');
+
+                $client = new Client($account_sid, $auth_token);
+                $client->messages->create(
+                    '+'.$request->phone,
+                    array(
+                        'from' => $twilio_number,
+                        'body' => $message
+                    )
+                );
+                session(['verification_code' => $verificationCode]);
+
+                $expiresAt = Carbon::now()->addMinutes(5);
+                Otp::create([
+//                    'user_id' => $user->id, // or however you're identifying the user
+                    'otp' => $verificationCode,
+                    'expires_at' => $expiresAt,
+                ]);
+
+                return view('user-app.otp',['requestData'=>$request->all()]);
+        }
     }
 
     // Handle login
@@ -114,7 +156,7 @@ class AuthController extends Controller
 
             $expiresAt = Carbon::now()->addMinutes(5);
             Otp::create([
-                'user_id' => $user->id, // or however you're identifying the user
+//                'user_id' => $user->id, // or however you're identifying the user
                 'otp' => $verificationCode,
                 'expires_at' => $expiresAt,
             ]);
@@ -126,25 +168,6 @@ class AuthController extends Controller
                 'status' => 'error',
                 'message' => 'Please register yourself'
             ]);
-        }
-    }
-
-    public function verify_otp(Request $request)
-    {
-
-        $otp = Otp::where('user_id', $request->user_id)
-            ->where('otp', $request->otp)
-            ->where('expires_at', '>', Carbon::now())
-            ->latest()
-            ->first();
-
-        if ($otp) {
-            $user = User::where('id', $request->user_id)->first();
-            Auth::guard('user')->login($user, true);
-            return redirect('/user/home');
-        } else {
-            dd('invalid otp');
-            return redirect()->back()->with('error', 'Invalid OTP');
         }
     }
 

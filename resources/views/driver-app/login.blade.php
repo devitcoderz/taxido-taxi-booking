@@ -32,7 +32,7 @@
                     <h6>Hey, You have been missed !</h6>
                 </div>
 
-                <form class="auth-form" action="{{url('driver/otp')}}" method="post">
+                <form class="auth-form" action="{{url('driver/login')}}" method="post">
                     @csrf
                     <div class="form-group mt-0">
                         <label class="form-label" for="validationDefault01">Mobile Number</label>
@@ -72,7 +72,7 @@
                             Apple</a>
                     </div>
 
-                    <button type="submit" class="btn theme-btn w-100 auth-btn">Get OTP</button>
+                    <button type="submit" class="btn theme-btn w-100 auth-btn">Sign In</button>
                     <h6 class="content-color fw-normal my-3 text-center"> New User ?
                         <a href="{{url('driver/signup')}}" class="title-color fw-medium">Sign up</a>
                     </h6>

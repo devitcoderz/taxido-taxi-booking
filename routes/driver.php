@@ -83,6 +83,7 @@ Route::group(['prefix' => 'driver', 'as' => 'driver.'], function (){
     Route::get('/login', function (){
         return view('driver-app.login');
     })->middleware(\App\Http\Middleware\RedirectIfAuthenticatedDriver::class);
+    Route::post('/login', [\App\Http\Controllers\Driver\AuthController::class, 'login_with_number'])->name('login_with_number');
 
     Route::get('/signup', function (){
         return view('driver-app.signup');

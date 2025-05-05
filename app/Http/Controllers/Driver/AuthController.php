@@ -11,6 +11,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Twilio\Rest\Client;
 
@@ -31,35 +32,28 @@ class AuthController extends Controller
     public function register(Request $request)
     {
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string',
-            'email' => 'required|email|unique:drivers,email',
-            'password' => 'required|string|min:6',
-        ]);
+        if ($request->otp == session('verification_code')) {
+            try {
+                $userData = json_decode($request->input('user_data'), true);
+                // Create the user
+                $user = Driver::create([
+                    'name' => $userData['name'],
+                    'phone' => $userData['phone'],
+                    'email' => $userData['email'],
+                    'password' => Hash::make($userData['password']),
+                ]);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
+                Session::forget('verification_code');
 
-        $validated = $validator->validated(); // Store validated data
+                Auth::guard('driver')->login($user);
 
-
-        try {
-            // Create the user
-            $user = Driver::create([
-                'name' => $validated['name'],
-                'phone' => $validated['phone'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-            ]);
-
-//            Auth::guard('driver')->login($user);
-
-            return redirect('driver/driver-document-verify')->with(['user' => $user]);
-        } catch (\Exception $e) {
-            Log::error('User Registration Error: ' . $e->getMessage());
-            return back()->with('error', 'Something went wrong! Please try again.');
+                return redirect()->to('driver/driver-document-verify')->with(['user' => $user,'success' => 'Registration successful!']);
+            } catch (\Exception $e) {
+                Log::error('User Registration Error: ' . $e->getMessage());
+                return back()->with('error', 'Something went wrong! Please try again.');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Invalid OTP');
         }
 
     }
@@ -147,6 +141,21 @@ class AuthController extends Controller
         ]);
     }
 
+    public function login_with_number(Request $request)
+    {
+        $user = Driver::where('phone', $request->phone)->first();
+
+        if ($user) {
+            Auth::guard('driver')->login($user);
+            return redirect('/driver/home');
+        }
+        else {
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ]);
+        }
+    }
+
     public function logout(){
         Auth::guard('driver')->logout();
         return redirect('/driver/login');
@@ -154,10 +163,26 @@ class AuthController extends Controller
 
     public function sendotp(Request $request)
     {
-        $user = Driver::where('phone', $request->phone)->first();
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $validated = $validator->validated(); // Store validated data
+
+        $user = Driver::where('phone', $validated["phone"])->first();
 
         if ($user) {
-
+            return redirect()->back()->with('error', 'Already Registered. Please login yourself');
+        }
+        else {
             $verificationCode = rand(10000, 99999);
             $message = "Your verification code is: $verificationCode";
 
@@ -177,18 +202,12 @@ class AuthController extends Controller
 
             $expiresAt = Carbon::now()->addMinutes(5);
             Otp::create([
-                'user_id' => $user->id, // or however you're identifying the user
+//                'user_id' => $user->id, // or however you're identifying the user
                 'otp' => $verificationCode,
                 'expires_at' => $expiresAt,
             ]);
 
-            return view('driver-app.otp',['user_id'=>$user->id]);
-        }
-        else {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Please register yourself'
-            ]);
+            return view('driver-app.otp',['requestData' => $request->all()]);
         }
     }
 
