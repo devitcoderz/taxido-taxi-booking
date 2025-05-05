@@ -41,7 +41,8 @@
                     </div>
                 @endif
 
-                <form class="auth-form" method="POST" action="{{route('driver.register')}}">
+                <form class="auth-form" method="POST" action="{{url('driver/otp')}}">
+{{--                    <form class="auth-form" method="POST" action="{{route('driver.register')}}">--}}
                     @csrf
                     <div class="form-group mt-0">
                         <label class="form-label mb-2" for="Inputname">User Name</label>

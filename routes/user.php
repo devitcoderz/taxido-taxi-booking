@@ -68,6 +68,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
         return view('user-app.signup');
     })->middleware(\App\Http\Middleware\RedirectIfAuthenticatedUser::class);
 
+    Route::post('/verify-otp', [AuthController::class, 'verify_otp'])->name('verify_otp');
     Route::post('/signup', [AuthController::class, 'register'])->name('register');
 
     Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);

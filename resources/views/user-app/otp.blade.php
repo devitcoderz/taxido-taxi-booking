@@ -35,8 +35,8 @@
                 </div>
 
                 <h4 class="title-color fw-medium otp-name">OTP</h4>
-                <form class="otp-form" action="{{route('user.verify_otp')}}" method="post">
-                    <input type="hidden" name="user_id" value="{{ $user_id }}">
+                <form class="otp-form" action="{{route('user.register')}}" method="post">
+                    <input type="hidden" name="user_data" value='@json($requestData)'>
                     <input type="hidden" name="otp" id="full_otp">
                     @csrf
                     <div class="form-input dark-border-gradient">
