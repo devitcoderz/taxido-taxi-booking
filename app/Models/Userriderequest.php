@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Userriderequest extends Model
 {
     protected $table = 'userriderequests';
-    protected $fillable = ['pickup_location',
+    protected $fillable = [
+        'user_id',
+        'pickup_location',
         'destination_location',
         'fare',
         'payment_method',
@@ -15,6 +17,7 @@ class Userriderequest extends Model
         'expiry',
         'delivery_date',
         'distance',
+        'status',
 
     ];
 

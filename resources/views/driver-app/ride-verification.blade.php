@@ -25,11 +25,11 @@
 
     <div class="ride-content-bg">
         <div class="profile-head mt-0 mb-sm-3 mb-2">
-            <img class="img-fluid profile-img" src="{{asset('assets/images/profile/p4.png')}}" alt="profile">
+            <img class="img-fluid profile-img" src="{{ $userriderequest->user->profile ? asset('storage/'.$userriderequest->user->profile) : asset('assets/images/profile/p4.png')}}" alt="profile">
             <div class="profile-content">
                 <div>
                     <div class="flex-align-center gap-1">
-                        <h5>Peter Thornton</h5>
+                        <h5>{{ $userriderequest->user->name }}</h5>
                     </div>
 
                     <div class="flex-align-center gap-1">
@@ -51,13 +51,15 @@
             </div>
         </div>
 
-        <form class="theme-form verification-part mt-0">
+        <form class="theme-form verification-part mt-0" method="post" action="{{url('driver/otp-successfully')}}">
+            @csrf
+            <input type="hidden" name="userriderequest_id" value="{{ $userriderequest->id }}">
             <div class="form-group mt-0">
                 <label class="form-label mb-2" for="Inputotp">OTP Verification</label>
-                <input type="number" class="form-control" id="Inputotp" placeholder="Enter otp">
+                <input type="number" class="form-control" id="Inputotp" name="otp" placeholder="Enter otp">
             </div>
+            <button type="submit" class="btn theme-btn w-100 mt-3">Accept Fare on ${{ $userriderequest->fare }}</button>
         </form>
-        <a href="{{url('driver/otp-successfully')}}" class="btn theme-btn w-100 mt-3">Accept Fare on $256</a>
     </div>
 
 @endsection

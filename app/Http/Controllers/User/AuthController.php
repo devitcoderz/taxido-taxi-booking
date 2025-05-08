@@ -104,7 +104,7 @@ class AuthController extends Controller
                     'expires_at' => $expiresAt,
                 ]);
 
-                return view('user-app.otp',['requestData'=>$request->all()]);
+                return view('user-app.otp',['requestData'=>$request->all(),'phone'=>$validated["phone"]]);
         }
     }
 

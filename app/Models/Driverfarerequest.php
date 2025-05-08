@@ -12,6 +12,7 @@ class Driverfarerequest extends Model
         'fare',
         'driver_id',
         'expiry',
+        'status',
     ];
 
     public function userriderequest(){

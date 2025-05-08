@@ -15,6 +15,7 @@ class DriverfarerequestController extends Controller
     {
         $userriderequests = Userriderequest::with('user')
             ->where('expiry', '>', Carbon::now())
+            ->where('status', 'waiting')
             ->orderBy('id', 'desc')
             ->get();
         return view('driver-app.home', compact('userriderequests'));
@@ -26,11 +27,22 @@ class DriverfarerequestController extends Controller
     }
     public function request_fare(Request $request)
     {
-        $driverfarerequest = new Driverfarerequest();
-        $driverfarerequest->driver_id = Auth::guard('driver')->id();
+        $driverId = Auth::guard('driver')->id();
+
+        $driverfarerequest = Driverfarerequest::where('driver_id', $driverId)
+            ->where('expiry', '>', Carbon::now()->subMinutes(2))
+            ->where('status', 'waiting')
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if (!$driverfarerequest) {
+            $driverfarerequest = new Driverfarerequest();
+            $driverfarerequest->driver_id = $driverId;
+        }
         $driverfarerequest->userriderequest_id = $request->userriderequest_id;
         $driverfarerequest->requested_fare = $request->requested_fare;
-        $driverfarerequest->expiry = Carbon::now()->addMinute(2);
+        $driverfarerequest->expiry = Carbon::now()->addMinutes(2);
+        $driverfarerequest->status = 'waiting'; // Optional: set explicitly if required
         $driverfarerequest->save();
         return redirect()->back()->with(['success' => 'Driver Requested the Fare Successfully']);
     }

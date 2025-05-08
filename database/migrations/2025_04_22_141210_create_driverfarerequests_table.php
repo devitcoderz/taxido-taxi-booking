@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('driver_id');
             $table->string('requested_fare');
             $table->timestamp('expiry');
+            $table->string('status')->default('waiting');
             $table->timestamps();
         });
     }
