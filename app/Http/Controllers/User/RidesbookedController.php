@@ -16,21 +16,28 @@ class RidesbookedController extends Controller
 {
     public function accept_ride_details(Request $request)
     {
-        $driverfarerequest_id = Driverfarerequest::where('id', $request->input('driverfarerequest_id'))->first()->userriderequest_id;
-        $userriderequest = Userriderequest::find($driverfarerequest_id);
+        $driverfarerequest = Driverfarerequest::where('id', $request->input('driverfarerequest_id'))->first();
+        $userriderequest_id = $driverfarerequest->userriderequest_id;
+        $userriderequest = Userriderequest::find($userriderequest_id);
 
         $ridesbooked = new Ridesbooked();
         $ridesbooked->user_id = $userriderequest->user_id;
         $ridesbooked->driver_id = $request->driver_id;
         $ridesbooked->pickup_location = $userriderequest->pickup_location;
         $ridesbooked->destination_location = $userriderequest->destination_location;
-        $ridesbooked->fare = $userriderequest->fare;
+        $ridesbooked->fare = $driverfarerequest->fare;
         $ridesbooked->payment_method = $userriderequest->payment_method;
         $ridesbooked->delivery_date = $userriderequest->delivery_date;
         $ridesbooked->distance = $userriderequest->distance;
         $ridesbooked->expiry = $userriderequest->expiry;
         $ridesbooked->status = 'pending';
         $ridesbooked->save();
+
+        $driverfarerequest->status = 'accepted';
+        $driverfarerequest->save();
+        $userriderequest->status = 'accepted';
+        $userriderequest->fare = $driverfarerequest->fare;
+        $userriderequest->save();
 
         return view('user-app.accept-ride-details',['ridesbooked' => $ridesbooked])->with(['success' => 'Ride booked successfully']);
     }

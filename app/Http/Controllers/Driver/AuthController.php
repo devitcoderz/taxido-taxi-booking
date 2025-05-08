@@ -167,7 +167,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'phone' => 'required|string',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:drivers,email',
             'password' => 'required|string|min:6',
         ]);
 
@@ -190,14 +190,14 @@ class AuthController extends Controller
             $auth_token = env('TWILIO_AUTH_TOKEN');
             $twilio_number =  env('TWILIO_NUMBER');
 
-            $client = new Client($account_sid, $auth_token);
-            $client->messages->create(
-                '+'.$request->phone,
-                array(
-                    'from' => $twilio_number,
-                    'body' => $message
-                )
-            );
+//            $client = new Client($account_sid, $auth_token);
+//            $client->messages->create(
+//                '+'.$request->phone,
+//                array(
+//                    'from' => $twilio_number,
+//                    'body' => $message
+//                )
+//            );
             session(['verification_code' => $verificationCode]);
 
             $expiresAt = Carbon::now()->addMinutes(5);

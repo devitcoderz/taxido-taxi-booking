@@ -15,7 +15,7 @@
     <header id="header" class="main-header inner-page-header position-absolute bg-transparent">
         <div class="custom-container">
             <div class="header-panel p-0">
-                <a href="{{url('driver/ride-verification')}}">
+                <a href="{{route('driver.home')}}">
                     <i class="iconsax icon-btn" data-icon="chevron-left"> </i>
                 </a>
             </div>

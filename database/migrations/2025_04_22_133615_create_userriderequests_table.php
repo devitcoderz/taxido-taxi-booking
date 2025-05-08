@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('userriderequests', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id')->nullable();
             $table->string('pickup_location');
             $table->string('destination_location');
             $table->string('fare');
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->string('delivery_date');
             $table->string('payment_method');
             $table->string('distance');
+            $table->string('status')->default('waiting');
             $table->timestamps();
         });
     }

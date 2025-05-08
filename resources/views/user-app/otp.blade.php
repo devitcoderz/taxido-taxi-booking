@@ -31,9 +31,8 @@
                 <div class="auth-title pt-3">
                     <div class="loader-line"></div>
                     <h2>OTP verification</h2>
-                    <h6>Enter OTP sent to +1-212-8684536</h6>
+                    <h6>Enter OTP sent to +{{ $phone }}</h6>
                 </div>
-
                 <h4 class="title-color fw-medium otp-name">OTP</h4>
                 <form class="otp-form" action="{{route('user.register')}}" method="post">
                     <input type="hidden" name="user_data" value='@json($requestData)'>
