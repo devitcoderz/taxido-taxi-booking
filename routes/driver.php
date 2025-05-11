@@ -107,9 +107,8 @@ Route::group(['prefix' => 'driver', 'as' => 'driver.'], function (){
     Route::post('/otp', [\App\Http\Controllers\Driver\AuthController::class,'sendotp'])->name('otplogin');
     Route::post('/verify-otp', [\App\Http\Controllers\Driver\AuthController::class,'verify_otp'])->name('verify_otp');
 
-    Route::get('/otp-successfully', function (){
-        return view('driver-app.otp-successfully');
-    });
+    Route::post('/otp-successfully', [\App\Http\Controllers\Driver\RidesbookedController::class, 'otp_successfully'])->name('otp_successfully');
+    Route::post('/start-ride-otp-successfully',[\App\Http\Controllers\Driver\RidesbookedController::class,'start_ride_otp_successfully'])->name('start_ride_otp_successfully');
 
     Route::get('/page-listing', function (){
         return view('driver-app.page-listing');
@@ -127,9 +126,8 @@ Route::group(['prefix' => 'driver', 'as' => 'driver.'], function (){
         return view('driver-app.ride-on-way');
     });
 
-    Route::get('/ride-verification', function (){
-        return view('driver-app.ride-verification');
-    });
+    Route::get('/ride-verification/{userriderequest_id}', [\App\Http\Controllers\Driver\RidesbookedController::class, 'ride_verification'])->name('ride_verification');
+    Route::get('/start-ride/{ride_id}', [\App\Http\Controllers\Driver\RidesbookedController::class, 'start_ride'])->name('start_ride');
 
     Route::get('/setting', function (){
         return view('driver-app.setting');

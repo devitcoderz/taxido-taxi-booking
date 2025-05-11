@@ -6,165 +6,166 @@
 
 @section('style')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        .flatpickr-calendar{
+            top: 220.667px !important;
+            left: 0px !important;
+            right: 0px !important;
+        }
+    </style>
 @endsection
 
 @section('content')
-
     <!-- header starts -->
-    <header id="header" class="main-header inner-page-header position-absolute bg-transparent">
+    <header id="header" class="main-header inner-page-header">
         <div class="custom-container">
-            <div class="header-panel p-0">
-                <a href="{{url('user/choose-rider')}}">
-                    <i class="iconsax icon-btn" data-icon="chevron-left"> </i>
-                </a>
+            <div class="header-panel">
+                <div class="flex-spacing gap-2 w-100">
+                    <a href="{{url('user/home')}}">
+                        <i class="iconsax icon-btn" data-icon="chevron-left"> </i>
+                    </a>
+
+                    <h3 class="fw-medium title-color">Out Station</h3>
+                    <a href="{{url('user/chatting')}}">
+                        <i class="iconsax icon-btn" data-icon="messages-2"> </i>
+                    </a>
+                </div>
             </div>
         </div>
     </header>
     <!-- header end -->
 
-    <!-- Select ride section starts -->
-    <div class="location-map position-relative w-100 h-100" id="map"></div>
-
-    <div class="theme-content-bg">
-        <h5>Vehicle Type</h5>
-        <ul class="ride-tab">
-            <li class="w-100">
-                <input type="radio" class="btn-check" name="options-base" id="btn-check-1" checked>
-                <label class="btn selact-ride-box" for="btn-check-1">
-
-                    <img class="img-fluid vehicle-img mt-0" src="{{asset('assets/images/svg/bike-img.svg')}}" alt="bike">
-                    <span class="flex-spacing">
-                        <span class="title-color text-start vehicle-name">Bike</span>
-                        <a href="#vehicle-details" data-bs-toggle="offcanvas">
-                            <i class="iconsax icon" data-icon="info-circle"> </i>
-                        </a>
-                    </span>
-                </label>
-            </li>
-
-            <li class="w-100">
-                <input type="radio" class="btn-check" name="options-base" id="btn-check-2">
-                <label class="btn selact-ride-box" for="btn-check-2">
-
-                    <img class="img-fluid vehicle-img mt-0" src="{{asset('assets/images/svg/car-img.svg')}}" alt="bike">
-                    <span class="flex-spacing">
-                        <span class="title-color text-start vehicle-name">Car</span>
-                        <a href="#vehicle-details" data-bs-toggle="offcanvas">
-                            <i class="iconsax icon" data-icon="info-circle"> </i>
-                        </a>
-                    </span>
-                </label>
-            </li>
-
-            <li class="w-100">
-                <input type="radio" class="btn-check" name="options-base" id="btn-check-3">
-                <label class="btn selact-ride-box" for="btn-check-3">
-
-                    <img class="img-fluid vehicle-img mt-0" src="{{asset('assets/images/svg/auto-img.svg')}}" alt="bike">
-                    <span class="flex-spacing">
-                        <span class="title-color text-start vehicle-name">Auto</span>
-                        <a href="#vehicle-details" data-bs-toggle="offcanvas">
-                            <i class="iconsax icon" data-icon="info-circle"> </i>
-                        </a>
-                    </span>
-                </label>
-            </li>
-        </ul>
-
-        <p class="price-content">Minimum price for this fare is <span class="fw-semibold">$80</span> per
-            ride. you can bid your price below.
-        </p>
-
-        <form class="theme-form px-20" method="post" action="{{ route('user.driver_fare_request') }}">
-            @csrf
-            <input type="hidden" name="pickup_location" value="{{ $request->pickup_location }}">
-            <input type="hidden" name="destination_location" value="{{ $request->destination_location }}">
-            <div class="form-group">
-                <label class="form-label mb-2" for="Inputstreet">Offer your fare</label>
-                <input type="text" class="form-control" id="Inputstreet" placeholder="Enter fare amount" name="fare">
-            </div>
-            <div class="form-group">
-                <label class="form-label mb-2" for="delivery_date">Select Date and Time</label>
-                <input type="text" class="form-control" id="delivery_date" name="delivery_date">
-            </div>
-
-            <h5 class="p-0 mt-3 mb-2 fw-medium title-color">Payment Method</h5>
-            <div class="order-type">
-                <div class="flex-spacing gap-3 w-100">
-                    <div class="form-check form-check3">
-                        <input class="form-check-input" type="radio" value="cash" name="payment_method" id="fixed45" checked>
-                        <label class="form-check-label box-background" for="fixed45">
-                            <span class="check-box"></span>
-                            <span class="name">Cash</span>
-                        </label>
+    <!-- option section starts -->
+    <section class="pt-0 section-b-space">
+        <div class="px-1 pt-5">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+                <form class="theme-form mt-0" method="post" action="{{ route('user.driver_fare_request') }}">
+                    @csrf
+                    <input type="hidden" name="pickup_location" value="{{ $request->pickup_location }}">
+                    <input type="hidden" name="destination_location" value="{{ $request->destination_location }}">
+                    <div class="form-group mt-0">
+                        <label class="form-label mb-2" for="departure_date">Date and time of Departure</label>
+                        <input type="text" class="form-control white-background" name="departure_date" id="departure_date">
+                    </div>
+                    <div class="form-group mt-0">
+                        <label class="form-label mb-2" for="arrival_date">Date and time of Arrival</label>
+                        <input type="text" class="form-control white-background" name="arrival_date" id="arrival_date">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label class="form-label mb-2" for="transport_time">Transport Time</label>
+                        <div class="d-flex gap-2">
+                            <input type="number" class="form-control white-background" id="transport_time" name="transport_time_value" placeholder="Enter time" min="1">
+                            <select class="form-select white-background" name="transport_time_unit">
+                                <option value="days">Days</option>
+                                <option value="weeks">Weeks</option>
+                                <option value="months">Months</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label class="form-label mb-2" for="Inputpassenger">Distance of Route</label>
+                        <input type="number" class="form-control white-background" id="Inputpassenger" name="distance"
+                               placeholder="Enter Distance in Km">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label class="form-label mb-2" for="type_of_package">Type of Package</label>
+                        <input type="text" class="form-control white-background" id="type_of_package" name="type_of_package"
+                               placeholder="Enter Package Type">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label class="form-label mb-2" for="length_of_package">Enter Length of Package (Meters)</label>
+                        <input type="number" class="form-control white-background" id="length_of_package" name="length_of_package"
+                               placeholder="Enter Package Length">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label class="form-label mb-2" for="width_of_package">Enter Width of Package (Meters)</label>
+                        <input type="number" class="form-control white-background" id="width_of_package" name="width_of_package"
+                               placeholder="Enter Package Width">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label class="form-label mb-2" for="volume_of_package">Enter Volume of Package (Meters)</label>
+                        <input type="number" class="form-control white-background" id="volume_of_package" name="volume_of_package"
+                               placeholder="Enter Package Volume">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label class="form-label mb-2" for="weight_of_package">Enter Weight of Package (Kg)</label>
+                        <input type="number" class="form-control white-background" id="weight_of_package" name="weight_of_package"
+                               placeholder="Enter Package Weight">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label class="form-label mb-2" for="quantity_of_package">Enter Quantity of Package (Numbers)</label>
+                        <input type="number" class="form-control white-background" id="quantity_of_package" name="quantity_of_package"
+                               placeholder="Enter Package Quantity">
                     </div>
 
-                    <div class="form-check form-check3">
-                        <input class="form-check-input" value="online" type="radio" name="payment_method" id="fixed469">
-                        <label class="form-check-label box-background" for="fixed469">
-                            <span class="check-box"></span>
-                            <span class="name">Online-Payment</span>
-                        </label>
+                    <div class="form-group mt-3">
+                        <label class="form-label mb-2" for="Inputofferrate">Enter your offer rate</label>
+                        <input type="number" class="form-control white-background" id="Inputofferrate" name="fare"
+                               placeholder="Enter offer rate">
                     </div>
-                </div>
-            </div>
-
-            <div class="custom-container">
-                <button type="submit" class="btn theme-btn w-100 my-3 auth-btn">Book Ride</button>
-            </div>
-        </form>
-    </div>
-    <!-- Select ride section end -->
-
-
-    <!-- vehicle offcanvas starts -->
-    <div class="offcanvas offcanvas-bottom ride-offcanvas" tabindex="-1" id="vehicle-details">
-        <div class="offcanvas-body p-0">
-            <div class="vehicle-details-head">
-                <div class="d-flex align-content-center">
-                    <h4 class="vehicle-title" id="offcanvasBottomLabel">Tesla car</h4>
-                    <div class="flex-align-center gap-1 ">
-                        <img class="icon ps-1" src="{{asset('assets/images/svg/profile-fill.svg')}}" alt="profile">
-                        <span class="fw-normal title-color">4</span>
+                    <div class="form-group mt-3">
+                        <label class="form-label mb-2" for="travel_company">Enter Travel Company</label>
+                        <input type="text" class="form-control white-background" id="travel_company" name="travel_company"
+                               placeholder="Enter Travel Company">
                     </div>
-                </div>
-                <h3 class="success-color fw-semibold">$50 <span class="fw-normal content-color"><del>$57</del></span>
-                </h3>
-            </div>
-            <div class="vehicle-details">
-                <div class="vehicle-image">
-                    <img class="img-fluid vehicle" src="{{asset('assets/images/svg/car-img.svg')}}" alt="car">
-                </div>
-                <div class="timing">
-                    <i class="iconsax icon" data-icon="clock"> </i>
-                    <h5>5 min away</h5>
-                </div>
-                <h6 class="fw-normal content-color pt-1">Comfortable sedans, top-quality drivers</h6>
-            </div>
-            <div class="terms-section">
-                <h5>Terms</h5>
-                <ul class="terms-list">
-                    <li>No Smoking and Drinking </li>
-                    <li>Not damage interior in Vehicle</li>
-                </ul>
-            </div>
+                    <div class="form-group mt-3">
+                        <label class="form-label mb-2" for="comments">Comments</label>
+                        <textarea class="form-control white-background" id="comments" name="comments"
+                                  placeholder="Enter comments" rows="3"></textarea>
+                    </div>
+                    <h5 class="p-0 mt-3 mb-2 fw-medium title-color">Payment Method</h5>
+                    <div class="order-type">
+                        <div class="flex-spacing gap-3 w-100">
+                            <div class="form-check form-check3">
+                                <input class="form-check-input" type="radio" name="payment_method" id="fixed45"
+                                       checked />
+                                <label class="form-check-label" for="fixed45">
+                                    <span class="check-box"></span>
+                                    <span class="name">Cash</span>
+                                </label>
+                            </div>
+
+                            <div class="form-check form-check3">
+                                <input class="form-check-input" type="radio" name="payment_method" id="fixed469" />
+                                <label class="form-check-label" for="fixed469">
+                                    <span class="check-box"></span>
+                                    <span class="name">Online-Payment</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn theme-btn w-100 mt-3 auth-btn">Book Ride</button>
+                </form>
         </div>
-    </div>
-    <!-- vehicle offcanvas end -->
+    </section>
+    <!-- option section end -->
 
-    @endsection
+@endsection
 
-    @section('script')
+@section('script')
 
-        <!-- map js -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGCQvcXUsXwCdYArPXo72dLZ31WS3WQRw"></script>
-        <script src="{{asset('assets/js/custom-map.js')}}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-        <script>
-            flatpickr("#delivery_date", {
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        $(document).ready(function (){
+            flatpickr("#arrival_date", {
                 enableTime: true,
                 dateFormat: "Y-m-d H:i",
                 minDate: "today"  // Optional: disables past dates
             });
-        </script>
+
+            flatpickr("#departure_date", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                minDate: "today"  // Optional: disables past dates
+            });
+        })
+    </script>
 @endsection

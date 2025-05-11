@@ -7,14 +7,28 @@ use Illuminate\Database\Eloquent\Model;
 class Userriderequest extends Model
 {
     protected $table = 'userriderequests';
-    protected $fillable = ['pickup_location',
+    protected $fillable = [
+        'user_id',
+        'pickup_location',
         'destination_location',
         'fare',
         'payment_method',
         'user_id',
         'expiry',
-        'delivery_date',
+        'departure_date',
+        'arrival_date',
         'distance',
+        'transport_time_value',
+        'transport_time_unit',
+        'travel_company',
+        'type_of_package',
+        'length_of_package',
+        'width_of_package',
+        'volume_of_package',
+        'weight_of_package',
+        'quantity_of_package',
+        'comments',
+        'status',
 
     ];
 

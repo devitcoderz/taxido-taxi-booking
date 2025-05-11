@@ -120,7 +120,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <a href="{{url('driver/ride-verification')}}" class="btn theme-btn w-100 mt-3">Pickup Customer</a>
+                                    <a href="{{url('driver/start-ride/'.$pending_ride->id)}}" class="btn theme-btn w-100 mt-3">Pickup Customer</a>
 
                                 </div>
                             </li>

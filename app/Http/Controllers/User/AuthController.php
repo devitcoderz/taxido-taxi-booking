@@ -104,7 +104,7 @@ class AuthController extends Controller
                     'expires_at' => $expiresAt,
                 ]);
 
-                return view('user-app.otp',['requestData'=>$request->all()]);
+                return view('user-app.otp',['requestData'=>$request->all(),'phone'=>$validated["phone"]]);
         }
     }
 
@@ -144,14 +144,14 @@ class AuthController extends Controller
             $auth_token = env('TWILIO_AUTH_TOKEN');
             $twilio_number =  env('TWILIO_NUMBER');
 
-            $client = new Client($account_sid, $auth_token);
-            $client->messages->create(
-                '+'.$request->phone,
-                array(
-                    'from' => $twilio_number,
-                    'body' => $message
-                )
-            );
+//            $client = new Client($account_sid, $auth_token);
+//            $client->messages->create(
+//                '+'.$request->phone,
+//                array(
+//                    'from' => $twilio_number,
+//                    'body' => $message
+//                )
+//            );
             session(['verification_code' => $verificationCode]);
 
             $expiresAt = Carbon::now()->addMinutes(5);
@@ -178,8 +178,9 @@ class AuthController extends Controller
 
     public function update_profile(Request $request)
     {
+
         $user = User::where('id', Auth::guard('user')->id())->first();
-        if ($request->hasFile('profile')) {
+        if ($request->hasFile('profile') && $request->file('profile')->isValid()) {
             $path = $request->file('profile')->store('documents/profile', 'public');
             $user->profile = $path;
         }
@@ -226,14 +227,14 @@ class AuthController extends Controller
             $auth_token = env('TWILIO_AUTH_TOKEN');
             $twilio_number =  env('TWILIO_NUMBER');
 
-            $client = new Client($account_sid, $auth_token);
-            $client->messages->create(
-                '+'.$request->phone,
-                array(
-                    'from' => $twilio_number,
-                    'body' => $message
-                )
-            );
+//            $client = new Client($account_sid, $auth_token);
+//            $client->messages->create(
+//                '+'.$request->phone,
+//                array(
+//                    'from' => $twilio_number,
+//                    'body' => $message
+//                )
+//            );
 
 //            Mail::raw('Your verification code is: ' . $verificationCode, function ($message) use ($request) {
 //                $message->to($request->email)
