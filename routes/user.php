@@ -13,6 +13,8 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
             return view('user-app.home');
         });
 
+        Route::get('/get-user-ride-request', [\App\Http\Controllers\User\RideController::class, 'get_user_ride_request'])->name('get_user_ride_request');
+
         Route::get('/accept-ride-details', [\App\Http\Controllers\User\RidesbookedController::class, 'accept_ride_details'])->name('accept_ride_details');
 
         Route::get('/bank-details', function (){
@@ -40,7 +42,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
 
         Route::post('/update_profile',[\App\Http\Controllers\User\AuthController::class,'update_profile'])->name('update_profile');
 
-        Route::post('/selact-ride', [\App\Http\Controllers\User\UserriderequestController::class, 'selact_ride'])->name('selact_ride');
+        Route::get('/selact-ride', [\App\Http\Controllers\User\UserriderequestController::class, 'selact_ride'])->name('selact_ride');
 
         Route::get('/setting', function (){
             return view('user-app.setting');
@@ -174,6 +176,10 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
 
     Route::get('/search-location', function (){
         return view('user-app.search-location');
+    });
+
+    Route::get('/google_place_api', function (){
+        return view('user-app.google_place_api');
     });
 
 });

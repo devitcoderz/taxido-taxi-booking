@@ -179,6 +179,12 @@
                     url: `/user/get-driver-fare-request?userriderequest_id=${userRequestId}`,
                     method: 'GET',
                     success: function(response) {
+
+                        if (response.ridebooked){
+                            toastr.success("Ride booked");
+                            window.location.href = '{{ url('/user/home') }}';
+                        }
+
                         if (response && response.length) {
                             let html = '';
 

@@ -14,7 +14,7 @@ class DriverfarerequestController extends Controller
     public function home()
     {
         $userriderequests = Userriderequest::with('user')
-            ->where('expiry', '>', Carbon::now())
+//            ->where('expiry', '>', Carbon::now())
             ->where('status', 'waiting')
             ->orderBy('id', 'desc')
             ->get();

@@ -28,7 +28,7 @@
     </header>
     <!-- header end -->
 
-    <form method="post" action="{{ route('user.selact_ride') }}">
+    <form method="get" action="{{ route('user.selact_ride') }}">
         @csrf
     <!-- location section starts -->
     <section class="location-section pt-0">
@@ -37,14 +37,14 @@
                 <li>
                     <div class="location-box">
                         <img class="icon" src="{{asset('assets/images/svg/location-fill.svg')}}" alt="location">
-                        <input type="text" id="inputpickup" class="form-control" placeholder="Pickup location" name="pickup_location">
+                        <input type="text" id="inputpickup" class="form-control" required placeholder="Pickup location" name="pickup_location">
                         <ul id="suggestions" class="suggestions"></ul>
                     </div>
                 </li>
                 <li>
                     <div class="location-box">
                         <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                        <input type="text" id="inputdestination" class="form-control border-0"
+                        <input type="text" required id="inputdestination" class="form-control border-0"
                             placeholder="Enter destination" name="destination_location">
                         <i class="iconsax add-stop" data-icon="add"></i>
                     </div>

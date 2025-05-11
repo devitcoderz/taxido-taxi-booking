@@ -223,8 +223,8 @@
             <div class="title">
                 <h4>Today’s Offer</h4>
             </div>
-            <ul class="my-ride-list driver-ride-list mt-0">
-                @foreach($userriderequests as $userriderequest)
+            <ul class="my-ride-list driver-ride-list mt-0" id="userRideList">
+                @forelse($userriderequests as $userriderequest)
                 <li>
                     <div class="my-ride-box">
                         <div class="my-ride-head">
@@ -276,7 +276,9 @@
                         </div>
                     </div>
                 </li>
-                @endforeach
+                @empty
+                    <p>No Ride requests available.</p>
+                @endforelse
             </ul>
         </div>
     </section>
@@ -296,5 +298,88 @@
 
 @endsection
 @section('script')
+
+    <script>
+        setInterval(() => {
+            console.log("Timeout triggered");  // Debug
+            getUserRideRequest();
+        }, 10000);
+
+        function getUserRideRequest() {
+            $.ajax({
+                url: `/user/get-user-ride-request`,
+                method: 'GET',
+                success: function(response) {
+                    console.log(response);
+                    if (response && response.length) {
+                        let html = '';
+                        response.forEach(item => {
+                            let profileImg = item.user.profile
+                                ? `/storage/${item.user.profile}`
+                                : '/assets/images/profile/p5.png';
+
+                            html += `
+                        <li>
+                            <div class="my-ride-box">
+                                <div class="my-ride-head">
+                                    <a href="/driver/accept-ride/${item.id}" class="my-ride-img">
+                                        <img class="img-fluid profile-img" src="${profileImg}" alt="profile">
+                                    </a>
+
+                                    <div class="my-ride-content flex-column">
+                                        <div class="flex-spacing">
+                                            <a href="/driver/accept-ride/${item.id}">
+                                                <h5 class="title-color fw-medium">${item.user.name}</h5>
+                                            </a>
+                                            <div class="flex-align-center">
+                                                <div class="flex-align-center gap-1 pe-2">
+                                                    <img class="star" src="/assets/images/svg/star.svg" alt="star">
+                                                    <h5 class="fw-normal title-color p-0">4.8</h5>
+                                                </div>
+                                                <h5 class="fw-mediun theme-color price ps-2 pe-0">$${item.fare}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="my-ride-details">
+                                    <div class="ride-info">
+                                        <div class="flex-align-center gap-1">
+                                            <img class="icon img-fluid" src="/assets/images/svg/location-fill.svg" alt="location">
+                                            <h6 class="fw-normal title-color">${item.distance} km</h6>
+                                        </div>
+                                        <h6 class="fw-normal title-color">${item.delivery_date}</h6>
+                                    </div>
+                                    <ul class="ride-location-listing">
+                                        <li class="border-0 shadow-none box-background">
+                                            <div class="location-box bg-transparent">
+                                                <img class="icon" src="/assets/images/svg/location-fill.svg" alt="location">
+                                                <h5 class="fw-light title-color">${item.pickup_location}</h5>
+                                            </div>
+                                        </li>
+
+                                        <li class="border-0 shadow-none box-background">
+                                            <div class="location-box bg-transparent">
+                                                <img class="icon" src="/assets/images/svg/gps.svg" alt="gps">
+                                                <h5 class="fw-light title-color border-0">${item.destination_location}</h5>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    `;
+                        });
+                        $('#userRideList').html(html);
+                    } else {
+                        $('#userRideList').html('<p>No Ride requests available.</p>');
+                    }
+                },
+                error: function(xhr) {
+                    console.error("Error fetching fare requests:", xhr.responseText);
+                }
+            });
+        }
+    </script>
 
 @endsection

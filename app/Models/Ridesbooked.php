@@ -15,9 +15,20 @@ class Ridesbooked extends Model
         'user_id',
         'driver_id',
         'expiry',
-        'delivery_date',
+        'departure_date',
+        'arrival_date',
         'distance',
-        'status'
+        'transport_time_value',
+        'transport_time_unit',
+        'travel_company',
+        'type_of_package',
+        'length_of_package',
+        'width_of_package',
+        'volume_of_package',
+        'weight_of_package',
+        'quantity_of_package',
+        'comments',
+        'status',
     ];
 
     public function user(){
