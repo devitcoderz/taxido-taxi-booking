@@ -55,21 +55,6 @@
                         <label class="form-label mb-2" for="departure_date">Date and time of Departure</label>
                         <input type="text" class="form-control white-background" name="departure_date" id="departure_date">
                     </div>
-                    <div class="form-group mt-0">
-                        <label class="form-label mb-2" for="arrival_date">Date and time of Arrival</label>
-                        <input type="text" class="form-control white-background" name="arrival_date" id="arrival_date">
-                    </div>
-                    <div class="form-group mt-3">
-                        <label class="form-label mb-2" for="transport_time">Transport Time</label>
-                        <div class="d-flex gap-2">
-                            <input type="number" class="form-control white-background" id="transport_time" name="transport_time_value" placeholder="Enter time" min="1">
-                            <select class="form-select white-background" name="transport_time_unit">
-                                <option value="days">Days</option>
-                                <option value="weeks">Weeks</option>
-                                <option value="months">Months</option>
-                            </select>
-                        </div>
-                    </div>
                     <div class="form-group mt-3">
                         <label class="form-label mb-2" for="Inputpassenger">Distance of Route</label>
                         <input type="number" class="form-control white-background" id="Inputpassenger" name="distance"
@@ -121,11 +106,28 @@
                         <textarea class="form-control white-background" id="comments" name="comments"
                                   placeholder="Enter comments" rows="3"></textarea>
                     </div>
+                    <div class="form-group mt-3">
+                        <label class="form-label mb-2">Receiver Details</label>
+                        <br>
+                        <label class="form-label mb-2" for="receiver_name">Name</label>
+                        <input type="text" class="form-control white-background" id="receiver_name" name="receiver_name"
+                               placeholder="Enter Receiver Name">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label class="form-label mb-2" for="receiver_email">Email</label>
+                        <input type="email" class="form-control white-background" id="receiver_email" name="receiver_email"
+                               placeholder="Enter Receiver Email">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label class="form-label mb-2" for="receiver_phone">Phone</label>
+                        <input type="number" class="form-control white-background" id="receiver_phone" name="receiver_phone"
+                               placeholder="Enter Receiver Phone">
+                    </div>
                     <h5 class="p-0 mt-3 mb-2 fw-medium title-color">Payment Method</h5>
                     <div class="order-type">
                         <div class="flex-spacing gap-3 w-100">
                             <div class="form-check form-check3">
-                                <input class="form-check-input" type="radio" name="payment_method" id="fixed45"
+                                <input class="form-check-input" type="radio" value="cash" name="payment_method" id="fixed45"
                                        checked />
                                 <label class="form-check-label" for="fixed45">
                                     <span class="check-box"></span>
@@ -134,7 +136,7 @@
                             </div>
 
                             <div class="form-check form-check3">
-                                <input class="form-check-input" type="radio" name="payment_method" id="fixed469" />
+                                <input class="form-check-input" type="radio" name="payment_method" value="online" id="fixed469" />
                                 <label class="form-check-label" for="fixed469">
                                     <span class="check-box"></span>
                                     <span class="name">Online-Payment</span>

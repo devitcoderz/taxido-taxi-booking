@@ -85,7 +85,7 @@
                                     </li>
                                 </ul>
                             </div>
-{{--                            <a href="{{url('driver/ride-verification')}}" class="btn theme-btn w-100 mt-3">Pickup Customer</a>--}}
+                            <a href="{{url('driver/ride-complete-request/'.$active_ride->id)}}" class="btn theme-btn w-100 mt-3">Complete Ride</a>
 
                         </div>
                     </li>

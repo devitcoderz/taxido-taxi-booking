@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\GoogleController;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
@@ -61,6 +62,9 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/otp', [\App\Http\Controllers\User\AuthController::class,'sendotp'])->name('otplogin');
     Route::post('/verify-otp', [\App\Http\Controllers\User\AuthController::class,'verify_otp'])->name('verify_otp');
+    Route::get('/ride/complete/{ride}', [\App\Http\Controllers\User\RideController::class, 'markRidecomplete'])
+        ->name('ride.complete')
+        ->middleware('signed');
 
     Route::get('/login-with-number', function (){
         return view('user-app.login-with-number');

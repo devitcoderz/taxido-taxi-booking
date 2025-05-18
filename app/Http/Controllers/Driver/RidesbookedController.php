@@ -13,6 +13,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Twilio\Rest\Client;
 
@@ -97,12 +98,12 @@ class RidesbookedController extends Controller
                 $ridesbooked = new Ridesbooked();
                 $ridesbooked->user_id = $userriderequest->user_id;
                 $ridesbooked->driver_id = Auth::guard('driver')->id();
+                $ridesbooked->receiver_name = $userriderequest->receiver_name;
+                $ridesbooked->receiver_email = $userriderequest->receiver_email;
+                $ridesbooked->receiver_phone = $userriderequest->receiver_phone;
                 $ridesbooked->pickup_location = $userriderequest->pickup_location;
                 $ridesbooked->destination_location = $userriderequest->destination_location;
                 $ridesbooked->departure_date      = $userriderequest->departure_date; // assuming current time as departure
-                $ridesbooked->arrival_date        = $userriderequest->arrival_date;
-                $ridesbooked->transport_time_value = $userriderequest->transport_time_value;
-                $ridesbooked->transport_time_unit = $userriderequest->transport_time_unit;
                 $ridesbooked->distance            = $userriderequest->distance ?? 0;
                 $ridesbooked->type_of_package   = $userriderequest->type_of_package;
                 $ridesbooked->length_of_package   = $userriderequest->length_of_package;
@@ -122,6 +123,16 @@ class RidesbookedController extends Controller
                 $userriderequest->save();
 
                 Session::forget('verification_code');
+
+                $user = User::find($ridesbooked->user_id);
+                if ($user && $user->email) {
+                    try {
+                        Mail::to($user->email)->send(new \App\Mail\RideBookedNotification($ridesbooked));
+                    }
+                    catch (\Exception $e) {
+                        Log::info($e->getMessage());
+                    }
+                }
 
                 return view('driver-app.otp-successfully')->with('success', 'Ride booked successfully!');
             }
@@ -146,6 +157,16 @@ class RidesbookedController extends Controller
 
                 Session::forget('verification_code');
 
+                $user = User::find($ridesbooked->user_id);
+                if ($user && $user->email) {
+                    try {
+                        Mail::to($user->email)->send(new \App\Mail\RideStartedNotification($ridesbooked));
+                    }
+                    catch (\Exception $e) {
+                        Log::info($e->getMessage());
+                    }
+                }
+
                 return view('driver-app.otp-successfully')->with('success', 'Ride Started successfully!');
             }
             catch (\Exception $e) {
@@ -156,6 +177,25 @@ class RidesbookedController extends Controller
         else {
             return redirect()->back()->with('error', 'Invalid OTP');
         }
+
+    }
+
+    public function ride_complete_request($ride_id)
+    {
+        $ride_booked = Ridesbooked::find($ride_id);
+
+//        dd($ride_booked);
+
+        if ($ride_booked && $ride_booked->receiver_email) {
+            try {
+                Mail::to($ride_booked->receiver_email)->send(new \App\Mail\RideCompleteRequestNotification($ride_booked));
+            }
+            catch (\Exception $e) {
+                Log::info($e->getMessage());
+            }
+        }
+
+        return redirect()->back()->with('success', 'Ride requested successfully to mark as complete!');
 
     }
 }
