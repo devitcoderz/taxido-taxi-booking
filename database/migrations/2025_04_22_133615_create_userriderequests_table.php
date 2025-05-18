@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('userriderequests', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->nullable();
+            $table->string('receiver_name');
+            $table->string('receiver_phone');
+            $table->string('receiver_email');
             $table->string('pickup_location');
             $table->string('destination_location');
             $table->string('fare');
             $table->timestamp('expiry');
             $table->string('departure_date')->nullable();
-            $table->string('arrival_date')->nullable();
             $table->string('payment_method');
             $table->string('distance');
-            $table->string('transport_time_value');
-            $table->string('transport_time_unit');
             $table->string('travel_company');
             $table->string('type_of_package');
             $table->string('length_of_package');

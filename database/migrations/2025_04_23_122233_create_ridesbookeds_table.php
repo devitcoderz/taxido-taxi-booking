@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('user_id');
             $table->string('driver_id');
+            $table->string('receiver_name');
+            $table->string('receiver_phone');
+            $table->string('receiver_email');
             $table->string('pickup_location');
             $table->string('destination_location');
             $table->string('fare');
@@ -23,8 +26,7 @@ return new class extends Migration
             $table->string('arrival_date')->nullable();
             $table->string('payment_method');
             $table->string('distance');
-            $table->string('transport_time_value');
-            $table->string('transport_time_unit');
+            $table->string('transport_time')->nullable();
             $table->string('travel_company');
             $table->string('type_of_package');
             $table->string('length_of_package');

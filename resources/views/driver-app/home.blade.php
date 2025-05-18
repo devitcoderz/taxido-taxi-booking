@@ -255,7 +255,7 @@
                                          alt="location">
                                     <h6 class="fw-normal title-color">{{ $userriderequest->distance }} km</h6>
                                 </div>
-                                <h6 class="fw-normal title-color">{{ $userriderequest->delivery_date }}</h6>
+                                <h6 class="fw-normal title-color">{{ $userriderequest->departure_date }}</h6>
                             </div>
                             <ul class="ride-location-listing">
                                 <li class="border-0 shadow-none box-background">
@@ -348,7 +348,7 @@
                                             <img class="icon img-fluid" src="/assets/images/svg/location-fill.svg" alt="location">
                                             <h6 class="fw-normal title-color">${item.distance} km</h6>
                                         </div>
-                                        <h6 class="fw-normal title-color">${item.delivery_date}</h6>
+                                        <h6 class="fw-normal title-color">${item.departure_date}</h6>
                                     </div>
                                     <ul class="ride-location-listing">
                                         <li class="border-0 shadow-none box-background">

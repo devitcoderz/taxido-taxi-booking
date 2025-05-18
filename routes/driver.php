@@ -110,6 +110,8 @@ Route::group(['prefix' => 'driver', 'as' => 'driver.'], function (){
     Route::post('/otp-successfully', [\App\Http\Controllers\Driver\RidesbookedController::class, 'otp_successfully'])->name('otp_successfully');
     Route::post('/start-ride-otp-successfully',[\App\Http\Controllers\Driver\RidesbookedController::class,'start_ride_otp_successfully'])->name('start_ride_otp_successfully');
 
+    Route::get('ride-complete-request/{id}',[\App\Http\Controllers\Driver\RidesbookedController::class,'ride_complete_request'])->name('ride_complete_request');
+
     Route::get('/page-listing', function (){
         return view('driver-app.page-listing');
     });

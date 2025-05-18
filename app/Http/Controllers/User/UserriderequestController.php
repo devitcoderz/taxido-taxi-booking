@@ -24,9 +24,6 @@ class UserriderequestController extends Controller
         $validator = Validator::make($request->all(), [
             'pickup_location'      => 'required|string|max:255',
             'destination_location' => 'required|string|max:255',
-            'transport_time_value' => 'required|numeric|min:1',
-            'transport_time_unit'  => 'required|in:days,weeks,months',
-            'distance'             => 'required|numeric|min:1',
             'length_of_package'    => 'required|numeric|min:1',
             'width_of_package'     => 'required|numeric|min:1',
             'volume_of_package'    => 'required|numeric|min:1',
@@ -43,12 +40,12 @@ class UserriderequestController extends Controller
 
         $userriderequest = new Userriderequest();
         $userriderequest->user_id             = Auth::guard('user')->id();
+        $userriderequest->receiver_name     = $request->receiver_name;
+        $userriderequest->receiver_email     = $request->receiver_email;
+        $userriderequest->receiver_phone     = $request->receiver_phone;
         $userriderequest->pickup_location     = $request->pickup_location;
         $userriderequest->destination_location = $request->destination_location;
         $userriderequest->departure_date      = $request->departure_date; // assuming current time as departure
-        $userriderequest->arrival_date        = $request->arrival_date;
-        $userriderequest->transport_time_value = $request->transport_time_value;
-        $userriderequest->transport_time_unit = $request->transport_time_unit;
         $userriderequest->distance            = $request->distance ?? 0;
         $userriderequest->type_of_package   = $request->type_of_package;
         $userriderequest->length_of_package   = $request->length_of_package;
