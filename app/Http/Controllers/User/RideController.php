@@ -4,10 +4,13 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ridesbooked;
+use App\Models\User;
 use App\Models\Userriderequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class RideController extends Controller
 {
@@ -68,6 +71,15 @@ class RideController extends Controller
         $ride_detail->transport_time = $result;
         $ride_detail->save();
         session()->flash('success', 'Ride Completed Successfully!');
+        $user = User::find($ride_detail->user_id);
+        if ($user && $user->email) {
+            try {
+                Mail::to($user->email)->send(new \App\Mail\RideBookedNotification($ride_detail));
+            }
+            catch (\Exception $e) {
+                Log::info($e->getMessage());
+            }
+        }
         return view('user-app.ride-details', [
             'ride_detail' => $ride_detail,
             'status' => 'completed'
