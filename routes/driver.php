@@ -120,9 +120,7 @@ Route::group(['prefix' => 'driver', 'as' => 'driver.'], function (){
         return view('driver-app.pending-ride-details');
     });
 
-    Route::get('/ride-details', function (){
-        return view('driver-app.ride-details');
-    });
+    Route::get('ride-details',[\App\Http\Controllers\Driver\RideController::class,'ride_details'])->name('ride_details');
 
     Route::get('/ride-on-way', function (){
         return view('driver-app.ride-on-way');
@@ -139,9 +137,7 @@ Route::group(['prefix' => 'driver', 'as' => 'driver.'], function (){
         return view('driver-app.topup-wallet');
     });
 
-    Route::get('/wallet', function (){
-        return view('driver-app.wallet');
-    });
+    Route::get('/wallet', [\App\Http\Controllers\Driver\DriverBalanceController::class,'wallet'])->name('wallet');
 
     Route::get('/withdraw', function (){
         return view('driver-app.withdraw');

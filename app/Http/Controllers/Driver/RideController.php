@@ -38,4 +38,13 @@ class RideController extends Controller
             ->get();
         return view('driver-app.active-ride', compact('active_rides'));
     }
+
+    public function ride_details(Request $request)
+    {
+        $ride_detail = Ridesbooked::where('id', $request->ride_id)
+            ->with('driver', 'user')
+            ->first();
+        return view('driver-app.ride-details', compact('ride_detail'));
+    }
+
 }

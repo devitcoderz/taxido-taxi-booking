@@ -97,7 +97,7 @@
 
                     <div class="d-flex align-content-center justify-content-between mt-3">
                         <h6 class="content-color fw-normal">Date</h6>
-                        <h5 class="title-color fw-normal">{{ $ride_detail->delivery_date }}</h5>
+                        <h5 class="title-color fw-normal">{{ \Carbon\Carbon::parse($ride_detail->departure_date)->format("d M’y,h:i A") }}</h5>
                     </div>
                     <div class="d-flex align-content-center justify-content-between mt-2">
                         <h6 class="content-color fw-normal">Booking ID</h6>

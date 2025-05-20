@@ -235,7 +235,45 @@
         });
     }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXkYMPZ27w-5YUm-bGG-txCLWxGZB6-ok&libraries=places&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKqq-XxVccy3MdBiolKZOJ601LNqvFPaE&libraries=places&callback=initMap" async defer></script>
 
 </body>
 </html>
+
+
+{{--    <!DOCTYPE html>--}}
+{{--<html>--}}
+{{--<head>--}}
+{{--    <title>--}}
+{{--        Simple Places Autocomplete--}}
+{{--    </title>--}}
+{{--    <script type="module" src="https://ajax.googleapis.com/ajax/libs/@googlemaps/extended-component-library/0.6.11/index.min.js">--}}
+{{--    </script>--}}
+{{--    <style>--}}
+{{--        body {--}}
+{{--            padding: 25px;--}}
+{{--            background-color: #f0f1f3;--}}
+{{--            font-family: "Arial", sans-serif;--}}
+{{--        }--}}
+
+{{--        #place-picker-box {--}}
+{{--            display: flex;--}}
+{{--            justify-content: center;--}}
+{{--            align-items: center;--}}
+{{--        }--}}
+
+{{--        #place-picker-container {--}}
+{{--            text-align: left;--}}
+{{--        }--}}
+{{--    </style>--}}
+{{--</head>--}}
+{{--<body>--}}
+{{--<gmpx-api-loader key="AIzaSyBKqq-XxVccy3MdBiolKZOJ601LNqvFPaE" solution-channel="GMP_GE_placepicker_v2">--}}
+{{--</gmpx-api-loader>--}}
+{{--<div id="place-picker-box">--}}
+{{--    <div id="place-picker-container">--}}
+{{--        <gmpx-place-picker placeholder="Enter an address"></gmpx-place-picker>--}}
+{{--    </div>--}}
+{{--</div>--}}
+{{--</body>--}}
+{{--</html>--}}
