@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Driver;
 use App\Models\Ridesbooked;
 use App\Models\User;
 use App\Models\Userriderequest;
@@ -71,10 +72,17 @@ class RideController extends Controller
         $ride_detail->transport_time = $result;
         $ride_detail->save();
         session()->flash('success', 'Ride Completed Successfully!');
-        $user = User::find($ride_detail->user_id);
+        if ($ride_detail->payment_method == 'online'){
+            $user = User::find($ride_detail->user_id);
+            $user->balance = $user->balance - $ride_detail->fare;
+            $user->save();
+            $driver = Driver::find($ride_detail->driver_id);
+            $driver->balance = $driver->balance + $ride_detail->fare;
+            $driver->save();
+        }
         if ($user && $user->email) {
             try {
-                Mail::to($user->email)->send(new \App\Mail\RideBookedNotification($ride_detail));
+                Mail::to($user->email)->send(new \App\Mail\RideCompletedNotification($ride_detail));
             }
             catch (\Exception $e) {
                 Log::info($e->getMessage());

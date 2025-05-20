@@ -37,16 +37,23 @@
                 <li>
                     <div class="location-box">
                         <img class="icon" src="{{asset('assets/images/svg/location-fill.svg')}}" alt="location">
-                        <input type="text" id="inputpickup" class="form-control" required placeholder="Pickup location" name="pickup_location">
-                        <ul id="suggestions" class="suggestions"></ul>
+                        <input type="text" id="pac-input" class="form-control" required placeholder="Pickup location" name="pickup_location">
+                        <div id="infowindow-content">
+                            <span id="place-name" class="title"></span><br />
+                            <span id="place-address"></span>
+                        </div>
                     </div>
                 </li>
                 <li>
                     <div class="location-box">
                         <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                        <input type="text" required id="inputdestination" class="form-control border-0"
+                        <input type="text" required id="pac-input2" class="form-control border-0"
                             placeholder="Enter destination" name="destination_location">
                         <i class="iconsax add-stop" data-icon="add"></i>
+                        <div id="infowindow-content2">
+                            <span id="place-name2" class="title"></span><br />
+                            <span id="place-address2"></span>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -180,58 +187,54 @@
     @endsection
 
     @section('script')
-        <script src="https://cdn.jsdelivr.net/npm/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
-
         <script>
-            // window.Helpers.initCustomOptionCheck();
-            $.ajaxSetup({
-                headers:{
-                    'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-                }
-            });
+            function preventFormSubmitOnEnter(inputElement) {
+                inputElement.addEventListener("keydown", function (e) {
+                    if (e.key === "Enter") {
+                        e.preventDefault(); // prevent form submission
+                    }
+                });
+            }
+            function initMap() {
+                // ---------- PICKUP LOCATION ----------
+                const input1 = document.getElementById("pac-input");
+                preventFormSubmitOnEnter(input1);
+                const autocomplete1 = new google.maps.places.Autocomplete(input1, {
+                    fields: ["formatted_address", "name"],
+                    strictBounds: false,
+                });
 
-            const accessToken = '{{ config('services.mapbox.access_token') }}';
-            const mapboxClient = mapboxSdk({ accessToken });
+                autocomplete1.addListener("place_changed", () => {
+                    const place = autocomplete1.getPlace();
+                    if (!place.geometry) {
+                        console.warn("Selected place has no geometry. Possibly partial data:", place);
+                        return;
+                    }
 
-            const addressInput = document.getElementById('inputpickup');
-            // const billingAddressInput = document.getElementById('billing_address');
-            const suggestionsList = document.getElementById('suggestions');
+                    document.getElementById("place-name").textContent = place.name || '';
+                    document.getElementById("place-address").textContent = place.formatted_address || '';
+                });
 
-            const clearSuggestions = () => {
-                suggestionsList.innerHTML = '';
-            };
+                // ---------- DESTINATION LOCATION ----------
+                const input2 = document.getElementById("pac-input2");
+                preventFormSubmitOnEnter(input2);
+                const autocomplete2 = new google.maps.places.Autocomplete(input2, {
+                    fields: ["formatted_address", "name"],
+                    strictBounds: false,
+                });
 
-            addressInput.addEventListener('input', () => {
-                const query = addressInput.value;
-                if (query.length > 2) {
-                    mapboxClient.geocoding.forwardGeocode({
-                        query,
-                        autocomplete: true,
-                        limit: 5
-                    })
-                        .send()
-                        .then(response => {
-                            clearSuggestions();
-                            if (response && response.body && response.body.features) {
-                                const suggestions = response.body.features;
+                autocomplete2.addListener("place_changed", () => {
+                    const place = autocomplete2.getPlace();
+                    if (!place.geometry) {
+                        console.warn("Selected place has no geometry. Possibly partial data:", place);
+                        return;
+                    }
 
-                                suggestions.forEach(suggestion => {
-                                    const li = document.createElement('li');
-                                    li.textContent = suggestion.place_name;
-                                    li.addEventListener('click', () => {
-                                        // billingAddressInput.value = '';
-                                        addressInput.value = suggestion.place_name;
-                                        // billingAddressInput.value = suggestion.place_name;
-                                        clearSuggestions();
-                                    });
-                                    suggestionsList.appendChild(li);
-                                });
-                            }
-                        });
-                } else {
-                    clearSuggestions();
-                }
-            });
-
+                    document.getElementById("place-name2").textContent = place.name || '';
+                    document.getElementById("place-address2").textContent = place.formatted_address || '';
+                });
+            }
         </script>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKqq-XxVccy3MdBiolKZOJ601LNqvFPaE&libraries=places&callback=initMap" async defer></script>
 @endsection

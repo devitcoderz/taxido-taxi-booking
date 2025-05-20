@@ -38,7 +38,7 @@
                 </div>
                 <div class="wallet-part">
                     <h6>My Wallet Balance</h6>
-                    <h5>$1,568.23 </h5>
+                    <h5>${{ $driver->balance }} </h5>
 
                 </div>
             </div>

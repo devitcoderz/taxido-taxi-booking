@@ -62,14 +62,14 @@
                             <li class="white-background">
                                 <div class="my-ride-box">
                                     <div class="my-ride-head">
-                                        <a href="{{url('driver/pending-ride-details')}}" class="my-ride-img">
+                                        <a href="{{url('driver/ride-details?ride_id='.$pending_ride->id)}}" class="my-ride-img">
                                             <img class="img-fluid profile-img" src="{{ $pending_ride->user->profile ? asset('storage/'.$pending_ride->user->profile) : asset('assets/images/profile/p5.png')}}"
                                                  alt="p5">
                                         </a>
 
                                         <div class="my-ride-content flex-column">
                                             <div class="flex-spacing">
-                                                <a href="{{url('driver/pending-ride-details')}}">
+                                                <a href="{{url('driver/ride-details?ride_id='.$pending_ride->id)}}">
                                                     <h6 class="title-color fw-medium">{{ $pending_ride->user->name }}</h6>
                                                 </a>
                                                 <h5 class="fw-mediun success-color">${{ $pending_ride->fare }}</h5>
@@ -134,14 +134,14 @@
                             <li class="white-background">
                                 <div class="my-ride-box">
                                     <div class="my-ride-head">
-                                        <a href="{{url('driver/complete-ride-details')}}" class="my-ride-img">
+                                        <a href="{{url('driver/ride-details?ride_id='.$completed_ride->id)}}" class="my-ride-img">
                                             <img class="img-fluid profile-img" src="{{ $completed_ride->user->profile ? asset('storage/'.$completed_ride->user->profile) : asset('assets/images/profile/p5.png')}}"
                                                  alt="p5">
                                         </a>
 
                                         <div class="my-ride-content flex-column">
                                             <div class="flex-spacing">
-                                                <a href="{{url('driver/complete-ride-details')}}">
+                                                <a href="{{url('driver/ride-details?ride_id='.$completed_ride->id)}}">
                                                     <h6 class="title-color fw-medium">{{ $completed_ride->user->name }}</h6>
                                                 </a>
                                                 <h5 class="fw-mediun success-color">${{ $completed_ride->fare }}</h5>
@@ -194,14 +194,14 @@
                             <li class="white-background">
                                 <div class="my-ride-box">
                                     <div class="my-ride-head">
-                                        <a href="{{url('driver/cancel-ride-details')}}" class="my-ride-img">
+                                        <a href="{{url('driver/ride-details?ride_id='.$cancelled_ride->id)}}" class="my-ride-img">
                                             <img class="img-fluid profile-img" src="{{ $cancelled_ride->user->profile ? asset('storage/'.$cancelled_ride->user->profile) : asset('assets/images/profile/p5.png')}}"
                                                  alt="p5">
                                         </a>
 
                                         <div class="my-ride-content flex-column">
                                             <div class="flex-spacing">
-                                                <a href="{{url('driver/cancel-ride-details')}}">
+                                                <a href="{{url('driver/ride-details?ride_id='.$cancelled_ride->id)}}">
                                                     <h6 class="title-color fw-medium">{{ $cancelled_ride->user->name }}</h6>
                                                 </a>
                                                 <h5 class="fw-mediun success-color">${{ $cancelled_ride->fare }}</h5>

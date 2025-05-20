@@ -57,7 +57,7 @@
                                             </div>
                                             <div class="flex-spacing  mt-2">
                                                 <h6 class="fw-mediun success-color">${{ $active_ride->fare }}</h6>
-                                                <h6 class="fw-normal content-color">{{ $active_ride->delivery_date }}</h6>
+                                                <h6 class="fw-normal content-color">{{ $active_ride->departure_date }}</h6>
                                             </div>
                                         </div>
                                     </div>
