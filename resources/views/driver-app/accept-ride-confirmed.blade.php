@@ -27,7 +27,11 @@
 
     <div class="ride-content-bg">
         <div class="profile-head mt-0">
-            <img class="img-fluid profile-img" src="{{ $userriderequest->user->profile ? asset('storage/'.$userriderequest->driver->profile) : asset('assets/images/profile/p4.png')}}" alt="profile">
+            <img class="img-fluid profile-img"
+                 src="{{ optional($userriderequest->user)->profile
+            ? asset('storage/' . $userriderequest->user->profile)
+            : asset('assets/images/profile/p4.png') }}"
+                 alt="profile">
             <div class="profile-content">
                 <div>
                     <div class="flex-align-center gap-1">
