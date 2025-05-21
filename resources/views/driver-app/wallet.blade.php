@@ -46,7 +46,7 @@
             <div class="tab-content" id="TabContent">
                 <div class="tab-pane fade active show" id="trip-tab">
                     <ul class="earning-list">
-                        @foreach($ridebookeds as $ridebooked)
+                        @forelse($ridebookeds as $ridebooked)
 
                             <li>
                             <div class="earning-box">
@@ -66,8 +66,9 @@
                                 </div>
                             </div>
                         </li>
+                        @empty
 
-                        @endforeach
+                        @endforelse
                     </ul>
                 </div>
 
@@ -80,7 +81,7 @@
                                 <div class="earning-content">
                                     <div class="flex-spacing">
                                         <div>
-                                            <a href="{{url('driver/ride-details?ride_id='.$ridebooked->id)}}">
+                                            <a href="{{url('driver/ride-details?ride_id=')}}">
                                                 <h6 class="fw-medium title-color ">#ACR148851</h6>
                                             </a>
                                             <h6 class="content-color fw-normal mt-1">15 March, 2024</h6>
@@ -98,7 +99,7 @@
                                 <div class="earning-content">
                                     <div class="flex-spacing">
                                         <div>
-                                            <a href="{{url('driver/ride-details?ride_id='.$ridebooked->id)}}">
+                                            <a href="{{url('driver/ride-details?ride_id=')}}">
                                                 <h6 class="fw-medium title-color ">#ACR148851</h6>
                                             </a>
                                             <h6 class="content-color fw-normal mt-1">22 March, 2024</h6>
@@ -116,7 +117,7 @@
                                 <div class="earning-content">
                                     <div class="flex-spacing">
                                         <div>
-                                            <a href="{{url('driver/ride-details?ride_id='.$ridebooked->id)}}">
+                                            <a href="{{url('driver/ride-details?ride_id=')}}">
                                                 <h6 class="fw-medium title-color ">#WTP148830</h6>
                                             </a>
                                             <h6 class="content-color fw-normal mt-1">3 April, 2024</h6>
@@ -134,7 +135,7 @@
                                 <div class="earning-content">
                                     <div class="flex-spacing">
                                         <div>
-                                            <a href="{{url('driver/ride-details?ride_id='.$ridebooked->id)}}">
+                                            <a href="{{url('driver/ride-details?ride_id=')}}">
                                                 <h6 class="fw-medium title-color ">#ACR148851</h6>
                                             </a>
                                             <h6 class="content-color fw-normal mt-1">8 April, 2024</h6>
@@ -152,7 +153,7 @@
                                 <div class="earning-content">
                                     <div class="flex-spacing">
                                         <div>
-                                            <a href="{{url('driver/ride-details?ride_id='.$ridebooked->id)}}">
+                                            <a href="{{url('driver/ride-details?ride_id=')}}">
                                                 <h6 class="fw-medium title-color ">#ACR148851</h6>
                                             </a>
                                             <h6 class="content-color fw-normal mt-1">12 April, 2024</h6>
@@ -170,7 +171,7 @@
                                 <div class="earning-content">
                                     <div class="flex-spacing">
                                         <div>
-                                            <a href="{{url('driver/ride-details?ride_id='.$ridebooked->id)}}">
+                                            <a href="{{url('driver/ride-details?ride_id=')}}">
                                                 <h6 class="fw-medium title-color ">#ACR148851</h6>
                                             </a>
                                             <h6 class="content-color fw-normal mt-1">16 April, 2024</h6>
@@ -188,7 +189,7 @@
                                 <div class="earning-content">
                                     <div class="flex-spacing">
                                         <div>
-                                            <a href="{{url('driver/ride-details?ride_id='.$ridebooked->id)}}">
+                                            <a href="{{url('driver/ride-details?ride_id=')}}">
                                                 <h6 class="fw-medium title-color ">#ACR148851</h6>
                                             </a>
                                             <h6 class="content-color fw-normal mt-1">21 April, 2024</h6>
@@ -206,7 +207,7 @@
                                 <div class="earning-content">
                                     <div class="flex-spacing">
                                         <div>
-                                            <a href="{{url('driver/ride-details?ride_id='.$ridebooked->id)}}">
+                                            <a href="{{url('driver/ride-details?ride_id=')}}">
                                                 <h6 class="fw-medium title-color ">#ACR148851</h6>
                                             </a>
                                             <h6 class="content-color fw-normal mt-1">25 April, 2024</h6>
@@ -224,7 +225,7 @@
                                 <div class="earning-content">
                                     <div class="flex-spacing">
                                         <div>
-                                            <a href="{{url('driver/ride-details?ride_id='.$ridebooked->id)}}">
+                                            <a href="{{url('driver/ride-details?ride_id=')}}">
                                                 <h6 class="fw-medium title-color ">#ACR148851</h6>
                                             </a>
                                             <h6 class="content-color fw-normal mt-1">5 May, 2024</h6>
@@ -242,7 +243,7 @@
                                 <div class="earning-content">
                                     <div class="flex-spacing">
                                         <div>
-                                            <a href="{{url('driver/ride-details?ride_id='.$ridebooked->id)}}">
+                                            <a href="{{url('driver/ride-details?ride_id=')}}">
                                                 <h6 class="fw-medium title-color ">#ACR148851</h6>
                                             </a>
                                             <h6 class="content-color fw-normal mt-1">13 May, 2024</h6>
