@@ -24,7 +24,7 @@
     <header id="header" class="main-header inner-page-header position-absolute bg-transparent">
         <div class="custom-container">
             <div class="header-panel p-0">
-                <a href="{{url('user/driver-fare-request')}}">
+                <a href="{{url('user/home')}}">
                     <i class="iconsax icon-btn" data-icon="chevron-left"> </i>
                 </a>
             </div>

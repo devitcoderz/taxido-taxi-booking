@@ -20,16 +20,15 @@ class UserriderequestController extends Controller
 
     public function driver_fare_request(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'pickup_location'      => 'required|string|max:255',
             'destination_location' => 'required|string|max:255',
-            'length_of_package'    => 'required|numeric|min:1',
-            'width_of_package'     => 'required|numeric|min:1',
-            'volume_of_package'    => 'required|numeric|min:1',
-            'quantity_of_package'  => 'required|integer|min:1',
-            'fare'                 => 'required|numeric|min:1',
-            'travel_company'       => 'required|string|max:255',
+            'length_of_package'    => 'required|min:1',
+            'width_of_package'     => 'required|min:1',
+//            'volume_of_package'    => 'required|numeric|min:1',
+            'quantity_of_package'  => 'required|min:1',
+            'fare'                 => 'required|min:1',
+//            'travel_company'       => 'required|string|max:255',
             'comments'             => 'required|string|max:1000',
             'payment_method'       => 'required|string',
         ]);
@@ -51,13 +50,14 @@ class UserriderequestController extends Controller
         $userriderequest->length_of_package   = $request->length_of_package;
         $userriderequest->width_of_package    = $request->width_of_package;
         $userriderequest->weight_of_package    = $request->weight_of_package;
-        $userriderequest->volume_of_package   = $request->volume_of_package;
+//        $userriderequest->volume_of_package   = $request->volume_of_package;
         $userriderequest->quantity_of_package = $request->quantity_of_package;
         $userriderequest->fare                = $request->fare;
-        $userriderequest->travel_company      = $request->travel_company;
+        $userriderequest->fare_currency               = $request->fare_currency;
+//        $userriderequest->travel_company      = $request->travel_company;
         $userriderequest->comments            = $request->comments;
         $userriderequest->payment_method      = $request->payment_method;
-        $userriderequest->expiry              = Carbon::now()->addMinutes(2);
+        $userriderequest->expiry              = Carbon::now()->addMinutes(10);
         $userriderequest->save();
         return view('user-app.driver-fare-request', ['userriderequest_id' => $userriderequest->id]);
     }

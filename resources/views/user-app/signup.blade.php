@@ -80,13 +80,13 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label mb-2" for="Inputid">Referral ID</label>
-                        <div class="position-relative">
-                            <input type="email" class="form-control" id="Inputid" placeholder="Enter referral id">
-                            <i class="iconsax icon" data-icon="profile-card"></i>
-                        </div>
-                    </div>
+{{--                    <div class="form-group">--}}
+{{--                        <label class="form-label mb-2" for="Inputid">Referral ID</label>--}}
+{{--                        <div class="position-relative">--}}
+{{--                            <input type="email" class="form-control" id="Inputid" placeholder="Enter referral id">--}}
+{{--                            <i class="iconsax icon" data-icon="profile-card"></i>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
                     <button type="submit" class="btn theme-btn w-100 auth-btn">Sign Up</button>
                     <h6 class="content-color fw-normal my-3 text-center"> Already have

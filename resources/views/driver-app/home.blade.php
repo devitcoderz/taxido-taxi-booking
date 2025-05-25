@@ -253,7 +253,7 @@
                                 <div class="flex-align-center gap-1">
                                     <img class="icon img-fluid" src="{{asset('assets/images/svg/location-fill.svg')}}"
                                          alt="location">
-                                    <h6 class="fw-normal title-color">{{ $userriderequest->distance }} km</h6>
+                                    <h6 class="fw-normal title-color">{{ $userriderequest->distance }}</h6>
                                 </div>
                                 <h6 class="fw-normal title-color">{{ $userriderequest->departure_date }}</h6>
                             </div>
@@ -346,7 +346,7 @@
                                     <div class="ride-info">
                                         <div class="flex-align-center gap-1">
                                             <img class="icon img-fluid" src="/assets/images/svg/location-fill.svg" alt="location">
-                                            <h6 class="fw-normal title-color">${item.distance} km</h6>
+                                            <h6 class="fw-normal title-color">${item.distance}</h6>
                                         </div>
                                         <h6 class="fw-normal title-color">${item.departure_date}</h6>
                                     </div>
