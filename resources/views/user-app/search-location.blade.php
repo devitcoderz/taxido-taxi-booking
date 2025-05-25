@@ -6,6 +6,15 @@
 
 @section('style')
 
+    <style>
+        #infowindow-content{
+            display: none !important;
+        }
+        #infowindow-content2{
+            display: none !important;
+        }
+    </style>
+
 @endsection
 
 @section('content')
@@ -29,6 +38,7 @@
     <!-- header end -->
 
     <form method="get" action="{{ route('user.selact_ride') }}">
+        <input type="hidden" name="distance" id="distance">
         @csrf
     <!-- location section starts -->
     <section class="location-section pt-0">
@@ -188,6 +198,8 @@
 
     @section('script')
         <script>
+            let pickupLocation = null;
+            let destinationLocation = null;
             function preventFormSubmitOnEnter(inputElement) {
                 inputElement.addEventListener("keydown", function (e) {
                     if (e.key === "Enter") {
@@ -196,11 +208,12 @@
                 });
             }
             function initMap() {
+
                 // ---------- PICKUP LOCATION ----------
                 const input1 = document.getElementById("pac-input");
                 preventFormSubmitOnEnter(input1);
                 const autocomplete1 = new google.maps.places.Autocomplete(input1, {
-                    fields: ["formatted_address", "name"],
+                    fields: ["formatted_address", "name", "geometry"],
                     strictBounds: false,
                 });
 
@@ -213,13 +226,16 @@
 
                     document.getElementById("place-name").textContent = place.name || '';
                     document.getElementById("place-address").textContent = place.formatted_address || '';
+
+                    pickupLocation = place.geometry.location;
+                    calculateDistance(); // call after setting pickup
                 });
 
                 // ---------- DESTINATION LOCATION ----------
                 const input2 = document.getElementById("pac-input2");
                 preventFormSubmitOnEnter(input2);
                 const autocomplete2 = new google.maps.places.Autocomplete(input2, {
-                    fields: ["formatted_address", "name"],
+                    fields: ["formatted_address", "name", "geometry"],
                     strictBounds: false,
                 });
 
@@ -232,9 +248,23 @@
 
                     document.getElementById("place-name2").textContent = place.name || '';
                     document.getElementById("place-address2").textContent = place.formatted_address || '';
+
+                    destinationLocation = place.geometry.location;
+                    calculateDistance(); // call after setting destination
+
                 });
             }
+
+            function calculateDistance() {
+                if (pickupLocation && destinationLocation) {
+                    const distanceInMeters = google.maps.geometry.spherical.computeDistanceBetween(pickupLocation, destinationLocation);
+                    const distanceInKm = (distanceInMeters / 1000).toFixed(2);
+                    document.getElementById("distance").value = `${distanceInKm} km`;
+                }
+            }
+
+
         </script>
 
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKqq-XxVccy3MdBiolKZOJ601LNqvFPaE&libraries=places&callback=initMap" async defer></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKqq-XxVccy3MdBiolKZOJ601LNqvFPaE&libraries=places,geometry&callback=initMap" async defer></script>
 @endsection

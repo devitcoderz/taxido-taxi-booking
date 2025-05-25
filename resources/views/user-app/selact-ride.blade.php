@@ -51,56 +51,72 @@
                     @csrf
                     <input type="hidden" name="pickup_location" value="{{ $request->pickup_location }}">
                     <input type="hidden" name="destination_location" value="{{ $request->destination_location }}">
+                    <input type="hidden" name="distance" value="{{ $request->distance }}">
                     <div class="form-group mt-0">
                         <label class="form-label mb-2" for="departure_date">Date and time of Departure</label>
                         <input type="text" class="form-control white-background" name="departure_date" id="departure_date">
                     </div>
+{{--                    <div class="form-group mt-3">--}}
+{{--                        <label class="form-label mb-2" for="Inputpassenger">Distance of Route</label>--}}
+{{--                        <input type="number" class="form-control white-background" id="Inputpassenger" name="distance"--}}
+{{--                               placeholder="Enter Distance in Km">--}}
+{{--                    </div>--}}
                     <div class="form-group mt-3">
-                        <label class="form-label mb-2" for="Inputpassenger">Distance of Route</label>
-                        <input type="number" class="form-control white-background" id="Inputpassenger" name="distance"
-                               placeholder="Enter Distance in Km">
+                        <label class="form-label mb-2" for="type_of_package">Select Type of Package</label>
+                        <select class="form-control white-background" id="type_of_package" name="type_of_package">
+                            <option value="Type 1">Type 1</option>
+                            <option value="Type 2">Type 2</option>
+                            <option value="Type 3">Type 3</option>
+                            <option value="Type 4">Type 4</option>
+                        </select>
                     </div>
                     <div class="form-group mt-3">
-                        <label class="form-label mb-2" for="type_of_package">Type of Package</label>
-                        <input type="text" class="form-control white-background" id="type_of_package" name="type_of_package"
-                               placeholder="Enter Package Type">
-                    </div>
-                    <div class="form-group mt-3">
-                        <label class="form-label mb-2" for="length_of_package">Enter Length of Package (Meters)</label>
-                        <input type="number" class="form-control white-background" id="length_of_package" name="length_of_package"
+                        <label class="form-label mb-2" for="length_of_package">Enter Length of Package</label>
+                        <input type="text" class="form-control white-background" id="length_of_package" name="length_of_package"
                                placeholder="Enter Package Length">
                     </div>
                     <div class="form-group mt-3">
-                        <label class="form-label mb-2" for="width_of_package">Enter Width of Package (Meters)</label>
-                        <input type="number" class="form-control white-background" id="width_of_package" name="width_of_package"
+                        <label class="form-label mb-2" for="width_of_package">Enter Width of Package</label>
+                        <input type="text" class="form-control white-background" id="width_of_package" name="width_of_package"
                                placeholder="Enter Package Width">
                     </div>
+{{--                    <div class="form-group mt-3">--}}
+{{--                        <label class="form-label mb-2" for="volume_of_package">Enter Volume of Package (Meters)</label>--}}
+{{--                        <input type="number" class="form-control white-background" id="volume_of_package" name="volume_of_package"--}}
+{{--                               placeholder="Enter Package Volume">--}}
+{{--                    </div>--}}
                     <div class="form-group mt-3">
-                        <label class="form-label mb-2" for="volume_of_package">Enter Volume of Package (Meters)</label>
-                        <input type="number" class="form-control white-background" id="volume_of_package" name="volume_of_package"
-                               placeholder="Enter Package Volume">
-                    </div>
-                    <div class="form-group mt-3">
-                        <label class="form-label mb-2" for="weight_of_package">Enter Weight of Package (Kg)</label>
-                        <input type="number" class="form-control white-background" id="weight_of_package" name="weight_of_package"
+                        <label class="form-label mb-2" for="weight_of_package">Enter Weight of Package</label>
+                        <input type="text" class="form-control white-background" id="weight_of_package" name="weight_of_package"
                                placeholder="Enter Package Weight">
                     </div>
                     <div class="form-group mt-3">
-                        <label class="form-label mb-2" for="quantity_of_package">Enter Quantity of Package (Numbers)</label>
+                        <label class="form-label mb-2" for="quantity_of_package">Enter Quantity of Package</label>
                         <input type="number" class="form-control white-background" id="quantity_of_package" name="quantity_of_package"
                                placeholder="Enter Package Quantity">
                     </div>
 
-                    <div class="form-group mt-3">
-                        <label class="form-label mb-2" for="Inputofferrate">Enter your offer rate</label>
-                        <input type="number" class="form-control white-background" id="Inputofferrate" name="fare"
-                               placeholder="Enter offer rate">
+                    <div class="row">
+                        <div class="form-group mt-3 col-6 d-inline-block">
+                            <label class="form-label mb-2" for="Inputofferrate">Enter your offer rate</label>
+                            <input type="number" class="form-control white-background" id="Inputofferrate" name="fare"
+                                   placeholder="Enter offer rate">
+                        </div>
+                        <div class="form-group mt-3 col-6 d-inline-block">
+                            <label class="form-label mb-2" for="currency_offerrate">Select your fare currency</label>
+                            <select class="form-control white-background" id="currency_offerrate" name="fare_currency">
+                                <option value="dollar">United State Dollar</option>
+                                <option value="dirham">Dirham</option>
+                                <option value="ryal">Ryal</option>
+                                <option value="euro">Euro</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group mt-3">
-                        <label class="form-label mb-2" for="travel_company">Enter Travel Company</label>
-                        <input type="text" class="form-control white-background" id="travel_company" name="travel_company"
-                               placeholder="Enter Travel Company">
-                    </div>
+{{--                    <div class="form-group mt-3">--}}
+{{--                        <label class="form-label mb-2" for="travel_company">Enter Travel Company</label>--}}
+{{--                        <input type="text" class="form-control white-background" id="travel_company" name="travel_company"--}}
+{{--                               placeholder="Enter Travel Company">--}}
+{{--                    </div>--}}
                     <div class="form-group mt-3">
                         <label class="form-label mb-2" for="comments">Comments</label>
                         <textarea class="form-control white-background" id="comments" name="comments"
@@ -126,17 +142,17 @@
                     <h5 class="p-0 mt-3 mb-2 fw-medium title-color">Payment Method</h5>
                     <div class="order-type">
                         <div class="flex-spacing gap-3 w-100">
-                            <div class="form-check form-check3">
-                                <input class="form-check-input" type="radio" value="cash" name="payment_method" id="fixed45"
-                                       checked />
-                                <label class="form-check-label" for="fixed45">
-                                    <span class="check-box"></span>
-                                    <span class="name">Cash</span>
-                                </label>
-                            </div>
+{{--                            <div class="form-check form-check3">--}}
+{{--                                <input class="form-check-input" type="radio" value="cash" name="payment_method" id="fixed45"--}}
+{{--                                       checked />--}}
+{{--                                <label class="form-check-label" for="fixed45">--}}
+{{--                                    <span class="check-box"></span>--}}
+{{--                                    <span class="name">Cash</span>--}}
+{{--                                </label>--}}
+{{--                            </div>--}}
 
                             <div class="form-check form-check3">
-                                <input class="form-check-input" type="radio" name="payment_method" value="online" id="fixed469" />
+                                <input class="form-check-input" type="radio" name="payment_method" checked value="online" id="fixed469" />
                                 <label class="form-check-label" for="fixed469">
                                     <span class="check-box"></span>
                                     <span class="name">Online-Payment</span>

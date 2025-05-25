@@ -14,7 +14,7 @@
     <header id="header" class="main-header inner-page-header position-absolute bg-transparent">
         <div class="custom-container">
             <div class="header-panel">
-                <a href="{{url('driver/accept-ride')}}">
+                <a href="{{url('driver/accept-ride/'.$userriderequest->id)}}">
                     <i class="iconsax icon-btn" data-icon="chevron-left"> </i>
                 </a>
             </div>

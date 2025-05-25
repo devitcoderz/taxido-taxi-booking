@@ -30,13 +30,15 @@
             <div class="my-ride-box">
                 <div class="my-ride-head">
                     <a href="{{url('driver/accept-ride-confirmed')}}" class="my-ride-img">
-                        <img class="img-fluid profile-img" src="{{asset('assets/images/profile/p4.png')}}" alt="p5">
+                        <img class="img-fluid profile-img" src="{{ optional($userriderequest->user)->profile
+            ? asset('storage/' . $userriderequest->user->profile)
+            : asset('assets/images/profile/p4.png') }}" alt="p5">
                     </a>
 
                     <div class="my-ride-content flex-column">
                         <div class="flex-spacing">
                             <a href="#">
-                                <h5 class="p-0 title-color fw-medium">Peter Thornton</h5>
+                                <h5 class="p-0 title-color fw-medium">{{ $userriderequest->user->name }}</h5>
                             </a>
                             <div class="flex-align-center">
                                 <div class="flex-align-center gap-1 pe-2">
@@ -53,9 +55,9 @@
                     <div class="ride-info">
                         <div class="flex-align-center gap-1">
                             <img class="icon img-fluid" src="{{asset('assets/images/svg/location-fill.svg')}}" alt="location">
-                            <h6 class="fw-normal title-color">{{ $userriderequest->distance }} km</h6>
+                            <h6 class="fw-normal title-color">{{ $userriderequest->distance }}</h6>
                         </div>
-                        <h6 class="fw-normal title-color">{{ $userriderequest->delivery_date }}</h6>
+                        <h6 class="fw-normal title-color">{{ $userriderequest->departure_date }}</h6>
                     </div>
                     <ul class="ride-location-listing">
                         <li class="border-0 shadow-none">
@@ -69,7 +71,7 @@
                         <li class="border-0 shadow-none">
                             <div class="location-box">
                                 <img class="icon bg-transparent" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                                <h5 class="fw-light title-color px-0 border-0">{{ $userriderequest->pickup_location }}
+                                <h5 class="fw-light title-color px-0 border-0">{{ $userriderequest->destination_location }}
                                 </h5>
                             </div>
                         </li>

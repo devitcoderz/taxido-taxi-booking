@@ -22,7 +22,6 @@ class RidesbookedController extends Controller
         $driverfarerequest = Driverfarerequest::where('id', $request->input('driverfarerequest_id'))->first();
         $userriderequest_id = $driverfarerequest->userriderequest_id;
         $userriderequest = Userriderequest::find($userriderequest_id);
-
         $ridesbooked = new Ridesbooked();
         $ridesbooked->user_id = $userriderequest->user_id;
         $ridesbooked->driver_id = $request->driver_id;
@@ -32,19 +31,20 @@ class RidesbookedController extends Controller
         $ridesbooked->pickup_location = $userriderequest->pickup_location;
         $ridesbooked->destination_location = $userriderequest->destination_location;
         $ridesbooked->departure_date      = $userriderequest->departure_date; // assuming current time as departure
-        $ridesbooked->arrival_date        = $userriderequest->arrival_date;
-        $ridesbooked->transport_time_value = $userriderequest->transport_time_value;
-        $ridesbooked->transport_time_unit = $userriderequest->transport_time_unit;
+//        $ridesbooked->arrival_date        = $userriderequest->arrival_date;
+//        $ridesbooked->transport_time_value = $userriderequest->transport_time_value;
+//        $ridesbooked->transport_time_unit = $userriderequest->transport_time_unit;
         $ridesbooked->distance            = $userriderequest->distance ?? 0;
         $ridesbooked->type_of_package   = $userriderequest->type_of_package;
         $ridesbooked->length_of_package   = $userriderequest->length_of_package;
         $ridesbooked->width_of_package    = $userriderequest->width_of_package;
         $ridesbooked->weight_of_package    = $userriderequest->weight_of_package;
-        $ridesbooked->volume_of_package   = $userriderequest->volume_of_package;
+//        $ridesbooked->volume_of_package   = $userriderequest->volume_of_package;
         $ridesbooked->quantity_of_package = $userriderequest->quantity_of_package;
         $ridesbooked->fare                = $driverfarerequest->requested_fare;
-        $ridesbooked->travel_company      = $userriderequest->travel_company;
-        $ridesbooked->comments            = $userriderequest->comments;
+        $ridesbooked->fare_currency                = $userriderequest->fare_currency;
+//        $ridesbooked->travel_company      = $userriderequest->travel_company;
+//        $ridesbooked->comments            = $userriderequest->comments;
         $ridesbooked->payment_method      = $userriderequest->payment_method;
         $ridesbooked->expiry = $userriderequest->expiry;
         $ridesbooked->status = 'pending';
