@@ -56,7 +56,7 @@
                                                 <span class="status accent-color fw-normal">{{ $active_ride->status }}</span>
                                             </div>
                                             <div class="flex-spacing  mt-2">
-                                                <h6 class="fw-mediun success-color">${{ $active_ride->fare }}</h6>
+                                                <h6 class="fw-mediun success-color">{{ $pending_ride->fare_currency}} {{ $active_ride->fare }}</h6>
                                                 <h6 class="fw-normal content-color">{{ $active_ride->departure_date }}</h6>
                                             </div>
                                         </div>
@@ -85,12 +85,17 @@
                                                      alt="location">
                                                 <h5 class="fw-light title-color">{{ $active_ride->pickup_location }}</h5>
                                             </li>
+                                            @php
+                                                $locations = json_decode($active_ride->destination_location, true); // returns array
+                                            @endphp
+                                            @foreach($locations as $location)
+                                                <li class="location-box">
+                                                    <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
+                                                    <h5 class="fw-light title-color border-0">{{ $location }}
+                                                    </h5>
+                                                </li>
+                                            @endforeach
 
-                                            <li class="location-box">
-                                                <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                                                <h5 class="fw-light title-color border-0">{{ $active_ride->destination_location }}
-                                                </h5>
-                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -118,7 +123,7 @@
                                                 <span class="status secondary-color fw-normal">{{ $pending_ride->status }}</span>
                                             </div>
                                             <div class="flex-spacing  mt-2">
-                                                <h6 class="fw-mediun success-color">${{ $pending_ride->fare }}</h6>
+                                                <h6 class="fw-mediun success-color">{{ $pending_ride->fare_currency}} {{ $pending_ride->fare }}</h6>
                                                 <h6 class="fw-normal content-color">{{ $pending_ride->delivery_date }}</h6>
                                             </div>
                                         </div>
@@ -147,11 +152,16 @@
                                                 <h5 class="fw-light title-color">{{ $pending_ride->pickup_location }}</h5>
                                             </li>
 
-                                            <li class="location-box">
-                                                <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                                                <h5 class="fw-light title-color border-0">{{ $pending_ride->destination_location }}
-                                                </h5>
-                                            </li>
+                                            @php
+                                                $locations = json_decode($pending_ride->destination_location, true); // returns array
+                                            @endphp
+                                            @foreach($locations as $location)
+                                                <li class="location-box">
+                                                    <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
+                                                    <h5 class="fw-light title-color border-0">{{ $location }}
+                                                    </h5>
+                                                </li>
+                                            @endforeach
                                         </ul>
 
                                     </div>
@@ -180,7 +190,7 @@
                                                 <span class="status success-color fw-normal">{{ $completed_ride->status }}</span>
                                             </div>
                                             <div class="flex-spacing  mt-2">
-                                                <h6 class="fw-mediun success-color">${{ $completed_ride->fare }}</h6>
+                                                <h6 class="fw-mediun success-color">{{ $completed_ride->fare_currency}} {{ $completed_ride->fare }}</h6>
                                                 <h6 class="fw-normal content-color">{{ $completed_ride->delivery_date }}</h6>
                                             </div>
                                         </div>
@@ -209,11 +219,16 @@
                                                 <h5 class="fw-light title-color">{{ $completed_ride->pickup_location }}</h5>
                                             </li>
 
-                                            <li class="location-box">
-                                                <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                                                <h5 class="fw-light title-color border-0">{{ $completed_ride->destination_location }}
-                                                </h5>
-                                            </li>
+                                            @php
+                                                $locations = json_decode($completed_ride->destination_location, true); // returns array
+                                            @endphp
+                                            @foreach($locations as $location)
+                                                <li class="location-box">
+                                                    <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
+                                                    <h5 class="fw-light title-color border-0">{{ $location }}
+                                                    </h5>
+                                                </li>
+                                            @endforeach
                                         </ul>
 
                                     </div>
@@ -242,7 +257,7 @@
                                                 <span class="status error-color fw-normal">{{ $cancelled_ride->status }}</span>
                                             </div>
                                             <div class="flex-spacing  mt-2">
-                                                <h6 class="fw-mediun success-color">${{ $cancelled_ride->fare }}</h6>
+                                                <h6 class="fw-mediun success-color">{{ $cancelled_ride->fare_currency}} {{ $cancelled_ride->fare }}</h6>
                                                 <h6 class="fw-normal content-color">{{ $cancelled_ride->delivery_date }}</h6>
                                             </div>
                                         </div>
@@ -271,11 +286,16 @@
                                                 <h5 class="fw-light title-color">{{ $cancelled_ride->pickup_location }}</h5>
                                             </li>
 
-                                            <li class="location-box">
-                                                <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                                                <h5 class="fw-light title-color border-0">{{ $cancelled_ride->destination_location }}
-                                                </h5>
-                                            </li>
+                                            @php
+                                                $locations = json_decode($cancelled_ride->destination_location, true); // returns array
+                                            @endphp
+                                            @foreach($locations as $location)
+                                                <li class="location-box">
+                                                    <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
+                                                    <h5 class="fw-light title-color border-0">{{ $location }}
+                                                    </h5>
+                                                </li>
+                                            @endforeach
                                         </ul>
                                     </div>
                                 </div>

@@ -50,7 +50,9 @@
                 <form class="theme-form mt-0" method="post" action="{{ route('user.driver_fare_request') }}">
                     @csrf
                     <input type="hidden" name="pickup_location" value="{{ $request->pickup_location }}">
-                    <input type="hidden" name="destination_location" value="{{ $request->destination_location }}">
+                    @foreach ($request->destination_location as $location)
+                        <input type="hidden" name="destination_location[]" value="{{ $location }}">
+                    @endforeach
                     <input type="hidden" name="distance" value="{{ $request->distance }}">
                     <div class="form-group mt-0">
                         <label class="form-label mb-2" for="departure_date">Date and time of Departure</label>
@@ -64,10 +66,16 @@
                     <div class="form-group mt-3">
                         <label class="form-label mb-2" for="type_of_package">Select Type of Package</label>
                         <select class="form-control white-background" id="type_of_package" name="type_of_package">
-                            <option value="Type 1">Type 1</option>
-                            <option value="Type 2">Type 2</option>
-                            <option value="Type 3">Type 3</option>
-                            <option value="Type 4">Type 4</option>
+                            <option value="Standard_parcels">Standard parcels: - Small packages (less than 5 kg) - Cardboard boxes and cartons (medium size, 5–20 kg) - Large parcels (furniture, household appliances, etc.)</option>
+                            <option value="Food_and_perishable_parcels">Food and perishable parcels* - Grocery shopping (supermarket deliveries) - Prepared meals (restaurant deliveries) - Fresh produce (meat, fish, vegetables) - Frozen products</option>
+                            <option value="Sensitive_and_fragile_parcels">Sensitive and fragile parcels* - Glass items (dishes, glassware) - Electronics (phones, computers) - Works of art and decorative objects - Musical instruments</option>
+                            <option value="Valuable_parcels">Valuable parcels* - Parcels with special tracking (jewelry, important documents) - Luxury deliveries (watches, high-end clothing) - Insured parcels</option>
+                            <option value="Medical_and_pharmaceutical_parcels">Medical and pharmaceutical parcels* - Medicines and prescriptions - Medical equipment - Laboratory products</option>
+                            <option value="Dangerous_parcels_or_regulated">Dangerous parcels or regulated* - Chemical products (with specific labeling) - Lithium batteries (electronic devices) - Flammable materials (transport restrictions)</option>
+                            <option value="Large_and_bulky_parcels">Large and bulky parcels* - Furniture (sofas, tables, wardrobes) - Household appliances (refrigerators, washing machines) - Bicycles and sports equipment</option>
+                            <option value="Live_animal_parcels">Live animal parcels* - Pets (dogs, cats, birds) – under conditions - Delivery of fish or reptiles (specialized)</option>
+                            <option value="Express_and_urgent_parcels">Express and urgent parcels* - Urgent documents (contracts, legal files) - Spare parts for repairs - Last minute orders</option>
+                            <option value="International_parcels">International parcels* - Postal shipments abroad - Customs and international freight</option>
                         </select>
                     </div>
                     <div class="form-group mt-3">
@@ -99,7 +107,7 @@
                     <div class="row">
                         <div class="form-group mt-3 col-6 d-inline-block">
                             <label class="form-label mb-2" for="Inputofferrate">Enter your offer rate</label>
-                            <input type="number" class="form-control white-background" id="Inputofferrate" name="fare"
+                            <input type="number" class="form-control white-background" id="Inputofferrate" name="fare" value="{{ $request->distance * 2 }}"
                                    placeholder="Enter offer rate">
                         </div>
                         <div class="form-group mt-3 col-6 d-inline-block">
@@ -108,7 +116,7 @@
                                 <option value="dollar">United State Dollar</option>
                                 <option value="dirham">Dirham</option>
                                 <option value="ryal">Ryal</option>
-                                <option value="euro">Euro</option>
+                                <option value="euro" selected>Euro</option>
                             </select>
                         </div>
                     </div>

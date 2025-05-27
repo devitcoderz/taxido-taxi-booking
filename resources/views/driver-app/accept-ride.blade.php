@@ -45,7 +45,7 @@
                                     <img class="star" src="{{asset('assets/images/svg/star.svg')}}" alt="star">
                                     <h5 class="fw-normal title-color p-0">4.8</h5>
                                 </div>
-                                <h5 class="fw-mediun theme-color price ps-2 pe-0">${{ $userriderequest->fare }}</h5>
+                                <h5 class="fw-mediun theme-color price ps-2 pe-0">{{ $userriderequest->fare_currency }} {{ $userriderequest->fare }}</h5>
                             </div>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                     <div class="ride-info">
                         <div class="flex-align-center gap-1">
                             <img class="icon img-fluid" src="{{asset('assets/images/svg/location-fill.svg')}}" alt="location">
-                            <h6 class="fw-normal title-color">{{ $userriderequest->distance }}</h6>
+                            <h6 class="fw-normal title-color">{{ $userriderequest->distance }} km</h6>
                         </div>
                         <h6 class="fw-normal title-color">{{ $userriderequest->departure_date }}</h6>
                     </div>
@@ -67,14 +67,18 @@
                                 <h5 class="fw-light title-color px-0">{{ $userriderequest->pickup_location }}</h5>
                             </div>
                         </li>
-
-                        <li class="border-0 shadow-none">
-                            <div class="location-box">
-                                <img class="icon bg-transparent" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                                <h5 class="fw-light title-color px-0 border-0">{{ $userriderequest->destination_location }}
-                                </h5>
-                            </div>
-                        </li>
+                        @php
+                            $locations = json_decode($userriderequest->destination_location, true); // returns array
+                        @endphp
+                        @foreach($locations as $location)
+                            <li class="border-0 shadow-none">
+                                <div class="location-box">
+                                    <img class="icon bg-transparent" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
+                                    <h5 class="fw-light title-color px-0 border-0">{{ $location }}
+                                    </h5>
+                                </div>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
 
@@ -82,7 +86,7 @@
 
                 <div class="fare-box">
                     <div class="icon sub"> -10 </div>
-                    <input type="number" value="{{ $userriderequest->fare }}" name="requested_fare" min="1" max="1000">
+                    <input type="number" value="{{ $userriderequest->fare }}" name="requested_fare">
                     <div class="icon add"> +10 </div>
                 </div>
 

@@ -63,20 +63,24 @@
                     <h5 class="fw-light title-color">{{ $userriderequest->pickup_location }}</h5>
                 </div>
             </li>
-
-            <li class="border-0 shadow-none">
-                <div class="location-box">
-                    <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                    <h5 class="fw-light title-color border-0">{{ $userriderequest->destination_location }}
-                    </h5>
-                </div>
-            </li>
+            @php
+                $locations = json_decode($userriderequest->destination_location, true); // returns array
+            @endphp
+            @foreach($locations as $location)
+                <li class="border-0 shadow-none">
+                    <div class="location-box">
+                        <img class="icon bg-transparent" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
+                        <h5 class="fw-light title-color px-0 border-0">{{ $location }}
+                        </h5>
+                    </div>
+                </li>
+            @endforeach
         </ul>
 
         <div class="amount-part">
             <div class="total flex-spacing">
                 <h4 class="fw-medium title-color">Total Fare </h4>
-                <span class="fw-medium theme-color">${{ $userriderequest->fare }}</span>
+                <span class="fw-medium theme-color">{{ $userriderequest->fare_currency }} {{ $userriderequest->fare }}</span>
             </div>
             <div class="location-part fare-amount">
                 <div class="flex-align-center gap-2">
@@ -88,7 +92,7 @@
                 </div>
             </div>
         </div>
-        <a href="{{route('driver.ride_verification',['userriderequest_id' => $userriderequest->id])}}" class="btn theme-btn w-100 mt-3">Accept Fare on ${{ $userriderequest->fare }}</a>
+        <a href="{{route('driver.ride_verification',['userriderequest_id' => $userriderequest->id])}}" class="btn theme-btn w-100 mt-3">Accept Fare on {{ $userriderequest->fare_currency }} {{ $userriderequest->fare }}</a>
     </div>
 
 @endsection

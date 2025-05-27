@@ -72,7 +72,7 @@
                                                 <a href="{{url('driver/ride-details?ride_id='.$pending_ride->id)}}">
                                                     <h6 class="title-color fw-medium">{{ $pending_ride->user->name }}</h6>
                                                 </a>
-                                                <h5 class="fw-mediun success-color">${{ $pending_ride->fare }}</h5>
+                                                <h5 class="fw-mediun success-color">{{ $pending_ride->fare_currency}} {{ $pending_ride->fare }}</h5>
                                             </div>
                                             <div class="flex-align-center gap-3">
                                                 <div class="flex-align-center gap-1">
@@ -110,14 +110,18 @@
                                                     <h5 class="fw-light title-color">{{ $pending_ride->pickup_location }}</h5>
                                                 </div>
                                             </li>
-
-                                            <li class="border-0 shadow-none">
-                                                <div class="location-box">
-                                                    <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                                                    <h5 class="fw-light title-color border-0">{{ $pending_ride->destination_location }}
-                                                    </h5>
-                                                </div>
-                                            </li>
+                                            @php
+                                                $locations = json_decode($pending_ride->destination_location, true); // returns array
+                                            @endphp
+                                            @foreach($locations as $location)
+                                                <li class="border-0 shadow-none">
+                                                    <div class="location-box">
+                                                        <img class="icon bg-transparent" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
+                                                        <h5 class="fw-light title-color px-0 border-0">{{ $location }}
+                                                        </h5>
+                                                    </div>
+                                                </li>
+                                            @endforeach
                                         </ul>
                                     </div>
                                     <a href="{{url('driver/start-ride/'.$pending_ride->id)}}" class="btn theme-btn w-100 mt-3">Pickup Customer</a>
@@ -144,7 +148,7 @@
                                                 <a href="{{url('driver/ride-details?ride_id='.$completed_ride->id)}}">
                                                     <h6 class="title-color fw-medium">{{ $completed_ride->user->name }}</h6>
                                                 </a>
-                                                <h5 class="fw-mediun success-color">${{ $completed_ride->fare }}</h5>
+                                                <h5 class="fw-mediun success-color">{{ $completed_ride->fare_currency}} {{ $completed_ride->fare }}</h5>
                                             </div>
                                             <div class="flex-align-center gap-3">
                                                 <div class="flex-align-center gap-1">
@@ -173,13 +177,18 @@
                                                 </div>
                                             </li>
 
-                                            <li class="border-0 shadow-none">
-                                                <div class="location-box">
-                                                    <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                                                    <h5 class="fw-light title-color border-0">{{ $completed_ride->destination_location }}
-                                                    </h5>
-                                                </div>
-                                            </li>
+                                            @php
+                                                $locations = json_decode($completed_ride->destination_location, true); // returns array
+                                            @endphp
+                                            @foreach($locations as $location)
+                                                <li class="border-0 shadow-none">
+                                                    <div class="location-box">
+                                                        <img class="icon bg-transparent" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
+                                                        <h5 class="fw-light title-color px-0 border-0">{{ $location }}
+                                                        </h5>
+                                                    </div>
+                                                </li>
+                                            @endforeach
                                         </ul>
                                     </div>
                                 </div>
@@ -204,7 +213,7 @@
                                                 <a href="{{url('driver/ride-details?ride_id='.$cancelled_ride->id)}}">
                                                     <h6 class="title-color fw-medium">{{ $cancelled_ride->user->name }}</h6>
                                                 </a>
-                                                <h5 class="fw-mediun success-color">${{ $cancelled_ride->fare }}</h5>
+                                                <h5 class="fw-mediun success-color">{{ $cancelled_ride->fare_currency}} {{ $cancelled_ride->fare }}</h5>
                                             </div>
                                             <div class="flex-align-center gap-3">
                                                 <div class="flex-align-center gap-1">
@@ -233,13 +242,18 @@
                                                 </div>
                                             </li>
 
-                                            <li class="border-0 shadow-none">
-                                                <div class="location-box">
-                                                    <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                                                    <h5 class="fw-light title-color border-0">{{ $cancelled_ride->destination_location }}
-                                                    </h5>
-                                                </div>
-                                            </li>
+                                            @php
+                                                $locations = json_decode($cancelled_ride->destination_location, true); // returns array
+                                            @endphp
+                                            @foreach($locations as $location)
+                                                <li class="border-0 shadow-none">
+                                                    <div class="location-box">
+                                                        <img class="icon bg-transparent" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
+                                                        <h5 class="fw-light title-color px-0 border-0">{{ $location }}
+                                                        </h5>
+                                                    </div>
+                                                </li>
+                                            @endforeach
                                         </ul>
                                     </div>
                                 </div>
