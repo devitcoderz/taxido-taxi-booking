@@ -112,8 +112,8 @@ class RidesbookedController extends Controller
                 $ridesbooked->volume_of_package   = $userriderequest->volume_of_package;
                 $ridesbooked->quantity_of_package = $userriderequest->quantity_of_package;
                 $ridesbooked->fare                = $userriderequest->fare;
-                $ridesbooked->travel_company      = $userriderequest->travel_company;
-                $ridesbooked->comments            = $userriderequest->comments;
+//                $ridesbooked->travel_company      = $userriderequest->travel_company;
+//                $ridesbooked->comments            = $userriderequest->comments;
                 $ridesbooked->payment_method      = $userriderequest->payment_method;
                 $ridesbooked->expiry = $userriderequest->expiry;
                 $ridesbooked->status = 'pending';
