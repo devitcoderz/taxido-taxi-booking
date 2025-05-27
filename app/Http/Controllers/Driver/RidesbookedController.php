@@ -109,9 +109,10 @@ class RidesbookedController extends Controller
                 $ridesbooked->length_of_package   = $userriderequest->length_of_package;
                 $ridesbooked->width_of_package    = $userriderequest->width_of_package;
                 $ridesbooked->weight_of_package    = $userriderequest->weight_of_package;
-                $ridesbooked->volume_of_package   = $userriderequest->volume_of_package;
+//                $ridesbooked->volume_of_package   = $userriderequest->volume_of_package;
                 $ridesbooked->quantity_of_package = $userriderequest->quantity_of_package;
                 $ridesbooked->fare                = $userriderequest->fare;
+                $ridesbooked->fare_currency                = $userriderequest->fare_currency;
 //                $ridesbooked->travel_company      = $userriderequest->travel_company;
 //                $ridesbooked->comments            = $userriderequest->comments;
                 $ridesbooked->payment_method      = $userriderequest->payment_method;
