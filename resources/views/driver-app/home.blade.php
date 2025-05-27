@@ -242,7 +242,7 @@
                                             <img class="star" src="{{asset('assets/images/svg/star.svg')}}" alt="star">
                                             <h5 class="fw-normal title-color p-0">4.8</h5>
                                         </div>
-                                        <h5 class="fw-mediun theme-color price ps-2 pe-0">${{ $userriderequest->fare }}</h5>
+                                        <h5 class="fw-mediun theme-color price ps-2 pe-0">{{ $userriderequest->fare_currency }} {{ $userriderequest->fare }}</h5>
                                     </div>
                                 </div>
                             </div>
@@ -253,7 +253,7 @@
                                 <div class="flex-align-center gap-1">
                                     <img class="icon img-fluid" src="{{asset('assets/images/svg/location-fill.svg')}}"
                                          alt="location">
-                                    <h6 class="fw-normal title-color">{{ $userriderequest->distance }}</h6>
+                                    <h6 class="fw-normal title-color">{{ $userriderequest->distance }} km</h6>
                                 </div>
                                 <h6 class="fw-normal title-color">{{ $userriderequest->departure_date }}</h6>
                             </div>
@@ -266,12 +266,19 @@
                                     </div>
                                 </li>
 
-                                <li class="border-0 shadow-none box-background">
-                                    <div class="location-box bg-transparent">
-                                        <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                                        <h5 class="fw-light title-color border-0">{{ $userriderequest->destination_location }}</h5>
-                                    </div>
-                                </li>
+                                @php
+                                    $locations = json_decode($userriderequest->destination_location, true); // returns array
+                                @endphp
+
+                                @foreach($locations as $location)
+                                    <li class="border-0 shadow-none box-background">
+                                        <div class="location-box bg-transparent">
+                                            <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
+                                            <h5 class="fw-light title-color border-0">{{ $location }}</h5>
+                                        </div>
+                                    </li>
+                                @endforeach
+
                             </ul>
                         </div>
                     </div>
@@ -312,6 +319,23 @@
                 success: function(response) {
                     console.log(response);
                     if (response && response.length) {
+                        let destinations = [];
+                        try {
+                            destinations = JSON.parse(item.destination_location); // Decode JSON string
+                        } catch (e) {
+                            destinations = [item.destination_location]; // Fallback if it's not JSON
+                        }
+                        let destinationHtml = '';
+                        destinations.forEach(dest => {
+                            destinationHtml += `
+                <li class="border-0 shadow-none box-background">
+                    <div class="location-box bg-transparent">
+                        <img class="icon" src="/assets/images/svg/gps.svg" alt="gps">
+                        <h5 class="fw-light title-color border-0">${dest}</h5>
+                    </div>
+                </li>`;
+                        });
+
                         let html = '';
                         response.forEach(item => {
                             let profileImg = item.user.profile
@@ -346,7 +370,7 @@
                                     <div class="ride-info">
                                         <div class="flex-align-center gap-1">
                                             <img class="icon img-fluid" src="/assets/images/svg/location-fill.svg" alt="location">
-                                            <h6 class="fw-normal title-color">${item.distance}</h6>
+                                            <h6 class="fw-normal title-color">${item.distance} km</h6>
                                         </div>
                                         <h6 class="fw-normal title-color">${item.departure_date}</h6>
                                     </div>
@@ -358,12 +382,7 @@
                                             </div>
                                         </li>
 
-                                        <li class="border-0 shadow-none box-background">
-                                            <div class="location-box bg-transparent">
-                                                <img class="icon" src="/assets/images/svg/gps.svg" alt="gps">
-                                                <h5 class="fw-light title-color border-0">${item.destination_location}</h5>
-                                            </div>
-                                        </li>
+                                            ${destinationHtml}
                                     </ul>
                                 </div>
                             </div>

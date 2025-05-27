@@ -89,7 +89,7 @@
                         <div class="payment-method-part">
                             <div class="d-flex align-content-center justify-content-between mt-2 mt-sm-3">
                                 <h6 class="title-color fw-normal">Payment method : {{ $ride_detail->payment_method }}</h6>
-                                <h4 class="success-color fw-semibold">${{ $ride_detail->fare }}</h4>
+                                <h4 class="success-color fw-semibold">{{ $ride_detail->fare_currency }} {{ $ride_detail->fare }}</h4>
                             </div>
                             <p class="mt-1 fw-normal content-color">The total of $24 has a GST of $2 included.</p>
                         </div>
@@ -120,13 +120,17 @@
                         <h5 class="fw-light title-color">{{ $ride_detail->pickup_location }}</h5>
                     </div>
                 </li>
-
+                @php
+                    $locations = json_decode($ride_detail->destination_location, true); // returns array
+                @endphp
+                @foreach($locations as $location)
                 <li>
                     <div class="location-box">
                         <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
-                        <h5 class="fw-light title-color border-0">{{ $ride_detail->destination_location }}</h5>
+                        <h5 class="fw-light title-color border-0">{{ $location }}</h5>
                     </div>
                 </li>
+                @endforeach
             </ul>
 
             @if($ride_detail->status == 'cancelled')

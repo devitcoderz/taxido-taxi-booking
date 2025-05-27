@@ -197,7 +197,7 @@
                                         <img class="img-fluid profile-img" src="${item.driver?.profile ? '/storage/' + item.driver.profile : '/assets/images/profile/p8.png'}" alt="profile">
                                         <h5>${item.driver?.vehicle_type}</h5>
                                     </div>
-                                    <h4 class="fw-medium success-color">$${item.requested_fare}</h4>
+                                    <h4 class="fw-medium success-color">${item.fare_currency} ${item.requested_fare}</h4>
                                 </div>
                                 <div class="flex-spacing mt-2">
                                     <h5 class="fw-normal title-color">${item.driver?.name ?? 'Unknown Driver'}</h5>
