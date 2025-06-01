@@ -66,16 +66,16 @@
                     <div class="form-group mt-3">
                         <label class="form-label mb-2" for="type_of_package">Select Type of Package</label>
                         <select class="form-control white-background" id="type_of_package" name="type_of_package">
-                            <option value="Standard_parcels">Standard parcels: - Small packages (less than 5 kg) - Cardboard boxes and cartons (medium size, 5–20 kg) - Large parcels (furniture, household appliances, etc.)</option>
-                            <option value="Food_and_perishable_parcels">Food and perishable parcels* - Grocery shopping (supermarket deliveries) - Prepared meals (restaurant deliveries) - Fresh produce (meat, fish, vegetables) - Frozen products</option>
-                            <option value="Sensitive_and_fragile_parcels">Sensitive and fragile parcels* - Glass items (dishes, glassware) - Electronics (phones, computers) - Works of art and decorative objects - Musical instruments</option>
-                            <option value="Valuable_parcels">Valuable parcels* - Parcels with special tracking (jewelry, important documents) - Luxury deliveries (watches, high-end clothing) - Insured parcels</option>
-                            <option value="Medical_and_pharmaceutical_parcels">Medical and pharmaceutical parcels* - Medicines and prescriptions - Medical equipment - Laboratory products</option>
-                            <option value="Dangerous_parcels_or_regulated">Dangerous parcels or regulated* - Chemical products (with specific labeling) - Lithium batteries (electronic devices) - Flammable materials (transport restrictions)</option>
-                            <option value="Large_and_bulky_parcels">Large and bulky parcels* - Furniture (sofas, tables, wardrobes) - Household appliances (refrigerators, washing machines) - Bicycles and sports equipment</option>
-                            <option value="Live_animal_parcels">Live animal parcels* - Pets (dogs, cats, birds) – under conditions - Delivery of fish or reptiles (specialized)</option>
-                            <option value="Express_and_urgent_parcels">Express and urgent parcels* - Urgent documents (contracts, legal files) - Spare parts for repairs - Last minute orders</option>
-                            <option value="International_parcels">International parcels* - Postal shipments abroad - Customs and international freight</option>
+                            <option>Please select package category</option>
+                            @foreach(\App\Models\ParcelCategory::all() as $parcel_category)
+                                <option value="{{ $parcel_category->id }}">{{ $parcel_category->title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label class="form-label mb-2" for="sub_type_of_package">Select Type of Package</label>
+                        <select class="form-control white-background" id="sub_type_of_package" name="sub_type_of_package">
+                            <option>Please select package sub category</option>
                         </select>
                     </div>
                     <div class="form-group mt-3">
@@ -191,6 +191,32 @@
                 enableTime: true,
                 dateFormat: "Y-m-d H:i",
                 minDate: "today"  // Optional: disables past dates
+            });
+            $('#type_of_package').on('change', function (){
+
+                $.ajax({
+                    url: `/user/get-package-sub_categories?category_id=` + $(this).val(),
+                    method: 'GET',
+                    success: function(response) {
+                        console.log(response.category);
+
+                        if (response && response.category && response.category.sub_category.length) {
+                            let html = '<option value="">Please select package sub category</option>';
+
+                            response.category.sub_category.forEach(item => {
+                                html += `<option value="${item.id}">${item.title}</option>`;
+                            });
+
+                            $('#sub_type_of_package').html(html);
+                        } else {
+                            $('#sub_type_of_package').html('<option value="">No Sub Category available</option>');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error("Error fetching sub categories:", xhr.responseText);
+                    }
+                });
+
             });
         })
     </script>

@@ -30,6 +30,10 @@ class RidesbookedController extends Controller
     {
         $userriderequest = Userriderequest::find($userriderequest_id);
 
+        if ($userriderequest->status == 'accepted') {
+//            return redirect()->route('driver.home')->with(['success' => 'Ride booked by another driver']);
+        }
+
         $verificationCode = rand(10000, 99999);
         $message = "Your verification code is: $verificationCode";
 
@@ -95,6 +99,10 @@ class RidesbookedController extends Controller
 
                 $userriderequest = Userriderequest::find($request->userriderequest_id);
 
+                if ($userriderequest->status == 'accepted') {
+                    return redirect()->route('driver.home')->with('success', 'Ride accepted by another driver');
+                }
+
                 $ridesbooked = new Ridesbooked();
                 $ridesbooked->user_id = $userriderequest->user_id;
                 $ridesbooked->driver_id = Auth::guard('driver')->id();
@@ -106,6 +114,7 @@ class RidesbookedController extends Controller
                 $ridesbooked->departure_date      = $userriderequest->departure_date; // assuming current time as departure
                 $ridesbooked->distance            = $userriderequest->distance ?? 0;
                 $ridesbooked->type_of_package   = $userriderequest->type_of_package;
+                $ridesbooked->sub_type_of_package   = $userriderequest->sub_type_of_package;
                 $ridesbooked->length_of_package   = $userriderequest->length_of_package;
                 $ridesbooked->width_of_package    = $userriderequest->width_of_package;
                 $ridesbooked->weight_of_package    = $userriderequest->weight_of_package;

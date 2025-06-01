@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Driver;
+use App\Models\ParcelCategory;
 use App\Models\Ridesbooked;
 use App\Models\User;
 use App\Models\Userriderequest;
@@ -92,5 +93,11 @@ class RideController extends Controller
             'ride_detail' => $ride_detail,
             'status' => 'completed'
         ]);
+    }
+
+    public function sub_categories(Request $request)
+    {
+        $category = ParcelCategory::with('sub_category')->find($request->category_id);
+        return response()->json(['category' => $category]);
     }
 }

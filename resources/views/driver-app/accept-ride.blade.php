@@ -105,4 +105,38 @@
     <!-- iconsax js -->
     <script src="{{asset('assets/js/quantity.js')}}"></script>
 
+
+    <script>
+        $(document).ready(function (){
+            setInterval(() => {
+                console.log("Timeout triggered");  // Debug
+                getDriverRideRequestStatus();
+            }, 5000);
+
+            let pathSegments = window.location.pathname.split('/');
+            var rideId = pathSegments[pathSegments.length - 1]; // Gets the last segment
+
+            function getDriverRideRequestStatus() {
+                let pathSegments = window.location.pathname.split('/');
+                var rideId = pathSegments[pathSegments.length - 1]; // Gets the last segment
+                $.ajax({
+                    url: `/user/get-driver-ride-request-status/` + rideId,
+                    method: 'GET',
+                    success: function(response) {
+                        console.log('AJAX response:', response); // Inspect this
+                        if (response.status == 'accepted') {
+                            toastr.success(response.message);
+                            setTimeout(() => {
+                                window.location.href = '/driver/home';
+                            }, 2000);
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error("Error fetching fare requests:", xhr.responseText);
+                    }
+                });
+            }
+        })
+    </script>
+
 @endsection

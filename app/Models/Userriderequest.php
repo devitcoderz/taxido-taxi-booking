@@ -25,6 +25,7 @@ class Userriderequest extends Model
 //        'transport_time',
 //        'travel_company',
         'type_of_package',
+        'sub_type_of_package',
         'length_of_package',
         'width_of_package',
 //        'volume_of_package',

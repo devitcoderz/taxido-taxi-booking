@@ -23,6 +23,9 @@ class DriverfarerequestController extends Controller
 
     public function accept_ride($id){
         $userriderrequest = Userriderequest::findorfail($id);
+        if ($userriderrequest->status == 'accepted') {
+            return redirect()->route('driver.home')->with('success', 'Ride accepted by another driver');
+        }
         return view('driver-app.accept-ride',['userriderequest'=>$userriderrequest]);
     }
     public function request_fare(Request $request)
@@ -45,5 +48,13 @@ class DriverfarerequestController extends Controller
         $driverfarerequest->status = 'waiting'; // Optional: set explicitly if required
         $driverfarerequest->save();
         return redirect()->back()->with(['success' => 'Driver Requested the Fare Successfully']);
+    }
+
+    public function get_driver_ride_request_status($id)
+    {
+        $driver_fare_request = Driverfarerequest::where('userriderequest_id',$id)->first();
+        if ($driver_fare_request && $driver_fare_request->status === 'accepted') {
+            return response()->json(['status' => $driver_fare_request->status,'message' => 'Ride has been booked.']);
+        }
     }
 }
