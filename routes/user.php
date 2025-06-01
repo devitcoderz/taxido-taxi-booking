@@ -14,8 +14,6 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
             return view('user-app.home');
         });
 
-        Route::get('/get-user-ride-request', [\App\Http\Controllers\User\RideController::class, 'get_user_ride_request'])->name('get_user_ride_request');
-
         Route::get('/accept-ride-details', [\App\Http\Controllers\User\RidesbookedController::class, 'accept_ride_details'])->name('accept_ride_details');
 
         Route::get('/bank-details', function (){
@@ -66,6 +64,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
         ->name('ride.complete')
         ->middleware('signed');
 
+
     Route::get('/login-with-number', function (){
         return view('user-app.login-with-number');
     });
@@ -84,6 +83,8 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
     Route::post('/update-password', [AuthController::class, 'update_password'])->name('update_password');
 
     Route::get('/verification',[ \App\Http\Controllers\User\AuthController::class, 'verification'])->name('verification');
+    Route::get('/get-driver-ride-request-status/{id}',[ \App\Http\Controllers\Driver\DriverfarerequestController::class, 'get_driver_ride_request_status'])->name('get_driver_ride_request_status');
+    Route::get('/get-package-sub_categories',[ \App\Http\Controllers\User\RideController::class, 'sub_categories'])->name('sub_categories');
 
     Route::get('/add-new-location', function (){
         return view('user-app.add-new-location');
@@ -98,6 +99,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
     });
 
     Route::get('ride-details',[\App\Http\Controllers\User\RideController::class,'ride_details'])->name('ride_details');
+    Route::get('/get-user-ride-request', [\App\Http\Controllers\User\RideController::class, 'get_user_ride_request'])->name('get_user_ride_request');
 
     Route::get('/coupon', function (){
         return view('user-app.coupon');

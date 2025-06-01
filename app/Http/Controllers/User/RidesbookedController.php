@@ -36,6 +36,7 @@ class RidesbookedController extends Controller
 //        $ridesbooked->transport_time_unit = $userriderequest->transport_time_unit;
         $ridesbooked->distance            = $userriderequest->distance ?? 0;
         $ridesbooked->type_of_package   = $userriderequest->type_of_package;
+        $ridesbooked->sub_type_of_package   = $userriderequest->sub_type_of_package;
         $ridesbooked->length_of_package   = $userriderequest->length_of_package;
         $ridesbooked->width_of_package    = $userriderequest->width_of_package;
         $ridesbooked->weight_of_package    = $userriderequest->weight_of_package;

@@ -26,6 +26,8 @@ class UserriderequestController extends Controller
             'destination_location.*' => 'required|string|max:255', // validate each item
             'length_of_package'    => 'required|min:1',
             'width_of_package'     => 'required|min:1',
+            'type_of_package'     => 'required',
+            'sub_type_of_package'     => 'required',
 //            'volume_of_package'    => 'required|numeric|min:1',
             'quantity_of_package'  => 'required|min:1',
             'fare'                 => 'required|min:1',
@@ -48,6 +50,7 @@ class UserriderequestController extends Controller
         $userriderequest->departure_date      = $request->departure_date; // assuming current time as departure
         $userriderequest->distance            = $request->distance ?? 0;
         $userriderequest->type_of_package   = $request->type_of_package;
+        $userriderequest->sub_type_of_package   = $request->sub_type_of_package;
         $userriderequest->length_of_package   = $request->length_of_package;
         $userriderequest->width_of_package    = $request->width_of_package;
         $userriderequest->weight_of_package    = $request->weight_of_package;
