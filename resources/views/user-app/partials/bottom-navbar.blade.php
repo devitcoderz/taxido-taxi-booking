@@ -30,6 +30,16 @@
             </a>
         </li>
 
+        <li class="{{ request()->url() == url('/user/track-ride') ? 'active' : '' }}">
+            <a href="{{url('user/track-ride')}}">
+                <div class="icon">
+                    <img class="unactive" src="{{asset('assets/images/svg/car.svg')}}" alt="car">
+                    <img class="active" src="{{asset('assets/images/svg/car-fill.svg')}}" alt="car">
+                </div>
+                <span>Track Ride</span>
+            </a>
+        </li>
+
         <li class="{{ request()->url() == url('/user/setting') ? 'active' : '' }}">
             <a href="{{url('user/setting')}}">
                 <div class="icon">

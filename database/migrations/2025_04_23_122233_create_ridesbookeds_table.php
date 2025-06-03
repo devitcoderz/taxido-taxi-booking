@@ -38,6 +38,8 @@ return new class extends Migration
             $table->string('quantity_of_package');
             $table->string('comments')->nullable();
             $table->string('status')->default('pending');
+            $table->string('driver_lat')->nullable();
+            $table->string('driver_lng')->nullable();
             $table->timestamps();
         });
     }

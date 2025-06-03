@@ -39,6 +39,26 @@ class RideController extends Controller
         return view('driver-app.active-ride', compact('active_rides'));
     }
 
+    public function track_ride()
+    {
+        $track_ride = Ridesbooked::where('driver_id', Auth::guard('driver')->id())
+            ->where('status', 'active')
+            ->where('departure_date', '>=', Carbon::now())
+            ->with('driver', 'user')
+            ->first();
+        return view('driver-app.track-ride', compact('track_ride'));
+    }
+
+    public function driver_location_update(Request $request)
+    {
+        $ride = Ridesbooked::find($request->ride_id);
+        if ($ride && $ride->status === 'active') {
+            $ride->driver_lat = $request->lat;
+            $ride->driver_lng = $request->lng;
+            $ride->save();
+        }
+    }
+
     public function ride_details(Request $request)
     {
         $ride_detail = Ridesbooked::where('id', $request->ride_id)

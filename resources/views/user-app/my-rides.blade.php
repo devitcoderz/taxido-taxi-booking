@@ -56,7 +56,7 @@
                                                 <span class="status accent-color fw-normal">{{ $active_ride->status }}</span>
                                             </div>
                                             <div class="flex-spacing  mt-2">
-                                                <h6 class="fw-mediun success-color">{{ $pending_ride->fare_currency}} {{ $active_ride->fare }}</h6>
+                                                <h6 class="fw-mediun success-color">{{ $active_ride->fare_currency}} {{ $active_ride->fare }}</h6>
                                                 <h6 class="fw-normal content-color">{{ $active_ride->departure_date }}</h6>
                                             </div>
                                         </div>

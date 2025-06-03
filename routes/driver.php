@@ -51,6 +51,8 @@ Route::group(['prefix' => 'driver', 'as' => 'driver.'], function (){
     });
 
     Route::get('active-ride',[\App\Http\Controllers\Driver\RideController::class,'active_rides'])->name('active_rides');
+    Route::get('track-ride',[\App\Http\Controllers\Driver\RideController::class,'track_ride'])->name('track_ride');
+    Route::post('driver-location-update',[\App\Http\Controllers\Driver\RideController::class,'driver_location_update'])->name('driver-location-update');
 
     Route::get('/app-setting', function (){
         return view('driver-app.app-setting');

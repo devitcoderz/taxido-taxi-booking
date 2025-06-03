@@ -39,4 +39,14 @@ class Userriderequest extends Model
     public function user(){
         return $this->belongsTo(User::class,'user_id','id');
     }
+
+    public function packagetype()
+    {
+        return$this->belongsTo(ParcelCategory::class,'type_of_package','id');
+    }
+
+    public function packagesubtype()
+    {
+        return$this->belongsTo(ParcelSubCategory::class,'sub_type_of_package','id');
+    }
 }

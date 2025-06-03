@@ -41,7 +41,7 @@
                                         <a href="{{url('driver/accept-ride-confirmed')}}">
                                             <h6 class="title-color fw-medium">{{ $active_ride->user->name }}</h6>
                                         </a>
-                                        <h5 class="fw-mediun success-color">{{ $pending_ride->fare_currency}} {{ $active_ride->fare }}</h5>
+                                        <h5 class="fw-mediun success-color">{{ $active_ride->fare_currency}} {{ $active_ride->fare }}</h5>
                                     </div>
                                     <div class="flex-align-center gap-3">
                                         <div class="flex-align-center gap-1">
