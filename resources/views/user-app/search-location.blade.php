@@ -298,7 +298,8 @@
                         const distanceInKm = (totalDistance / 1000).toFixed(2);
                         console.log(`Total Driving Distance: ${distanceInKm} km`);
                         document.getElementById("distance").value = `${distanceInKm}`;
-                    } else {
+                    }
+                    else {
                         console.error('Directions request failed due to ', status);
                     }
                 });

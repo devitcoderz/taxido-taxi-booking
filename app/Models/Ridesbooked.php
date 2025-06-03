@@ -33,6 +33,8 @@ class Ridesbooked extends Model
         'quantity_of_package',
         'comments',
         'status',
+        'driver_lat',
+        'driver_lng',
     ];
 
     public function user(){

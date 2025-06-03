@@ -139,6 +139,8 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
     });
 
     Route::get('my-rides',[\App\Http\Controllers\User\RideController::class, 'my_rides'])->name('my_rides');
+    Route::get('track-ride',[\App\Http\Controllers\User\RideController::class, 'track_ride'])->name('track_ride');
+    Route::get('get-driver-location',[\App\Http\Controllers\User\RideController::class,'get_driver_location'])->name('get_driver_location');
 
     Route::get('/notification', function (){
         return view('user-app.notification');

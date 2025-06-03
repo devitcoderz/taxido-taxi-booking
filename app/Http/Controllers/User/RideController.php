@@ -41,6 +41,30 @@ class RideController extends Controller
         return view('user-app.my-rides', compact('pending_rides', 'completed_rides', 'cancelled_rides', 'active_rides'));
     }
 
+    public function track_ride()
+    {
+        $track_ride = Ridesbooked::where('user_id', Auth::guard('user')->id())
+            ->where('status', 'active')
+//            ->where('departure_date', '>=', Carbon::now())
+            ->with('driver', 'user')
+            ->first();
+        return view('user-app.track-ride', compact('track_ride'));
+    }
+
+    public function get_driver_location(Request $request)
+    {
+        $ride = Ridesbooked::find($request->ride_id);
+
+        if (!$ride || !$ride->driver_lat || !$ride->driver_lng) {
+            return response()->json(['lat' => null, 'lng' => null]);
+        }
+
+        return response()->json([
+            'lat' => $ride->driver_lat,
+            'lng' => $ride->driver_lng
+        ]);
+    }
+
     public function ride_details(Request $request)
     {
         $ride_details = Ridesbooked::where('id', $request->ride_id)
@@ -51,7 +75,7 @@ class RideController extends Controller
 
     public function get_user_ride_request()
     {
-        $driverFareRequests = Userriderequest::with('user') // if you have these relationships
+        $driverFareRequests = Userriderequest::with('user','packagetype','packagesubtype') // if you have these relationships
         ->where('status', 'waiting')
 //            ->where('expiry', '>', Carbon::now())
             ->orderBy('id', 'desc')

@@ -257,6 +257,15 @@
                                 </div>
                                 <h6 class="fw-normal title-color">{{ $userriderequest->departure_date }}</h6>
                             </div>
+                            <div class="d-flex flex-column">
+                                <p>Type of Package :- {{ $userriderequest->packagetype->title }}</p>
+                                <p>Sub Type of Package :- {{ $userriderequest->packagesubtype->title }}</p>
+                                <p>Length of Package :- {{ $userriderequest->length_of_package }}</p>
+                                <p>Width of Package :- {{ $userriderequest->width_of_package }}</p>
+                                <p>Weight of Package :- {{ $userriderequest->weight_of_package }}</p>
+                                <p>Quantity of Package :- {{ $userriderequest->quantity_of_package }}</p>
+                                <p>Comments :- {{ $userriderequest->comments }}</p>
+                            </div>
                             <ul class="ride-location-listing">
                                 <li class="border-0 shadow-none box-background">
                                     <div class="location-box bg-transparent">
@@ -377,6 +386,15 @@
                                             <h6 class="fw-normal title-color">${ride.distance} km</h6>
                                         </div>
                                         <h6 class="fw-normal title-color">${ride.departure_date}</h6>
+                                    </div>
+                                    <div class="d-flex flex-column">
+                                        <p>Type of Package :- ${ride.packagetype.title}</p>
+                                        <p>Sub Type of Package :- ${ride.packagesubtype.title}</p>
+                                        <p>Length of Package :- ${ride.length_of_package}</p>
+                                        <p>Width of Package :- ${ride.width_of_package}</p>
+                                        <p>Weight of Package :- ${ride.weight_of_package}</p>
+                                        <p>Quantity of Package :- ${ride.quantity_of_package}</p>
+                                        <p>Comments :- ${ride.comments}</p>
                                     </div>
                                     <ul class="ride-location-listing">
                                         <li class="border-0 shadow-none box-background">

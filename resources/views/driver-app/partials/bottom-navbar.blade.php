@@ -1,3 +1,4 @@
+@php use App\Models\Ridesbooked;use Illuminate\Support\Carbon;use Illuminate\Support\Facades\Auth; @endphp
 <div class="navbar-menu">
     <ul>
         <li class="{{ request()->url() == url('/driver/home') ? 'active' : '' }}">
@@ -19,7 +20,15 @@
                 <span class="active">Active Ride</span>
             </a>
         </li>
-
+        <li class="{{ request()->url() == url('/driver/track-ride') ? 'active' : '' }}">
+                <a href="{{url('driver/track-ride')}}">
+                    <div class="icon">
+                        <img class="unactive" src="{{asset('assets/images/svg/driving.svg')}}" alt="driving">
+                        <img class="active" src="{{asset('assets/images/svg/driving-fill.svg')}}" alt="driving">
+                    </div>
+                    <span class="active">Track Ride</span>
+                </a>
+        </li>
         <li class="{{ request()->url() == url('/driver/my-rides') ? 'active' : '' }}">
             <a href="{{url('driver/my-rides')}}">
                 <div class="icon">
