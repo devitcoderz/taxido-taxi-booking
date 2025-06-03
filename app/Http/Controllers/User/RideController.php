@@ -53,15 +53,19 @@ class RideController extends Controller
 
     public function get_driver_location(Request $request)
     {
-        $ride = Ridesbooked::find($request->ride_id);
+        $track_ride = Ridesbooked::where('user_id', Auth::guard('user')->id())
+            ->where('status', 'active')
+//            ->where('departure_date', '>=', Carbon::now())
+            ->with('driver', 'user')
+            ->first();
 
-        if (!$ride || !$ride->driver_lat || !$ride->driver_lng) {
+        if (!$track_ride || !$track_ride->driver_lat || !$track_ride->driver_lng) {
             return response()->json(['lat' => null, 'lng' => null]);
         }
 
         return response()->json([
-            'lat' => $ride->driver_lat,
-            'lng' => $ride->driver_lng
+            'lat' => $track_ride->driver_lat,
+            'lng' => $track_ride->driver_lng
         ]);
     }
 
