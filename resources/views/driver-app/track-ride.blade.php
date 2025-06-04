@@ -125,14 +125,11 @@
             });
         }
 
-        let lastSpokenStep = -1;
-
         function startTracking() {
             if (!navigator.geolocation) return alert("Geolocation not supported.");
 
             @if($track_ride)
             navigator.geolocation.watchPosition(position => {
-                console.log('Geolocation update:', position.coords.latitude, position.coords.longitude);
                 const userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
                 if (currentStep >= allSteps.length) return;
@@ -140,13 +137,10 @@
                 const step = allSteps[currentStep];
                 const end = step.end_location;
                 const distance = google.maps.geometry.spherical.computeDistanceBetween(userLatLng, end);
-                console.log(`Current step: ${currentStep}, Distance to step end: ${distance}`);
 
-                if (distance < 80 && currentStep !== lastSpokenStep) {
-                    console.log('Speaking instruction:', step.instructions);
+                if (distance < 80) {
                     showInstruction(step.instructions);
                     speak(step.instructions);
-                    lastSpokenStep = currentStep;
                     currentStep++;
                 }
             }, error => {
@@ -161,9 +155,6 @@
 
         function speak(text) {
             const cleanedText = text.replace(/<[^>]+>/g, '');
-            if (speechSynthesis.speaking) {
-                speechSynthesis.cancel(); // cancel current speech to avoid overlap
-            }
             const utterance = new SpeechSynthesisUtterance(cleanedText);
             utterance.lang = 'en-US';
             speechSynthesis.speak(utterance);
@@ -177,11 +168,6 @@
                 $('#instruction-alert').fadeOut();
             }, 8000);
         }
-
-        $(document).one('click', () => {
-            // User interacted, speech should work now
-            console.log("User interaction detected, speech allowed.");
-        });
     </script>
 
     <!-- PWA: Manifest + Service Worker -->
