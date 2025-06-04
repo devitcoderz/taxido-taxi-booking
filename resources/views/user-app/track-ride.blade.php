@@ -5,6 +5,11 @@
 @endsection
 
 @section('style')
+    <style>
+        #map { height: 70vh; width: 100%; }
+        .controls { margin: 10px; }
+        .controls input { margin: 5px 0; width: 100%; padding: 8px; font-size: 14px; }
+    </style>
 
 @endsection
 
