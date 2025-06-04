@@ -44,7 +44,10 @@
     @section('script')
 
         <script>
-            let map, marker;
+            let map, marker, directionsService, directionsRenderer;
+
+            const pickupLocation = {!! json_encode($pickup_location ?? '') !!};
+            const destinationArray = {!! json_encode(json_decode($destination_location ?? '[]')) !!};
 
             function initMap() {
                 fetch('{{ url('user/get-driver-location') }}')
@@ -63,24 +66,49 @@
                             icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
                         });
 
+                        drawRoute();
                         pollDriverLocation();
                     });
             }
 
+            function drawRoute() {
+                directionsService = new google.maps.DirectionsService();
+                directionsRenderer = new google.maps.DirectionsRenderer({ map: map });
+
+                const origin = pickupLocation;
+                const destination = destinationArray[destinationArray.length - 1];
+                const waypoints = destinationArray.slice(0, -1).map(loc => ({
+                    location: loc,
+                    stopover: true
+                }));
+
+                directionsService.route({
+                    origin,
+                    destination,
+                    waypoints,
+                    travelMode: google.maps.TravelMode.DRIVING
+                }, (result, status) => {
+                    if (status === "OK") {
+                        directionsRenderer.setDirections(result);
+                    } else {
+                        alert("Could not draw route: " + status);
+                    }
+                });
+            }
+
             function pollDriverLocation() {
                 setInterval(() => {
-                    var url = '{{ url('user/get-driver-location') }}'
-                    fetch(url)
+                    fetch('{{ url('user/get-driver-location') }}')
                         .then(res => res.json())
                         .then(data => {
-                            console.log("Driver Location:", data); // ← Add this
+                            console.log("Driver Location:", data);
                             if (data.lat && data.lng) {
                                 const latLng = new google.maps.LatLng(data.lat, data.lng);
                                 marker.setPosition(latLng);
                                 map.panTo(latLng);
                             }
                         });
-                }, 5000); // Poll every 5 seconds
+                }, 5000);
             }
 
             window.initMap = initMap;
