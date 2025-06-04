@@ -48,7 +48,10 @@ class RideController extends Controller
 //            ->where('departure_date', '>=', Carbon::now())
             ->with('driver', 'user')
             ->first();
-        return view('user-app.track-ride', compact('track_ride'));
+        return view('user-app.track-ride', [
+            'pickup_location' => $track_ride->pickup_location,
+            'destination_location' => $track_ride->destination_location
+        ]);
     }
 
     public function get_driver_location(Request $request)
