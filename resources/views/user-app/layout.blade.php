@@ -42,7 +42,7 @@
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register("{{ asset('sw.js') }}");
+            navigator.serviceWorker.register("{{ asset('public/sw.js') }}");
         }
     </script>
 </head>
