@@ -47,17 +47,24 @@
             let map, marker;
 
             function initMap() {
-                map = new google.maps.Map(document.getElementById("map"), {
-                    zoom: 14,
-                    center: { lat: 30.1575, lng: 71.5249 }
-                });
+                fetch('{{ url('user/get-driver-location') }}')
+                    .then(res => res.json())
+                    .then(data => {
+                        const latLng = new google.maps.LatLng(data.lat, data.lng);
 
-                marker = new google.maps.Marker({
-                    map: map,
-                    icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-                });
+                        map = new google.maps.Map(document.getElementById("map"), {
+                            zoom: 14,
+                            center: latLng
+                        });
 
-                pollDriverLocation();
+                        marker = new google.maps.Marker({
+                            map: map,
+                            position: latLng,
+                            icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                        });
+
+                        pollDriverLocation();
+                    });
             }
 
             function pollDriverLocation() {
@@ -66,9 +73,12 @@
                     fetch(url)
                         .then(res => res.json())
                         .then(data => {
-                            const latLng = new google.maps.LatLng(data.lat, data.lng);
-                            marker.setPosition(latLng);
-                            map.panTo(latLng);
+                            console.log("Driver Location:", data); // ← Add this
+                            if (data.lat && data.lng) {
+                                const latLng = new google.maps.LatLng(data.lat, data.lng);
+                                marker.setPosition(latLng);
+                                map.panTo(latLng);
+                            }
                         });
                 }, 5000); // Poll every 5 seconds
             }
