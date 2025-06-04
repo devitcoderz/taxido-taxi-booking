@@ -128,6 +128,7 @@
 
             @if($track_ride)
             navigator.geolocation.watchPosition(position => {
+                console.log('Geolocation update:', position.coords.latitude, position.coords.longitude);
                 const userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
                 if (currentStep >= allSteps.length) return;
@@ -135,8 +136,10 @@
                 const step = allSteps[currentStep];
                 const end = step.end_location;
                 const distance = google.maps.geometry.spherical.computeDistanceBetween(userLatLng, end);
+                console.log(`Current step: ${currentStep}, Distance to step end: ${distance}`);
 
                 if (distance < 80) {
+                    console.log('Speaking instruction:', step.instructions);
                     speak(step.instructions);
                     currentStep++;
                 }
