@@ -41,8 +41,14 @@
     {{--@laravelPWA--}}
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <script>
+        {{--if ('serviceWorker' in navigator) {--}}
+        {{--    navigator.serviceWorker.register("{{ asset('public/sw.js') }}");--}}
+        {{--}--}}
+
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register("{{ asset('public/sw.js') }}");
+            navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                .then(() => console.log('✅ Service Worker registered globally'))
+                .catch(err => console.error('❌ Service Worker error:', err));
         }
     </script>
 </head>
