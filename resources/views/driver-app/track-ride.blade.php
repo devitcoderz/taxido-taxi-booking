@@ -135,7 +135,7 @@
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
 
-                var url = '{{ url('/driver-location-update') }}';
+                var url = '{{ url('driver/driver-location-update') }}';
 
                 console.log(url);
 

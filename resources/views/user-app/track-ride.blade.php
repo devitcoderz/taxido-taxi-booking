@@ -55,7 +55,8 @@
 
     function pollDriverLocation() {
         setInterval(() => {
-            fetch('/get-driver-location')
+            var url = '{{ url('user/get-driver-location') }}'
+            fetch(url)
                 .then(res => res.json())
                 .then(data => {
                     const latLng = new google.maps.LatLng(data.lat, data.lng);
