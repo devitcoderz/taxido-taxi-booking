@@ -14,7 +14,7 @@
     <!-- header end -->
 
     <!-- my ride section starts -->
-    <section class="section-b-space">
+    <section>
 
         <div class="custom-container" id="map">
 
