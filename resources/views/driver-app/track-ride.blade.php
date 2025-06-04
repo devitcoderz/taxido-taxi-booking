@@ -138,11 +138,11 @@
                 const distance = google.maps.geometry.spherical.computeDistanceBetween(userLatLng, end);
                 console.log(`Current step: ${currentStep}, Distance to step end: ${distance}`);
 
-                if (distance < 80) {
+                // if (distance < 80) {
                     console.log('Speaking instruction:', step.instructions);
                     speak(step.instructions);
                     currentStep++;
-                }
+                // }
             }, error => {
                 console.error("Geolocation error:", error);
             }, {
