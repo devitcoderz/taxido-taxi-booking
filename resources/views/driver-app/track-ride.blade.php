@@ -35,6 +35,8 @@
         <input id="destination" type="text" placeholder="Final destination" readonly>
     </div>
 
+    <div id="instruction-alert" class="alert alert-info" role="alert" style="display:none; position: fixed; top: 70px; width: 90%; max-width: 600px; left: 50%; transform: translateX(-50%); z-index: 1000;"></div>
+
     @if ($track_ride)
     <!-- track ride starts -->
     <section>
@@ -123,6 +125,8 @@
             });
         }
 
+        let lastSpokenStep = -1;
+
         function startTracking() {
             if (!navigator.geolocation) return alert("Geolocation not supported.");
 
@@ -138,11 +142,13 @@
                 const distance = google.maps.geometry.spherical.computeDistanceBetween(userLatLng, end);
                 console.log(`Current step: ${currentStep}, Distance to step end: ${distance}`);
 
-                // if (distance < 80) {
+                if (distance < 80 && currentStep !== lastSpokenStep) {
                     console.log('Speaking instruction:', step.instructions);
+                    showInstruction(step.instructions);
                     speak(step.instructions);
+                    lastSpokenStep = currentStep;
                     currentStep++;
-                // }
+                }
             }, error => {
                 console.error("Geolocation error:", error);
             }, {
@@ -155,10 +161,27 @@
 
         function speak(text) {
             const cleanedText = text.replace(/<[^>]+>/g, '');
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel(); // cancel current speech to avoid overlap
+            }
             const utterance = new SpeechSynthesisUtterance(cleanedText);
             utterance.lang = 'en-US';
             speechSynthesis.speak(utterance);
         }
+
+        function showInstruction(html) {
+            $('#instruction-alert').html(html).fadeIn();
+
+            // Hide after 8 seconds or when next instruction comes
+            setTimeout(() => {
+                $('#instruction-alert').fadeOut();
+            }, 8000);
+        }
+
+        $(document).one('click', () => {
+            // User interacted, speech should work now
+            console.log("User interaction detected, speech allowed.");
+        });
     </script>
 
     <!-- PWA: Manifest + Service Worker -->
