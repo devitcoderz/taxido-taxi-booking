@@ -31,7 +31,7 @@
     <!-- bottom navbar end -->
 
     <!-- sidebar starts -->
-    @include('user-app.partials.sidebar')
+    @include('user-app.partials.sidear')
     <!-- sidebar end -->
 
     @endsection
