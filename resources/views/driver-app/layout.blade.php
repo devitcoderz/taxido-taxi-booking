@@ -76,6 +76,30 @@
 @yield('script')
 
 <script>
+
+    navigator.geolocation.watchPosition(position => {
+
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
+        var url = '{{ url('driver/driver-location-update') }}';
+
+        $.post(url, {
+            lat, lng,
+            _token: '{{ csrf_token() }}'
+        });
+
+    }, error => {
+        console.error("Geolocation error:", error);
+    }, {
+        enableHighAccuracy: true,
+        maximumAge: 5000,
+        timeout: 10000
+    });
+
+</script>
+
+<script>
     @if(Session::has('success'))
     toastr.success("{{ Session::get('success') }}");
     @endif

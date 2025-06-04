@@ -132,19 +132,6 @@
 
                 if (currentStep >= allSteps.length) return;
 
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-
-                var url = '{{ url('driver/driver-location-update') }}';
-
-                console.log(url);
-
-                    $.post(url, {
-                        lat, lng,
-                        ride_id: {{ $track_ride->id }},
-                        _token: '{{ csrf_token() }}'
-                    });
-
                 const step = allSteps[currentStep];
                 const end = step.end_location;
                 const distance = google.maps.geometry.spherical.computeDistanceBetween(userLatLng, end);

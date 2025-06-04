@@ -51,7 +51,11 @@ class RideController extends Controller
 
     public function driver_location_update(Request $request)
     {
-        $ride = Ridesbooked::find($request->ride_id);
+        $ride = Ridesbooked::where('driver_id', Auth::guard('driver')->id())
+            ->where('status', 'active')
+            ->where('departure_date', '>=', Carbon::now())
+            ->with('driver', 'user')
+            ->first();
         if ($ride && $ride->status === 'active') {
             $ride->driver_lat = $request->lat;
             $ride->driver_lng = $request->lng;
