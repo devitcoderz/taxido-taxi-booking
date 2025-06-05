@@ -31,34 +31,78 @@ class RidesbookedController extends Controller
         $userriderequest = Userriderequest::find($userriderequest_id);
 
         if ($userriderequest->status == 'accepted') {
-//            return redirect()->route('driver.home')->with(['success' => 'Ride booked by another driver']);
+            return redirect()->route('driver.home')->with(['success' => 'Ride booked by another driver']);
+        }
+        $ridesbooked = Ridesbooked::where('userriderequest_id','=',$userriderequest_id)->first();
+        if ($ridesbooked) {
+            return redirect()->route('driver.home')->with(['success' => 'Ride booked by another driver']);
         }
 
-        $verificationCode = rand(10000, 99999);
-        $message = "Your verification code is: $verificationCode";
+//        $verificationCode = rand(10000, 99999);
+//        $message = "Your verification code is: $verificationCode";
+//
+//        $account_sid = env('TWILIO_SID_KEY');
+//        $auth_token = env('TWILIO_AUTH_TOKEN');
+//        $twilio_number =  env('TWILIO_NUMBER');
+//
+//                $client = new Client($account_sid, $auth_token);
+//                $client->messages->create(
+//                    '+'.Auth::guard('driver')->user()->phone,
+//                    array(
+//                        'from' => $twilio_number,
+//                        'body' => $message
+//                    )
+//                );
+//        session(['verification_code' => $verificationCode]);
+//
+//        $expiresAt = Carbon::now()->addMinutes(5);
+//        Otp::create([
+//            'user_id' => $userriderequest->user_id, // or however you're identifying the user
+//            'otp' => $verificationCode,
+//            'expires_at' => $expiresAt,
+//        ]);
 
-        $account_sid = env('TWILIO_SID_KEY');
-        $auth_token = env('TWILIO_AUTH_TOKEN');
-        $twilio_number =  env('TWILIO_NUMBER');
+        $ridesbooked = new Ridesbooked();
+        $ridesbooked->userriderequest_id = $userriderequest->id;
+        $ridesbooked->user_id = $userriderequest->user_id;
+        $ridesbooked->driver_id = Auth::guard('driver')->id();
+        $ridesbooked->receiver_name = $userriderequest->receiver_name;
+        $ridesbooked->receiver_email = $userriderequest->receiver_email;
+        $ridesbooked->receiver_phone = $userriderequest->receiver_phone;
+        $ridesbooked->pickup_location = $userriderequest->pickup_location;
+        $ridesbooked->destination_location = $userriderequest->destination_location;
+        $ridesbooked->departure_date      = $userriderequest->departure_date; // assuming current time as departure
+        $ridesbooked->distance            = $userriderequest->distance ?? 0;
+        $ridesbooked->type_of_package   = $userriderequest->type_of_package;
+        $ridesbooked->sub_type_of_package   = $userriderequest->sub_type_of_package;
+        $ridesbooked->length_of_package   = $userriderequest->length_of_package;
+        $ridesbooked->width_of_package    = $userriderequest->width_of_package;
+        $ridesbooked->weight_of_package    = $userriderequest->weight_of_package;
+//                $ridesbooked->volume_of_package   = $userriderequest->volume_of_package;
+        $ridesbooked->quantity_of_package = $userriderequest->quantity_of_package;
+        $ridesbooked->fare                = $userriderequest->fare;
+        $ridesbooked->fare_currency                = $userriderequest->fare_currency;
+//                $ridesbooked->travel_company      = $userriderequest->travel_company;
+//                $ridesbooked->comments            = $userriderequest->comments;
+        $ridesbooked->payment_method      = $userriderequest->payment_method;
+        $ridesbooked->expiry = $userriderequest->expiry;
+        $ridesbooked->status = 'pending';
+        $ridesbooked->save();
 
-                $client = new Client($account_sid, $auth_token);
-                $client->messages->create(
-                    '+'.Auth::guard('driver')->user()->phone,
-                    array(
-                        'from' => $twilio_number,
-                        'body' => $message
-                    )
-                );
-        session(['verification_code' => $verificationCode]);
+        $userriderequest->status = 'accepted';
+        $userriderequest->save();
 
-        $expiresAt = Carbon::now()->addMinutes(5);
-        Otp::create([
-            'user_id' => $userriderequest->user_id, // or however you're identifying the user
-            'otp' => $verificationCode,
-            'expires_at' => $expiresAt,
-        ]);
+        $user = User::find($ridesbooked->user_id);
+        if ($user && $user->email) {
+            try {
+                Mail::to($user->email)->send(new \App\Mail\RideBookedNotification($ridesbooked));
+            }
+            catch (\Exception $e) {
+                Log::info($e->getMessage());
+            }
+        }
 
-        return view('driver-app.ride-verification',['userriderequest' => $userriderequest]);
+        return redirect()->route('driver.home')->with(['success' => 'Ride booked Successfully']);
     }
 
     public function start_ride($ride_id)

@@ -130,6 +130,15 @@
                                 window.location.href = '/driver/home';
                             }, 2000);
                         }
+                        if (response.ride_status) {
+                            toastr.success('Ride booked by another driver');
+                            setTimeout(() => {
+                                window.location.href = '/driver/home';
+                            }, 2000);
+                        }
+                        if (response.status == 'rejected') {
+                            toastr.success('Your Fare request Rejected');
+                        }
                     },
                     error: function(xhr) {
                         console.error("Error fetching fare requests:", xhr.responseText);

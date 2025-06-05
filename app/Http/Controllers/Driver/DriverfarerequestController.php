@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Driver;
 
 use App\Http\Controllers\Controller;
 use App\Models\Driverfarerequest;
+use App\Models\Ridesbooked;
 use App\Models\Userriderequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -52,9 +53,16 @@ class DriverfarerequestController extends Controller
 
     public function get_driver_ride_request_status($id)
     {
-        $driver_fare_request = Driverfarerequest::where('userriderequest_id',$id)->first();
-        if ($driver_fare_request && $driver_fare_request->status === 'accepted') {
-            return response()->json(['status' => $driver_fare_request->status,'message' => 'Ride has been booked.']);
-        }
+        $driver_fare_request = Driverfarerequest::where('userriderequest_id',$id)
+            ->where('driver_id', Auth::guard('driver')->id())
+            ->orderBy('id','desc')
+            ->first();
+        $ride_status = Ridesbooked::where('userriderequest_id',$id)
+            ->first();
+        return response()->json([
+            'status' => $driver_fare_request ? $driver_fare_request->status : null,
+            'ride_status' => $ride_status ? $ride_status : null,
+            'message' => 'Ride has been booked.'
+        ]);
     }
 }
