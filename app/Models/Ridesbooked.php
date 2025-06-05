@@ -13,6 +13,7 @@ class Ridesbooked extends Model
         'fare',
         'fare_currency',
         'payment_method',
+        'userriderequest_id',
         'user_id',
         'receiver_name',
         'receiver_phone',

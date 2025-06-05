@@ -212,7 +212,7 @@
                                     <h6 class="fw-normal content-color">4 km</h6>
                                 </div>
                                 <div class="grid-btn mt-2">
-                                    <a href="#alert" data-bs-toggle="offcanvas" class="btn gray-btn w-100 m-0">Skip</a>
+                                    <a href="#" id="reject_request" data-deriver_id="${item.driver_id}" data-driverfarerequest_id="${item.id}" class="btn gray-btn w-100 m-0">Skip</a>
                                     <a href="/user/accept-ride-details?driverfarerequest_id=${item.id}&driver_id=${item.driver_id}" class="btn theme-btn w-100 m-0">Accept</a>
                                 </div>
                                 <div class="progress mt-2" role="progressbar">
@@ -233,6 +233,64 @@
                     }
                 });
             }
+
+            $(document).on('click', '#reject_request', function (e) {
+                e.preventDefault();
+                var driver_request_id = $(this).data('driverfarerequest_id');
+
+                $.ajax({
+                    url: `/user/reject-ride-details?driver_request_id=${driver_request_id}`,
+                    method: 'GET',
+                    success: function(response) {
+
+                        if (response && response.length) {
+                            let html = '';
+
+                            response.forEach(item => {
+                                html += `
+                        <li>
+                            <div class="driver-box">
+                                <div class="profile-head">
+                                    <div class="flex-align-center gap-2">
+                                        <img class="img-fluid profile-img" src="${item.driver?.profile ? '/storage/' + item.driver.profile : '/assets/images/profile/p8.png'}" alt="profile">
+                                        <h5>${item.driver?.vehicle_type}</h5>
+                                    </div>
+                                    <h4 class="fw-medium success-color">${item.userriderequest?.fare_currency} ${item.requested_fare}</h4>
+                                </div>
+                                <div class="flex-spacing mt-2">
+                                    <h5 class="fw-normal title-color">${item.driver?.name ?? 'Unknown Driver'}</h5>
+                                    <h6 class="fw-normal content-color">4 min</h6>
+                                </div>
+                                <div class="flex-spacing mt-2">
+                                    <div class="flex-align-center gap-1">
+                                        <img class="star" src="/assets/images/svg/star.svg" alt="star">
+                                        <h5 class="fw-normal title-color">4.8</h5>
+                                        <span class="content-color fw-normal">(127)</span>
+                                    </div>
+                                    <h6 class="fw-normal content-color">4 km</h6>
+                                </div>
+                                <div class="grid-btn mt-2">
+                                    <a href="#" id="reject_request" data-deriver_id="${item.driver_id}" data-driverfarerequest_id="${item.id}" class="btn gray-btn w-100 m-0">Skip</a>
+                                    <a href="/user/accept-ride-details?driverfarerequest_id=${item.id}&driver_id=${item.driver_id}" class="btn theme-btn w-100 m-0">Accept</a>
+                                </div>
+                                <div class="progress mt-2" role="progressbar">
+                                    <div class="progress-bar w-0"></div>
+                                </div>
+                            </div>
+                        </li>
+                    `;
+                            });
+
+                            $('#driverFareList').html(html);
+                        } else {
+                            $('#driverFareList').html('<li><p>No fare requests available.</p></li>');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error("Error fetching fare requests:", xhr.responseText);
+                    }
+                });
+            })
 
         </script>
 

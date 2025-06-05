@@ -87,6 +87,7 @@ class UserriderequestController extends Controller
         $driverFareRequests = Driverfarerequest::with('driver', 'userriderequest') // if you have these relationships
         ->where('userriderequest_id', $request->input('userriderequest_id'))
 //            ->where('expiry', '>', Carbon::now())
+            ->where('status','!=','rejected')
             ->orderBy('id', 'desc')
             ->get();
         return response()->json($driverFareRequests);

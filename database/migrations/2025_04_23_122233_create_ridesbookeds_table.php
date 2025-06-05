@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('ridesbookeds', function (Blueprint $table) {
             $table->id();
+            $table->integer('userriderequest_id')->nullable();
             $table->string('user_id');
             $table->string('driver_id');
             $table->string('receiver_name');

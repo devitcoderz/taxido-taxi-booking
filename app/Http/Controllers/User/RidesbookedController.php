@@ -22,7 +22,14 @@ class RidesbookedController extends Controller
         $driverfarerequest = Driverfarerequest::where('id', $request->input('driverfarerequest_id'))->first();
         $userriderequest_id = $driverfarerequest->userriderequest_id;
         $userriderequest = Userriderequest::find($userriderequest_id);
+
+        $ridesbooked = Ridesbooked::where('userriderequest_id','=',$userriderequest_id)->first();
+        if ($ridesbooked) {
+            return redirect()->route('user.home')->with(['success' => 'Ride booked by a driver']);
+        }
+
         $ridesbooked = new Ridesbooked();
+        $ridesbooked->userriderequest_id = $userriderequest->id;
         $ridesbooked->user_id = $userriderequest->user_id;
         $ridesbooked->driver_id = $request->driver_id;
         $ridesbooked->receiver_name = $userriderequest->receiver_name;
@@ -68,6 +75,21 @@ class RidesbookedController extends Controller
         }
 
         return view('user-app.accept-ride-details',['ridesbooked' => $ridesbooked])->with(['success' => 'Ride booked successfully']);
+    }
+
+    public function reject_ride_details(Request $request)
+    {
+        $driverfarerequest = Driverfarerequest::where('id', $request->input('driver_request_id'))->first();
+        $driverfarerequest->status = 'rejected';
+        $driverfarerequest->save();
+
+        $driverFareRequests = Driverfarerequest::with('driver', 'userriderequest') // if you have these relationships
+        ->where('userriderequest_id', $request->input('userriderequest_id'))
+//            ->where('expiry', '>', Carbon::now())
+            ->orderBy('id', 'desc')
+            ->where('status','!=','rejected')
+            ->get();
+        return response()->json($driverFareRequests);
     }
 
     public function chat(Request $request)

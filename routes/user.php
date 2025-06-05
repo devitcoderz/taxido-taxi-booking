@@ -15,6 +15,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
         });
 
         Route::get('/accept-ride-details', [\App\Http\Controllers\User\RidesbookedController::class, 'accept_ride_details'])->name('accept_ride_details');
+        Route::get('/reject-ride-details', [\App\Http\Controllers\User\RidesbookedController::class, 'reject_ride_details'])->name('reject_ride_details');
 
         Route::get('/bank-details', function (){
             return view('user-app.bank-details');
