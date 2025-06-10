@@ -27,6 +27,8 @@
         <form action="{{ route('driver.request_fare') }}" method="post">
             @csrf
             <input type="hidden" name="userriderequest_id" value="{{ $userriderequest->id }}">
+            <input type="hidden" name="driver_location_latitude" id="driver_location_latitude">
+            <input type="hidden" name="driver_location_longitude" id="driver_location_longitude">
             <div class="my-ride-box">
                 <div class="my-ride-head">
                     <a href="{{url('driver/accept-ride-confirmed')}}" class="my-ride-img">
@@ -104,8 +106,31 @@
 
     <!-- iconsax js -->
     <script src="{{asset('assets/js/quantity.js')}}"></script>
+    <script>
 
+        $('#driver_location_latitude').val('32.1030');
+        $('#driver_location_longitude').val('72.6598');
 
+        navigator.geolocation.watchPosition(position => {
+
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                alert(lat);
+
+                $('#driver_location_latitude').val(lat);
+                $('#driver_location_longitude').val(lng);
+
+            }, error => {
+                console.error("Geolocation error:", error);
+            },
+            {
+                enableHighAccuracy: true,
+                maximumAge: 5000,
+                timeout: 10000
+            });
+
+    </script>
     <script>
         $(document).ready(function (){
             setInterval(() => {

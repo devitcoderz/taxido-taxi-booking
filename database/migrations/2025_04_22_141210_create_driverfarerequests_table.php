@@ -16,6 +16,8 @@ return new class extends Migration
             $table->integer('userriderequest_id');
             $table->integer('driver_id');
             $table->string('requested_fare');
+            $table->string('driver_location_latitude')->nullable();
+            $table->string('driver_location_longitude')->nullable();
             $table->timestamp('expiry');
             $table->string('status')->default('waiting');
             $table->timestamps();

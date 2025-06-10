@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('receiver_email');
             $table->string('pickup_location');
             $table->string('destination_location');
+            $table->string('pickup_location_latitude')->nullable();
+            $table->string('pickup_location_longitude')->nullable();
             $table->string('fare');
             $table->string('fare_currency');
             $table->timestamp('expiry');

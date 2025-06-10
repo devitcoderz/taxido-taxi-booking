@@ -50,6 +50,8 @@
                 <form class="theme-form mt-0" method="post" action="{{ route('user.driver_fare_request') }}">
                     @csrf
                     <input type="hidden" name="pickup_location" value="{{ $request->pickup_location }}">
+                    <input type="hidden" name="pickup_location_latitude" id="pickup_location_latitude">
+                    <input type="hidden" name="pickup_location_longitude" id="pickup_location_longitude">
                     @foreach ($request->destination_location as $location)
                         <input type="hidden" name="destination_location[]" value="{{ $location }}">
                     @endforeach
@@ -177,8 +179,33 @@
 @endsection
 
 @section('script')
-
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKqq-XxVccy3MdBiolKZOJ601LNqvFPaE&libraries=places,geometry&callback=initMap" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+
+        $('#pickup_location_latitude').val('32.0740');
+        $('#pickup_location_longitude').val('72.6861');
+
+        navigator.geolocation.watchPosition(position => {
+
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            alert(lat);
+
+            $('#pickup_location_latitude').val(lat);
+            $('#pickup_location_longitude').val(lng);
+
+        }, error => {
+            console.error("Geolocation error:", error);
+        },
+            {
+            enableHighAccuracy: true,
+            maximumAge: 5000,
+            timeout: 10000
+        });
+
+    </script>
     <script>
         $(document).ready(function (){
             flatpickr("#arrival_date", {

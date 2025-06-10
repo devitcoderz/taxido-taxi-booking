@@ -188,6 +188,29 @@
                         if (response && response.length) {
                             let html = '';
 
+                            const userLatLng = new google.maps.LatLng(response.user_lat, response.user_lng);
+                            const driverLatLng = new google.maps.LatLng(response.driver_location_latitude, response.driver_location_longitude);
+                            const distanceMeters = google.maps.geometry.spherical.computeDistanceBetween(userLatLng, driverLatLng);
+                            const distanceKm = (distanceMeters / 1000).toFixed(2);
+                            console.log(`Distance (straight line): ${distanceKm} km`);
+                            const directionsService = new google.maps.DirectionsService();
+                            directionsService.route({
+                                origin: driverLatLng,
+                                destination: userLatLng,
+                                travelMode: google.maps.TravelMode.DRIVING
+                            }, function(result, status) {
+                                if (status === google.maps.DirectionsStatus.OK) {
+                                    const leg = result.routes[0].legs[0];
+                                    const drivingDistance = leg.distance.text; // e.g. "4.5 km"
+                                    const drivingDuration = leg.duration.text; // e.g. "10 mins"
+
+                                    console.log(`Driving Distance: ${drivingDistance}`);
+                                    console.log(`Estimated Time: ${drivingDuration}`);
+                                } else {
+                                    console.error("Directions request failed:", status);
+                                }
+                            });
+
                             response.forEach(item => {
                                 html += `
                         <li>
