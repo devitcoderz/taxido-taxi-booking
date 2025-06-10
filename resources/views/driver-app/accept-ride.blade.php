@@ -116,8 +116,6 @@
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
 
-                alert(lat);
-
                 $('#driver_location_latitude').val(lat);
                 $('#driver_location_longitude').val(lng);
 
