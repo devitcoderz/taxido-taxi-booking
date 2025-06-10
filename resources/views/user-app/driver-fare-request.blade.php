@@ -160,106 +160,128 @@
     @section('script')
 
         <!-- map js -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGCQvcXUsXwCdYArPXo72dLZ31WS3WQRw&libraries=places,geometry"></script>
+{{--        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGCQvcXUsXwCdYArPXo72dLZ31WS3WQRw&libraries=places,geometry"></script>--}}
         <script src="{{asset('assets/js/custom-map.js')}}"></script>
 
         <script>
             const userId = {{ Auth::guard('user')->id() }};
             const userRequestId = {{ $userriderequest_id }};
 
-            getDriverFareRequest();
+            let fareRequestInterval;
 
-            setInterval(() => {
-                console.log("Timeout triggered");  // Debug
-                getDriverFareRequest();
-            }, 2000);
+            // This function is called by Google Maps API after loading (due to callback=initMap)
+            function initMap() {
+                console.log("Google Maps API loaded.");
 
-            function getDriverFareRequest() {
-                $.ajax({
-                    url: `/user/get-driver-fare-request?userriderequest_id=${userRequestId}`,
-                    method: 'GET',
-                    success: function(response) {
+                // Start polling driver fare requests every 2 seconds
+                fareRequestInterval = setInterval(() => {
+                    console.log("Timeout triggered");  // Debug
+                    getDriverFareRequest();
+                }, 2000);
 
-                        console.log("response" +response);
+                // Your existing AJAX function, unchanged except for logging improvements
+                function getDriverFareRequest() {
+                    $.ajax({
+                        url: `/user/get-driver-fare-request?userriderequest_id=${userRequestId}`,
+                        method: 'GET',
+                        success: function(response) {
 
-                        if (response.ridebooked){
-                            toastr.success("Ride booked");
-                            window.location.href = '{{ url('/user/home') }}';
-                        }
+                            console.log("Response:", response);
 
-                        if (response && response.length) {
-                            let html = '';
+                            if (response.ridebooked){
+                                toastr.success("Ride booked");
+                                window.location.href = '{{ url('/user/home') }}';
+                                return; // stop further processing
+                            }
 
-                            response.forEach(item => {
+                            if (response && response.length) {
+                                let html = '';
 
-                                console.log("item" + item);
+                                response.forEach(item => {
 
-                                const userLatLng = new google.maps.LatLng(item.user_lat, item.user_lng);
-                                const driverLatLng = new google.maps.LatLng(item.driver_location_latitude, item.driver_location_longitude);
-                                const distanceMeters = google.maps.geometry.spherical.computeDistanceBetween(userLatLng, driverLatLng);
-                                const distanceKm = (distanceMeters / 1000).toFixed(2);
-                                console.log(`Distance (straight line): ${distanceKm} km`);
-                                const directionsService = new google.maps.DirectionsService();
-                                directionsService.route({
-                                    origin: driverLatLng,
-                                    destination: userLatLng,
-                                    travelMode: google.maps.TravelMode.DRIVING
-                                }, function(result, status) {
-                                    if (status === google.maps.DirectionsStatus.OK) {
-                                        const leg = result.routes[0].legs[0];
-                                        const drivingDistance = leg.distance.text; // e.g. "4.5 km"
-                                        const drivingDuration = leg.duration.text; // e.g. "10 mins"
+                                    console.log("Item:", item);
 
-                                        console.log(`Driving Distance: ${drivingDistance}`);
-                                        console.log(`Estimated Time: ${drivingDuration}`);
-                                    } else {
-                                        console.error("Directions request failed:", status);
+                                    // Defensive check in case lat/lng missing
+                                    if (!item.user_lat || !item.user_lng || !item.driver_location_latitude || !item.driver_location_longitude) {
+                                        console.warn("Missing lat/lng for item", item);
+                                        return; // skip this item
                                     }
+
+                                    const userLatLng = new google.maps.LatLng(item.user_lat, item.user_lng);
+                                    const driverLatLng = new google.maps.LatLng(item.driver_location_latitude, item.driver_location_longitude);
+
+                                    // Use Google Maps geometry to calculate straight-line distance
+                                    const distanceMeters = google.maps.geometry.spherical.computeDistanceBetween(userLatLng, driverLatLng);
+                                    const distanceKm = (distanceMeters / 1000).toFixed(2);
+                                    console.log(`Distance (straight line): ${distanceKm} km`);
+
+                                    // DirectionsService to get driving distance/time
+                                    const directionsService = new google.maps.DirectionsService();
+
+                                    directionsService.route({
+                                        origin: driverLatLng,
+                                        destination: userLatLng,
+                                        travelMode: google.maps.TravelMode.DRIVING
+                                    }, function(result, status) {
+                                        if (status === google.maps.DirectionsStatus.OK) {
+                                            const leg = result.routes[0].legs[0];
+                                            const drivingDistance = leg.distance.text; // e.g. "4.5 km"
+                                            const drivingDuration = leg.duration.text; // e.g. "10 mins"
+
+                                            console.log(`Driving Distance: ${drivingDistance}`);
+                                            console.log(`Estimated Time: ${drivingDuration}`);
+
+                                            // Optional: Update the UI with these values
+                                            // For example, find element by id and update driving info here
+                                        } else {
+                                            console.error("Directions request failed:", status);
+                                        }
+                                    });
+
+                                    html += `
+                                <li>
+                                    <div class="driver-box">
+                                        <div class="profile-head">
+                                            <div class="flex-align-center gap-2">
+                                                <img class="img-fluid profile-img" src="${item.driver?.profile ? '/storage/' + item.driver.profile : '/assets/images/profile/p8.png'}" alt="profile">
+                                                <h5>${item.driver?.vehicle_type}</h5>
+                                            </div>
+                                            <h4 class="fw-medium success-color">${item.userriderequest?.fare_currency} ${item.requested_fare}</h4>
+                                        </div>
+                                        <div class="flex-spacing mt-2">
+                                            <h5 class="fw-normal title-color">${item.driver?.name ?? 'Unknown Driver'}</h5>
+                                            <h6 class="fw-normal content-color">4 min</h6>
+                                        </div>
+                                        <div class="flex-spacing mt-2">
+                                            <div class="flex-align-center gap-1">
+                                                <img class="star" src="/assets/images/svg/star.svg" alt="star">
+                                                <h5 class="fw-normal title-color">4.8</h5>
+                                                <span class="content-color fw-normal">(127)</span>
+                                            </div>
+                                            <h6 class="fw-normal content-color">4 km</h6>
+                                        </div>
+                                        <div class="grid-btn mt-2">
+                                            <a href="#" id="reject_request" data-deriver_id="${item.driver_id}" data-driverfarerequest_id="${item.id}" class="btn gray-btn w-100 m-0">Skip</a>
+                                            <a href="/user/accept-ride-details?driverfarerequest_id=${item.id}&driver_id=${item.driver_id}" class="btn theme-btn w-100 m-0">Accept</a>
+                                        </div>
+                                        <div class="progress mt-2" role="progressbar">
+                                            <div class="progress-bar w-0"></div>
+                                        </div>
+                                    </div>
+                                </li>
+                            `;
                                 });
 
-                                html += `
-                        <li>
-                            <div class="driver-box">
-                                <div class="profile-head">
-                                    <div class="flex-align-center gap-2">
-                                        <img class="img-fluid profile-img" src="${item.driver?.profile ? '/storage/' + item.driver.profile : '/assets/images/profile/p8.png'}" alt="profile">
-                                        <h5>${item.driver?.vehicle_type}</h5>
-                                    </div>
-                                    <h4 class="fw-medium success-color">${item.userriderequest?.fare_currency} ${item.requested_fare}</h4>
-                                </div>
-                                <div class="flex-spacing mt-2">
-                                    <h5 class="fw-normal title-color">${item.driver?.name ?? 'Unknown Driver'}</h5>
-                                    <h6 class="fw-normal content-color">4 min</h6>
-                                </div>
-                                <div class="flex-spacing mt-2">
-                                    <div class="flex-align-center gap-1">
-                                        <img class="star" src="/assets/images/svg/star.svg" alt="star">
-                                        <h5 class="fw-normal title-color">4.8</h5>
-                                        <span class="content-color fw-normal">(127)</span>
-                                    </div>
-                                    <h6 class="fw-normal content-color">4 km</h6>
-                                </div>
-                                <div class="grid-btn mt-2">
-                                    <a href="#" id="reject_request" data-deriver_id="${item.driver_id}" data-driverfarerequest_id="${item.id}" class="btn gray-btn w-100 m-0">Skip</a>
-                                    <a href="/user/accept-ride-details?driverfarerequest_id=${item.id}&driver_id=${item.driver_id}" class="btn theme-btn w-100 m-0">Accept</a>
-                                </div>
-                                <div class="progress mt-2" role="progressbar">
-                                    <div class="progress-bar w-0"></div>
-                                </div>
-                            </div>
-                        </li>
-                    `;
-                            });
-
-                            $('#driverFareList').html(html);
-                        } else {
-                            $('#driverFareList').html('<li><p>No fare requests available.</p></li>');
+                                $('#driverFareList').html(html);
+                            } else {
+                                $('#driverFareList').html('<li><p>No fare requests available.</p></li>');
+                            }
+                        },
+                        error: function(xhr) {
+                            console.error("Error fetching fare requests:", xhr.responseText);
                         }
-                    },
-                    error: function(xhr) {
-                        console.error("Error fetching fare requests:", xhr.responseText);
-                    }
-                });
+                    });
+                }
             }
 
             $(document).on('click', '#reject_request', function (e) {
@@ -321,5 +343,6 @@
             })
 
         </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGCQvcXUsXwCdYArPXo72dLZ31WS3WQRw&libraries=places,geometry&callback=initMap" async defer></script>
 
 @endsection
