@@ -93,8 +93,15 @@ class UserriderequestController extends Controller
             ->where('status','!=','rejected')
             ->orderBy('id', 'desc')
             ->get();
-        $driverFareRequests['user_lat'] = $userriderequest->pickup_location_latitude;
-        $driverFareRequests['user_lng'] = $userriderequest->pickup_location_longitude;
+        $userLat = $userriderequest->pickup_location_latitude;
+        $userLng = $userriderequest->pickup_location_longitude;
+
+// Add user lat/lng to each item
+        $driverFareRequests->transform(function ($item) use ($userLat, $userLng) {
+            $item->user_lat = $userLat;
+            $item->user_lng = $userLng;
+            return $item;
+        });
         return response()->json($driverFareRequests);
     }
 }
