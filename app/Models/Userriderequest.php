@@ -11,6 +11,8 @@ class Userriderequest extends Model
         'user_id',
         'pickup_location',
         'destination_location',
+        'pickup_location_latitude',
+        'pickup_location_longitude',
         'fare',
         'fare_currency',
         'payment_method',

@@ -45,6 +45,8 @@ class DriverfarerequestController extends Controller
         }
         $driverfarerequest->userriderequest_id = $request->userriderequest_id;
         $driverfarerequest->requested_fare = $request->requested_fare;
+        $driverfarerequest->driver_location_latitude = $request->driver_location_latitude;
+        $driverfarerequest->driver_location_longitude = $request->driver_location_longitude;
         $driverfarerequest->expiry = Carbon::now()->addMinutes(2);
         $driverfarerequest->status = 'waiting'; // Optional: set explicitly if required
         $driverfarerequest->save();

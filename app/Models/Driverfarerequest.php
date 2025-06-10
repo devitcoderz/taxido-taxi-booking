@@ -11,6 +11,8 @@ class Driverfarerequest extends Model
         'userriderequest_id',
         'fare',
         'driver_id',
+        'driver_location_longitude',
+        'driver_location_latitude',
         'expiry',
         'status',
     ];

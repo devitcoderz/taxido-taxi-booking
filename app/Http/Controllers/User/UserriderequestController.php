@@ -47,6 +47,8 @@ class UserriderequestController extends Controller
         $userriderequest->receiver_phone     = $request->receiver_phone;
         $userriderequest->pickup_location     = $request->pickup_location;
         $userriderequest->destination_location = json_encode($request->destination_location); // store as JSON
+        $userriderequest->pickup_location_latitude      = $request->pickup_location_latitude; // assuming current time as departure
+        $userriderequest->pickup_location_longitude      = $request->pickup_location_longitude; // assuming current time as departure
         $userriderequest->departure_date      = $request->departure_date; // assuming current time as departure
         $userriderequest->distance            = $request->distance ?? 0;
         $userriderequest->type_of_package   = $request->type_of_package;
@@ -72,6 +74,7 @@ class UserriderequestController extends Controller
         $userriderequest = Userriderequest::where('id',$request->input('userriderequest_id'))->first();
 
         $ridebooked = Ridesbooked::where('user_id',Auth::guard('user')->id())
+            ->where('userriderequest_id',$userriderequest->id)
             ->where('pickup_location',$userriderequest->pickup_location)
             ->where('destination_location',$userriderequest->destination_location)
             ->where('fare',$userriderequest->fare)
@@ -90,6 +93,8 @@ class UserriderequestController extends Controller
             ->where('status','!=','rejected')
             ->orderBy('id', 'desc')
             ->get();
+        $driverFareRequests['user_lat'] = $userriderequest->pickup_location_latitude;
+        $driverFareRequests['user_lng'] = $userriderequest->pickup_location_longitude;
         return response()->json($driverFareRequests);
     }
 }
