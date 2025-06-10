@@ -160,7 +160,7 @@
     @section('script')
 
         <!-- map js -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGCQvcXUsXwCdYArPXo72dLZ31WS3WQRw"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGCQvcXUsXwCdYArPXo72dLZ31WS3WQRw&libraries=places,geometry"></script>
         <script src="{{asset('assets/js/custom-map.js')}}"></script>
 
         <script>

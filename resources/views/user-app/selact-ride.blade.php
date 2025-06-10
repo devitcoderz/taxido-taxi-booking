@@ -191,8 +191,6 @@
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
 
-            alert(lat);
-
             $('#pickup_location_latitude').val(lat);
             $('#pickup_location_longitude').val(lng);
 
