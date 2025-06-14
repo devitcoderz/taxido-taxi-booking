@@ -41,6 +41,8 @@
         ETA: <span id="eta">-</span> | Distance left: <span id="remaining-distance">-</span>
     </div>
 
+    <button onclick="redirectToGoogleMaps()" class="btn btn-primary w-100 mt-3">Start Navigation</button>
+
     @if ($track_ride)
     <!-- track ride starts -->
     <section>
@@ -76,10 +78,10 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKqq-XxVccy3MdBiolKZOJ601LNqvFPaE&libraries=places,geometry&callback=initMap" async defer></script>
 
     <script>
-        let map, directionsService, directionsRenderer, positionMarker;
+        let map, directionsService, directionsRenderer;
         let stopInputs = [], allLegs = [], allSteps = [], currentStep = 0;
-        let trackingInterval;
 
+        // Blade variables
         const pickupLocation = {!! json_encode($track_ride['pickup_location'] ?? '') !!};
         const destinationArray = {!! json_encode(json_decode($track_ride['destination_location'] ?? '[]')) !!};
 
@@ -90,11 +92,13 @@
             });
 
             directionsService = new google.maps.DirectionsService();
-            directionsRenderer = new google.maps.DirectionsRenderer({ map });
+            directionsRenderer = new google.maps.DirectionsRenderer({ map: map });
 
+            // Prefill origin/destination
             $('#origin').val(pickupLocation);
             $('#destination').val(destinationArray[destinationArray.length - 1]);
 
+            // Add intermediate stops
             for (let i = 0; i < destinationArray.length - 1; i++) {
                 const inputId = `stop-${i}`;
                 $('#stops').append(`<input id="${inputId}" type="text" value="${destinationArray[i]}" placeholder="Enter stop location">`);
@@ -107,25 +111,19 @@
         function calculateRoute() {
             const origin = $('#origin').val();
             const destination = $('#destination').val();
-            const waypoints = stopInputs.map(id => ({
-                location: $(`#${id}`).val(),
-                stopover: true
-            }));
+            const waypoints = stopInputs.map(id => ({ location: $(`#${id}`).val(), stopover: true }));
 
             directionsService.route({
                 origin,
                 destination,
                 waypoints,
-                travelMode: google.maps.TravelMode.DRIVING,
-                avoidTolls: false, // Change to true if you want to avoid toll roads
-                provideRouteAlternatives: false
+                travelMode: google.maps.TravelMode.DRIVING
             }, (result, status) => {
                 if (status === "OK") {
                     directionsRenderer.setDirections(result);
                     allLegs = result.routes[0].legs;
                     allSteps = allLegs.flatMap(leg => leg.steps);
                     currentStep = 0;
-
                     startTracking();
                 } else {
                     alert("Could not calculate route: " + status);
@@ -136,91 +134,58 @@
         function startTracking() {
             if (!navigator.geolocation) return alert("Geolocation not supported.");
 
-            if (trackingInterval) clearInterval(trackingInterval);
+            @if($track_ride)
+            navigator.geolocation.watchPosition(position => {
+                const userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
-            navigator.geolocation.getCurrentPosition((initialPos) => {
-                const latLng = new google.maps.LatLng(initialPos.coords.latitude, initialPos.coords.longitude);
-                positionMarker = new google.maps.Marker({
-                    map,
-                    position: latLng,
-                    icon: {
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        scale: 5,
-                        fillColor: "#4285F4",
-                        fillOpacity: 1,
-                        strokeWeight: 1
-                    }
-                });
-                map.setCenter(latLng);
-            });
+                if (currentStep >= allSteps.length) return;
 
-            trackingInterval = setInterval(() => {
-                navigator.geolocation.getCurrentPosition(position => {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    const currentLatLng = new google.maps.LatLng(lat, lng);
+                const step = allSteps[currentStep];
+                const end = step.end_location;
+                const distance = google.maps.geometry.spherical.computeDistanceBetween(userLatLng, end);
 
-                    positionMarker.setPosition(currentLatLng);
-                    map.setCenter(currentLatLng);
-
-                    checkStepProximity(currentLatLng);
-                    updateRemainingDistance(currentLatLng);
-
-                }, err => {
-                    console.error("Tracking error:", err);
-                }, {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 5000
-                });
-            }, 10000); // Update every 10s
-        }
-
-        function checkStepProximity(userLatLng) {
-            if (currentStep >= allSteps.length) return;
-
-            const step = allSteps[currentStep];
-            const stepEnd = step.end_location;
-            const dist = google.maps.geometry.spherical.computeDistanceBetween(userLatLng, stepEnd);
-
-            if (dist < 50) {
-                showInstruction(step.instructions);
-                speak(step.instructions);
-                currentStep++;
-            }
-        }
-
-        function updateRemainingDistance(userLatLng) {
-            const destination = $('#destination').val();
-
-            directionsService.route({
-                origin: userLatLng,
-                destination,
-                travelMode: google.maps.TravelMode.DRIVING,
-                avoidTolls: false
-            }, (result, status) => {
-                if (status === "OK") {
-                    const leg = result.routes[0].legs[0];
-                    $('#eta').text(leg.duration.text);
-                    $('#remaining-distance').text(leg.distance.text);
+                if (distance < 80) {
+                    showInstruction(step.instructions);
+                    speak(step.instructions);
+                    currentStep++;
                 }
+            }, error => {
+                console.error("Geolocation error:", error);
+            }, {
+                enableHighAccuracy: true,
+                maximumAge: 5000,
+                timeout: 10000
             });
+            @endif
         }
 
         function speak(text) {
-            const clean = text.replace(/<[^>]+>/g, '');
-            const utter = new SpeechSynthesisUtterance(clean);
-            utter.lang = 'en-US';
-            speechSynthesis.speak(utter);
+            const cleanedText = text.replace(/<[^>]+>/g, '');
+            const utterance = new SpeechSynthesisUtterance(cleanedText);
+            utterance.lang = 'en-US';
+            speechSynthesis.speak(utterance);
         }
 
         function showInstruction(html) {
             $('#instruction-alert').html(html).fadeIn();
 
+            // Hide after 8 seconds or when next instruction comes
             setTimeout(() => {
                 $('#instruction-alert').fadeOut();
             }, 8000);
         }
+
+        function redirectToGoogleMaps() {
+            const origin = encodeURIComponent($('#origin').val());
+            const destination = encodeURIComponent($('#destination').val());
+
+            let waypoints = stopInputs.map(id => encodeURIComponent($(`#${id}`).val())).join('|');
+
+            const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving${waypoints ? `&waypoints=${waypoints}` : ''}`;
+
+            window.location.href = mapsUrl;
+        }
+
     </script>
 
     <!-- PWA: Manifest + Service Worker -->
