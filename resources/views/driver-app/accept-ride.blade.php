@@ -108,25 +108,46 @@
     <script src="{{asset('assets/js/quantity.js')}}"></script>
     <script>
 
-        $('#driver_location_latitude').val('32.1030');
-        $('#driver_location_longitude').val('72.6598');
+        // $('#driver_location_latitude').val('32.1030');
+        // $('#driver_location_longitude').val('72.6598');
 
-        navigator.geolocation.watchPosition(position => {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.watchPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
 
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
+                    console.log(`Location updated: ${lat}, ${lng}`);
 
-                $('#driver_location_latitude').val(lat);
-                $('#driver_location_longitude').val(lng);
+                    $('#driver_location_latitude').val(lat);
+                    $('#driver_location_longitude').val(lng);
+                },
+                (error) => {
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            console.error("User denied the request for Geolocation.");
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            console.error("Location information is unavailable.");
+                            break;
+                        case error.TIMEOUT:
+                            console.error("The request to get user location timed out.");
+                            break;
+                        case error.UNKNOWN_ERROR:
+                            console.error("An unknown error occurred.");
+                            break;
+                    }
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 5000,
+                }
+            );
+        } else {
+            console.error("Geolocation is not supported by this browser.");
+        }
 
-            }, error => {
-                console.error("Geolocation error:", error);
-            },
-            {
-                enableHighAccuracy: true,
-                maximumAge: 5000,
-                timeout: 10000
-            });
 
     </script>
     <script>
