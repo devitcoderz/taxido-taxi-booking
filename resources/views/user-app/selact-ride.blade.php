@@ -183,8 +183,8 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
 
-        $('#pickup_location_latitude').val('32.0740');
-        $('#pickup_location_longitude').val('72.6861');
+        // $('#pickup_location_latitude').val('32.0740');
+        // $('#pickup_location_longitude').val('72.6861');
 
         navigator.geolocation.watchPosition(position => {
 
