@@ -266,8 +266,15 @@
                                 <p>Quantity of Package :- {{ $userriderequest->quantity_of_package }}</p>
                                 <p>Comments :- {{ $userriderequest->comments }}</p>
                             </div>
-                            <div class="d-flex flex-column">
-{{--                                <img src="{{  }}">--}}
+                            <div class="d-flex flex-row">
+                                @php
+                                $parcel_pictures = $userriderequest->parcel_pictures ? json_decode($userriderequest->parcel_pictures) : '';
+                                @endphp
+                                @if($parcel_pictures)
+                                    @foreach($parcel_pictures as $parcel_picture)
+                                        <img src="{{ asset('storage/'. $parcel_picture) }}" class="me-1" width="50" height="50" alt="loading">
+                                    @endforeach
+                                @endif
                             </div>
                             <ul class="ride-location-listing">
                                 <li class="border-0 shadow-none box-background">
@@ -333,7 +340,7 @@
                         let html = '';
 
                         response.forEach(ride => {
-                            // Parse destination_location for this ride
+                            // Parse destination_location
                             let destinations = [];
                             try {
                                 destinations = JSON.parse(ride.destination_location);
@@ -341,76 +348,89 @@
                                 destinations = [ride.destination_location];
                             }
 
-                            // Build destinations HTML for this ride
-                            let destinationHtml = '';
-                            destinations.forEach(dest => {
-                                destinationHtml += `
-                            <li class="border-0 shadow-none box-background">
-                                <div class="location-box bg-transparent">
-                                    <img class="icon" src="/assets/images/svg/gps.svg" alt="gps">
-                                    <h5 class="fw-light title-color border-0">${dest}</h5>
-                                </div>
-                            </li>`;
-                            });
+                            let destinationHtml = destinations.map(dest => `
+                        <li class="border-0 shadow-none box-background">
+                            <div class="location-box bg-transparent">
+                                <img class="icon" src="/assets/images/svg/gps.svg" alt="gps">
+                                <h5 class="fw-light title-color border-0">${dest}</h5>
+                            </div>
+                        </li>`).join('');
 
-                            // Use user profile if available
+                            // Parse parcel_pictures
+                            let parcelPicturesHtml = '';
+                            if (ride.parcel_pictures) {
+                                try {
+                                    const pictures = JSON.parse(ride.parcel_pictures);
+                                    parcelPicturesHtml = pictures.map(pic => `
+                                <img src="/storage/${pic}" class="me-1" width="50" height="50" alt="parcel">
+                            `).join('');
+                                } catch (e) {
+                                    console.warn("Invalid parcel_pictures JSON:", e);
+                                }
+                            }
+
                             let profileImg = ride.user.profile
                                 ? `/storage/${ride.user.profile}`
                                 : '/assets/images/profile/p5.png';
 
-                            // Append HTML block
                             html += `
-                        <li>
-                            <div class="my-ride-box">
-                                <div class="my-ride-head">
-                                    <a href="/driver/accept-ride/${ride.id}" class="my-ride-img">
-                                        <img class="img-fluid profile-img" src="${profileImg}" alt="profile">
-                                    </a>
-                                    <div class="my-ride-content flex-column">
-                                        <div class="flex-spacing">
-                                            <a href="/driver/accept-ride/${ride.id}">
-                                                <h5 class="title-color fw-medium">${ride.user.name}</h5>
-                                            </a>
-                                            <div class="flex-align-center">
-                                                <div class="flex-align-center gap-1 pe-2">
-                                                    <img class="star" src="/assets/images/svg/star.svg" alt="star">
-                                                    <h5 class="fw-normal title-color p-0">4.8</h5>
-                                                </div>
-                                                <h5 class="fw-mediun theme-color price ps-2 pe-0">${ride.fare_currency} ${ride.fare}</h5>
+                    <li>
+                        <div class="my-ride-box">
+                            <div class="my-ride-head">
+                                <a href="/driver/accept-ride/${ride.id}" class="my-ride-img">
+                                    <img class="img-fluid profile-img" src="${profileImg}" alt="profile">
+                                </a>
+                                <div class="my-ride-content flex-column">
+                                    <div class="flex-spacing">
+                                        <a href="/driver/accept-ride/${ride.id}">
+                                            <h5 class="title-color fw-medium">${ride.user.name}</h5>
+                                        </a>
+                                        <div class="flex-align-center">
+                                            <div class="flex-align-center gap-1 pe-2">
+                                                <img class="star" src="/assets/images/svg/star.svg" alt="star">
+                                                <h5 class="fw-normal title-color p-0">4.8</h5>
                                             </div>
+                                            <h5 class="fw-mediun theme-color price ps-2 pe-0">${ride.fare_currency} ${ride.fare}</h5>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="my-ride-details">
-                                    <div class="ride-info">
-                                        <div class="flex-align-center gap-1">
-                                            <img class="icon img-fluid" src="/assets/images/svg/location-fill.svg" alt="location">
-                                            <h6 class="fw-normal title-color">${ride.distance} km</h6>
-                                        </div>
-                                        <h6 class="fw-normal title-color">${ride.departure_date}</h6>
-                                    </div>
-                                    <div class="d-flex flex-column">
-                                        <p>Type of Package :- ${ride.packagetype.title}</p>
-                                        <p>Sub Type of Package :- ${ride.packagesubtype.title}</p>
-                                        <p>Length of Package :- ${ride.length_of_package}</p>
-                                        <p>Width of Package :- ${ride.width_of_package}</p>
-                                        <p>Weight of Package :- ${ride.weight_of_package}</p>
-                                        <p>Quantity of Package :- ${ride.quantity_of_package}</p>
-                                        <p>Comments :- ${ride.comments}</p>
-                                    </div>
-                                    <ul class="ride-location-listing">
-                                        <li class="border-0 shadow-none box-background">
-                                            <div class="location-box bg-transparent">
-                                                <img class="icon" src="/assets/images/svg/location-fill.svg" alt="location">
-                                                <h5 class="fw-light title-color">${ride.pickup_location}</h5>
-                                            </div>
-                                        </li>
-                                        ${destinationHtml}
-                                    </ul>
                                 </div>
                             </div>
-                        </li>`;
+
+                            <div class="my-ride-details">
+                                <div class="ride-info">
+                                    <div class="flex-align-center gap-1">
+                                        <img class="icon img-fluid" src="/assets/images/svg/location-fill.svg" alt="location">
+                                        <h6 class="fw-normal title-color">${ride.distance} km</h6>
+                                    </div>
+                                    <h6 class="fw-normal title-color">${ride.departure_date}</h6>
+                                </div>
+
+                                <div class="d-flex flex-column">
+                                    <p>Type of Package :- ${ride.packagetype.title}</p>
+                                    <p>Sub Type of Package :- ${ride.packagesubtype.title}</p>
+                                    <p>Length of Package :- ${ride.length_of_package}</p>
+                                    <p>Width of Package :- ${ride.width_of_package}</p>
+                                    <p>Weight of Package :- ${ride.weight_of_package}</p>
+                                    <p>Quantity of Package :- ${ride.quantity_of_package}</p>
+                                    <p>Comments :- ${ride.comments}</p>
+                                </div>
+
+                                <div class="d-flex flex-row mb-2">
+                                    ${parcelPicturesHtml}
+                                </div>
+
+                                <ul class="ride-location-listing">
+                                    <li class="border-0 shadow-none box-background">
+                                        <div class="location-box bg-transparent">
+                                            <img class="icon" src="/assets/images/svg/location-fill.svg" alt="location">
+                                            <h5 class="fw-light title-color">${ride.pickup_location}</h5>
+                                        </div>
+                                    </li>
+                                    ${destinationHtml}
+                                </ul>
+                            </div>
+                        </div>
+                    </li>`;
                         });
 
                         $('#userRideList').html(html);
@@ -423,6 +443,7 @@
                 }
             });
         }
+
 
     </script>
 
