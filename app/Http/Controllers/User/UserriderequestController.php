@@ -67,14 +67,25 @@ class UserriderequestController extends Controller
 
         if ($request->hasFile('parcel_pictures')) {
             $imagePaths = [];
+            $imagePaths = [];
+            $files = $request->file('parcel_pictures');
 
-            foreach ($request->file('parcel_pictures') as $image) {
-                $path = $image->store('documents/parcel_pictures', 'public');
-                $imagePaths[] = $path;
+            if (!is_array($files)) {
+                $files = [$files];
+            }
+            foreach ($files as $image) {
+                try {
+                    $path = $image->store('documents/parcel_pictures', 'public');
+                    $imagePaths[] = $path;
+                } catch (\Exception $e) {
+                    dd($e->getMessage());
+                }
             }
 
             $userriderequest->parcel_pictures = json_encode($imagePaths);
         }
+
+        dd($userriderequest);
 
         $userriderequest->payment_method      = $request->payment_method;
         $userriderequest->expiry              = Carbon::now()->addMinutes(10);

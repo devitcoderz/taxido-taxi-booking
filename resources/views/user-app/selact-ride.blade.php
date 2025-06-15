@@ -47,7 +47,8 @@
                     </ul>
                 </div>
             @endif
-                <form class="theme-form mt-0" method="post" action="{{ route('user.driver_fare_request') }}" enctype="multipart/form-data">
+{{--                theme-form--}}
+                <form class="mt-0" method="post" action="{{ route('user.driver_fare_request') }}" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="pickup_location" value="{{ $request->pickup_location }}">
                     <input type="hidden" name="pickup_location_latitude" id="pickup_location_latitude">
@@ -127,7 +128,7 @@
                             <li class="form-group mt-0">
                                 <h5 class="fw-medium title-color mb-2">Parcel Pictures (1 * front, 1 * back, 1 * top)</h5>
                                 <div id="output" class="upload-image">
-                                    <input id="file" class="form-control upload-file" type="file" name="parcel_pictures" id="formFileLg" multiple>
+                                    <input id="file" class="form-control upload-file" type="file" name="parcel_pictures[]" id="formFileLg" multiple>
                                     <i class="iconsax upload-icon" data-icon="logout-2"> </i>
                                     <h5>Upload</h5>
                                 </div>
