@@ -35,6 +35,8 @@ return new class extends Migration
             $table->string('branch_name')->nullable();
             $table->string('ifsc_code')->nullable();
             $table->string('profile')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -47,7 +47,7 @@
                     </ul>
                 </div>
             @endif
-                <form class="theme-form mt-0" method="post" action="{{ route('user.driver_fare_request') }}">
+                <form class="theme-form mt-0" method="post" action="{{ route('user.driver_fare_request') }}" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="pickup_location" value="{{ $request->pickup_location }}">
                     <input type="hidden" name="pickup_location_latitude" id="pickup_location_latitude">
@@ -107,21 +107,34 @@
                     </div>
 
                     <div class="row">
-                        <div class="form-group mt-3 col-6 d-inline-block">
+                        <div class="form-group mt-3 col-8 d-inline-block">
                             <label class="form-label mb-2" for="Inputofferrate">Enter your offer rate</label>
-                            <input type="number" class="form-control white-background" id="Inputofferrate" name="fare" value="{{ $request->distance * 2 }}"
-                                   placeholder="Enter offer rate">
+                            <input type="number" class="form-control white-background" id="Inputofferrate" name="fare" value=""
+                                   placeholder="Estimated fare is {{ $request->distance * 2 }}, you can change it">
                         </div>
-                        <div class="form-group mt-3 col-6 d-inline-block">
+                        <div class="form-group mt-3 col-4 d-inline-block">
                             <label class="form-label mb-2" for="currency_offerrate">Select your fare currency</label>
                             <select class="form-control white-background" id="currency_offerrate" name="fare_currency">
                                 <option value="dollar">United State Dollar</option>
-                                <option value="dirham">Dirham</option>
-                                <option value="ryal">Ryal</option>
+{{--                                <option value="dirham">Dirham</option>--}}
+{{--                                <option value="ryal">Ryal</option>--}}
                                 <option value="euro" selected>Euro</option>
                             </select>
                         </div>
                     </div>
+                    <div class="custom-container">
+                        <ul class="auth-form">
+                            <li class="form-group mt-0">
+                                <h5 class="fw-medium title-color mb-2">Parcel Pictures (1 * front, 1 * back, 1 * top)</h5>
+                                <div id="output" class="upload-image">
+                                    <input id="file" class="form-control upload-file" type="file" name="parcel_pictures" id="formFileLg" multiple>
+                                    <i class="iconsax upload-icon" data-icon="logout-2"> </i>
+                                    <h5>Upload</h5>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
 {{--                    <div class="form-group mt-3">--}}
 {{--                        <label class="form-label mb-2" for="travel_company">Enter Travel Company</label>--}}
 {{--                        <input type="text" class="form-control white-background" id="travel_company" name="travel_company"--}}

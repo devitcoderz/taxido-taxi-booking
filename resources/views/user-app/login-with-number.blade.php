@@ -32,7 +32,7 @@
                     <h6>Hey, You have been missed !</h6>
                 </div>
 
-                <form class="auth-form" action="{{url('user/otp')}}" method="post">
+                <form class="auth-form" action="{{url('user/login-with-number')}}" method="post">
                     @csrf
                     <div class="flex-align-center gap-3">
                         <a href="{{ url('user/auth/google') }}" class="btn theme-btn google-btn w-50 flex-center gap-2">
@@ -76,7 +76,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn theme-btn w-100 auth-btn">Get OTP</button>
+                    <button type="submit" class="btn theme-btn w-100 auth-btn">Sign In</button>
                     <h6 class="content-color fw-normal my-3 text-center"> New User ?
                         <a href="{{url('user/signup')}}" class="title-color fw-medium">Sign up</a>
                     </h6>

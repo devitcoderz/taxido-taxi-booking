@@ -92,6 +92,7 @@
                 </div>
             </div>
         </div>
+        <form></form>
         <a href="{{route('driver.ride_verification',['userriderequest_id' => $userriderequest->id])}}" class="btn theme-btn w-100 mt-3">Accept Fare on {{ $userriderequest->fare_currency }} {{ $userriderequest->fare }}</a>
     </div>
 

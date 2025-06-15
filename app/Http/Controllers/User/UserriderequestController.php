@@ -20,6 +20,7 @@ class UserriderequestController extends Controller
 
     public function driver_fare_request(Request $request)
     {
+//        dd($request->all());
         $validator = Validator::make($request->all(), [
             'pickup_location'      => 'required|string|max:255',
             'destination_location' => 'required|array|min:1',
@@ -33,6 +34,7 @@ class UserriderequestController extends Controller
             'fare'                 => 'required|min:1',
 //            'travel_company'       => 'required|string|max:255',
             'comments'             => 'required|string|max:1000',
+            'parcel_pictures.*' => 'image|mimes:jpg,jpeg,png|max:2048',
             'payment_method'       => 'required|string',
         ]);
 
@@ -62,6 +64,18 @@ class UserriderequestController extends Controller
         $userriderequest->fare_currency               = $request->fare_currency;
 //        $userriderequest->travel_company      = $request->travel_company;
         $userriderequest->comments            = $request->comments;
+
+        if ($request->hasFile('parcel_pictures')) {
+            $imagePaths = [];
+
+            foreach ($request->file('parcel_pictures') as $image) {
+                $path = $image->store('documents/parcel_pictures', 'public');
+                $imagePaths[] = $path;
+            }
+
+            $userriderequest->parcel_pictures = json_encode($imagePaths);
+        }
+
         $userriderequest->payment_method      = $request->payment_method;
         $userriderequest->expiry              = Carbon::now()->addMinutes(10);
         $userriderequest->save();

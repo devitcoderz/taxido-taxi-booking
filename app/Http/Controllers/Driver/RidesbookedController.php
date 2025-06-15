@@ -107,33 +107,59 @@ class RidesbookedController extends Controller
 
     public function start_ride($ride_id)
     {
-        $ride_booked = Ridesbooked::find($ride_id);
 
-        $verificationCode = rand(10000, 99999);
-        $message = "Your verification code is: $verificationCode";
+        try {
 
-        $account_sid = env('TWILIO_SID_KEY');
-        $auth_token = env('TWILIO_AUTH_TOKEN');
-        $twilio_number =  env('TWILIO_NUMBER');
+            $ride_booked = Ridesbooked::find($ride_id);
+            $ride_booked->status = 'active';
+            $ride_booked->save();
 
-                $client = new Client($account_sid, $auth_token);
-                $client->messages->create(
-                    '+'.Auth::guard('driver')->user()->phone,
-                    array(
-                        'from' => $twilio_number,
-                        'body' => $message
-                    )
-                );
-        session(['verification_code' => $verificationCode]);
+            $user = User::find($ride_booked->user_id);
+            if ($user && $user->email) {
+                try {
+                    Mail::to($user->email)->send(new \App\Mail\RideStartedNotification($ride_booked));
+                }
+                catch (\Exception $e) {
+                    Log::info($e->getMessage());
+                }
+            }
+            $active_rides = Ridesbooked::where('driver_id', Auth::guard('driver')->id())
+                ->where('status', 'active')
+                ->where('departure_date', '>=', \Carbon\Carbon::now())
+                ->with('driver', 'user')
+                ->get();
+            return view('driver-app.active-ride', compact('active_rides'))->with('success', 'Ride Started successfully!');
+        }
+        catch (\Exception $e) {
+            Log::error('User Registration Error: ' . $e->getMessage());
+            return back()->with('error', $e->getMessage());
+        }
 
-        $expiresAt = Carbon::now()->addMinutes(5);
-        Otp::create([
-            'user_id' => $ride_booked->user_id, // or however you're identifying the user
-            'otp' => $verificationCode,
-            'expires_at' => $expiresAt,
-        ]);
-
-        return view('driver-app.book-ride-verification',['ride_booked' => $ride_booked]);
+//        $verificationCode = rand(10000, 99999);
+//        $message = "Your verification code is: $verificationCode";
+//
+//        $account_sid = env('TWILIO_SID_KEY');
+//        $auth_token = env('TWILIO_AUTH_TOKEN');
+//        $twilio_number =  env('TWILIO_NUMBER');
+//
+//                $client = new Client($account_sid, $auth_token);
+//                $client->messages->create(
+//                    '+'.Auth::guard('driver')->user()->phone,
+//                    array(
+//                        'from' => $twilio_number,
+//                        'body' => $message
+//                    )
+//                );
+//        session(['verification_code' => $verificationCode]);
+//
+//        $expiresAt = Carbon::now()->addMinutes(5);
+//        Otp::create([
+//            'user_id' => $ride_booked->user_id, // or however you're identifying the user
+//            'otp' => $verificationCode,
+//            'expires_at' => $expiresAt,
+//        ]);
+//
+//        return view('driver-app.book-ride-verification',['ride_booked' => $ride_booked]);
     }
 
     public function otp_successfully(Request $request)
