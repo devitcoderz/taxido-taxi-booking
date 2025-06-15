@@ -139,20 +139,22 @@ class RideController extends Controller
         $longitude = request()->longitude;
         $distance = 10; // km
 
-        $drivers = DB::table('drivers')
-            ->select('*', DB::raw("(
-            6371 * acos(
-                cos(radians(?)) *
-                cos(radians(latitude)) *
-                cos(radians(longitude) - radians(?)) +
-                sin(radians(?)) *
-                sin(radians(latitude))
-            )
-        ) AS distance"))
-            ->having("distance", "<", $distance)
-            ->orderBy("distance", 'asc')
-            ->setBindings([$latitude, $longitude, $latitude])
-            ->get();
+        $drivers = Driver::where('id',1)->get();
+
+//        $drivers = DB::table('drivers')
+//            ->select('*', DB::raw("(
+//            6371 * acos(
+//                cos(radians(?)) *
+//                cos(radians(latitude)) *
+//                cos(radians(longitude) - radians(?)) +
+//                sin(radians(?)) *
+//                sin(radians(latitude))
+//            )
+//        ) AS distance"))
+//            ->having("distance", "<", $distance)
+//            ->orderBy("distance", 'asc')
+//            ->setBindings([$latitude, $longitude, $latitude])
+//            ->get();
 
         return response()->json($drivers);
     }
