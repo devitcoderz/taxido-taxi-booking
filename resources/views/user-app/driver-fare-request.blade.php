@@ -27,7 +27,7 @@
     <div class="location-map position-relative w-100 h-100" id="map"></div>
 
     <!-- driver request section starts -->
-    <section class="pt-0 driver-request section-b-space" style="position: absolute; top: 80px; z-index: 1000; width: 100%">
+    <section class="pt-0 driver-request section-b-space" style="position: absolute; top: 165px; z-index: 1000; width: 100%">
         <div class="custom-container">
             <ul class="driver-list" id="driverFareList">
 {{--                <li>--}}

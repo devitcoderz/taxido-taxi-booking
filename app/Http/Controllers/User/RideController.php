@@ -142,23 +142,22 @@ class RideController extends Controller
         $drivers = DB::table('drivers')
             ->select('*', DB::raw("(
         6371 * acos(
-            cos(radians(?)) *
+            cos(radians($latitude)) *
             cos(radians(latitude)) *
-            cos(radians(longitude) - radians(?)) +
-            sin(radians(?)) *
+            cos(radians(longitude) - radians($longitude)) +
+            sin(radians($latitude)) *
             sin(radians(latitude))
         )
     ) AS distance"))
-            ->addBinding([$latitude, $longitude, $latitude], 'select')
             ->whereRaw("(
         6371 * acos(
-            cos(radians(?)) *
+            cos(radians($latitude)) *
             cos(radians(latitude)) *
-            cos(radians(longitude) - radians(?)) +
-            sin(radians(?)) *
+            cos(radians(longitude) - radians($longitude)) +
+            sin(radians($latitude)) *
             sin(radians(latitude))
         )
-    ) <= ?", [$latitude, $longitude, $latitude, $radius])
+    ) <= $radius")
             ->orderBy('distance', 'asc')
             ->get();
 
