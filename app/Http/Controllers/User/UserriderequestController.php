@@ -85,7 +85,7 @@ class UserriderequestController extends Controller
             $userriderequest->parcel_pictures = json_encode($imagePaths);
         }
 
-        dd($userriderequest);
+//        dd($userriderequest);
 
         $userriderequest->payment_method      = $request->payment_method;
         $userriderequest->expiry              = Carbon::now()->addMinutes(10);
