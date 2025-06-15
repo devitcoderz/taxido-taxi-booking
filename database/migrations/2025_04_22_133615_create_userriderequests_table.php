@@ -36,6 +36,7 @@ return new class extends Migration
             $table->string('weight_of_package');
             $table->string('quantity_of_package');
             $table->string('comments')->nullable();
+            $table->text('parcel_pictures')->nullable();
             $table->string('status')->default('waiting');
             $table->timestamps();
         });
