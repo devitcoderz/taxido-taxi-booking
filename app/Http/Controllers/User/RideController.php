@@ -137,28 +137,21 @@ class RideController extends Controller
     {
         $latitude = request()->latitude;
         $longitude = request()->longitude;
-        $radius = 10; // km
+        $distance = 10; // km
 
         $drivers = DB::table('drivers')
             ->select('*', DB::raw("(
-        6371 * acos(
-            cos(radians($latitude)) *
-            cos(radians(latitude)) *
-            cos(radians(longitude) - radians($longitude)) +
-            sin(radians($latitude)) *
-            sin(radians(latitude))
-        )
-    ) AS distance"))
-            ->whereRaw("(
-        6371 * acos(
-            cos(radians($latitude)) *
-            cos(radians(latitude)) *
-            cos(radians(longitude) - radians($longitude)) +
-            sin(radians($latitude)) *
-            sin(radians(latitude))
-        )
-    ) <= $radius")
-            ->orderBy('distance', 'asc')
+            6371 * acos(
+                cos(radians(?)) *
+                cos(radians(latitude)) *
+                cos(radians(longitude) - radians(?)) +
+                sin(radians(?)) *
+                sin(radians(latitude))
+            )
+        ) AS distance"))
+            ->having("distance", "<", $distance)
+            ->orderBy("distance", 'asc')
+            ->setBindings([$latitude, $longitude, $latitude])
             ->get();
 
         return response()->json($drivers);
