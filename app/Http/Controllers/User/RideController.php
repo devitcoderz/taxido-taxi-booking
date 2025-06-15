@@ -135,12 +135,9 @@ class RideController extends Controller
 
     public function getNearbyDrivers(Request $request)
     {
-        $latitude = request()->latitude;
-        $longitude = request()->longitude;
+        $latitude = floatval(request()->lat);    // e.g. 32.0836
+        $longitude = floatval(request()->lng);  // e.g. 72.6711
         $distance = 10; // km
-
-        $drivers = Driver::where('id',1)->get();
-
 
         $drivers = DB::table('drivers')
             ->select('*', DB::raw("
