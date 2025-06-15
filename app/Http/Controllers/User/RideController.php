@@ -11,6 +11,7 @@ use App\Models\Userriderequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -130,5 +131,37 @@ class RideController extends Controller
     {
         $category = ParcelCategory::with('sub_category')->find($request->category_id);
         return response()->json(['category' => $category]);
+    }
+
+    public function getNearbyDrivers(Request $request)
+    {
+        $latitude = request()->latitude;
+        $longitude = request()->longitude;
+        $radius = 10; // km
+
+        $drivers = DB::table('drivers')
+            ->select('*', DB::raw("(
+        6371 * acos(
+            cos(radians(?)) *
+            cos(radians(latitude)) *
+            cos(radians(longitude) - radians(?)) +
+            sin(radians(?)) *
+            sin(radians(latitude))
+        )
+    ) AS distance"))
+            ->addBinding([$latitude, $longitude, $latitude], 'select')
+            ->whereRaw("(
+        6371 * acos(
+            cos(radians(?)) *
+            cos(radians(latitude)) *
+            cos(radians(longitude) - radians(?)) +
+            sin(radians(?)) *
+            sin(radians(latitude))
+        )
+    ) <= ?", [$latitude, $longitude, $latitude, $radius])
+            ->orderBy('distance', 'asc')
+            ->get();
+
+        return response()->json($drivers);
     }
 }

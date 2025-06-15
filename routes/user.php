@@ -70,6 +70,8 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
         return view('user-app.login-with-number');
     });
 
+    Route::post('login-with-number',[AuthController::class,'login_with_number']);
+
     Route::get('/signup', function (){
         return view('user-app.signup');
     })->middleware(\App\Http\Middleware\RedirectIfAuthenticatedUser::class);
@@ -186,6 +188,8 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
     Route::get('/search-location', function (){
         return view('user-app.search-location');
     });
+
+    Route::get('/nearby-drivers', [\App\Http\Controllers\User\RideController::class, 'getNearbyDrivers']);
 
     Route::get('/google_place_api', function (){
         return view('user-app.google_place_api');

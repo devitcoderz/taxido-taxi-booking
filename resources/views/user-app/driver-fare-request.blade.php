@@ -24,8 +24,10 @@
     </header>
     <!-- header end -->
 
+    <div class="location-map position-relative w-100 h-100" id="map"></div>
+
     <!-- driver request section starts -->
-    <section class="pt-0 driver-request section-b-space">
+    <section class="pt-0 driver-request section-b-space" style="position: absolute; top: 80px; z-index: 1000; width: 100%">
         <div class="custom-container">
             <ul class="driver-list" id="driverFareList">
 {{--                <li>--}}
@@ -160,18 +162,46 @@
     @section('script')
 
         <!-- map js -->
-{{--        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGCQvcXUsXwCdYArPXo72dLZ31WS3WQRw&libraries=places,geometry"></script>--}}
-        <script src="{{asset('assets/js/custom-map.js')}}"></script>
+{{--        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGCQvcXUsXwCdYArPXo72dLZ31WS3WQRw"></script>--}}
+{{--        <script src="{{asset('assets/js/custom-map.js')}}"></script>--}}
 
         <script>
             const userId = {{ Auth::guard('user')->id() }};
             const userRequestId = {{ $userriderequest_id }};
-
             let fareRequestInterval;
+
+            let map;
+            let userMarker;
+            let driverMarkers = [];
 
             // This function is called by Google Maps API after loading (due to callback=initMap)
             function initMap() {
                 console.log("Google Maps API loaded.");
+
+                navigator.geolocation.getCurrentPosition(position => {
+                    const userLat = position.coords.latitude;
+                    const userLng = position.coords.longitude;
+
+                    const userLatLng = new google.maps.LatLng(userLat, userLng);
+
+                    map = new google.maps.Map(document.getElementById("map"), {
+                        center: userLatLng,
+                        zoom: 14,
+                    });
+
+                    userMarker = new google.maps.Marker({
+                        position: userLatLng,
+                        map,
+                        icon: {
+                            url: "/assets/images/user-pin.png", // optional custom pin
+                            scaledSize: new google.maps.Size(40, 40)
+                        },
+                        title: "Your Location",
+                    });
+
+                    fetchNearbyDrivers(userLat, userLng);
+
+                });
 
                 // Start polling driver fare requests every 2 seconds
                 fareRequestInterval = setInterval(() => {
@@ -244,7 +274,7 @@
 
                                 $('#driverFareList').html(html);
                             } else {
-                                $('#driverFareList').html('<li><p>No fare requests available.</p></li>');
+                                // $('#driverFareList').html('<li><p>No fare requests available.</p></li>');
                             }
                         },
                         error: function(xhr) {
@@ -252,6 +282,29 @@
                         }
                     });
                 }
+            }
+
+            function fetchNearbyDrivers(lat, lng) {
+                $.get('/user/nearby-drivers', { lat, lng }, function (drivers) {
+                    clearDriverMarkers();
+
+                    drivers.forEach(driver => {
+                        const driverLatLng = new google.maps.LatLng(driver.latitude, driver.longitude);
+
+                        const marker = new google.maps.Marker({
+                            position: driverLatLng,
+                            map,
+                            title: driver.name ?? "Nearby Driver",
+                        });
+
+                        driverMarkers.push(marker);
+                    });
+                });
+            }
+
+            function clearDriverMarkers() {
+                driverMarkers.forEach(marker => marker.setMap(null));
+                driverMarkers = [];
             }
 
             $(document).on('click', '#reject_request', function (e) {
@@ -313,8 +366,8 @@
             })
 
         </script>
-{{--        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGCQvcXUsXwCdYArPXo72dLZ31WS3WQRw&libraries=places,geometry&callback=initMap" async defer></script>--}}
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGCQvcXUsXwCdYArPXo72dLZ31WS3WQRw&libraries=geometry&callback=initMap" async defer></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGCQvcXUsXwCdYArPXo72dLZ31WS3WQRw&libraries=places,geometry&callback=initMap" async defer></script>
+{{--        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGCQvcXUsXwCdYArPXo72dLZ31WS3WQRw&libraries=geometry&callback=initMap" async defer></script>--}}
 
 
     @endsection

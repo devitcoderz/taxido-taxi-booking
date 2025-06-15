@@ -266,6 +266,9 @@
                                 <p>Quantity of Package :- {{ $userriderequest->quantity_of_package }}</p>
                                 <p>Comments :- {{ $userriderequest->comments }}</p>
                             </div>
+                            <div class="d-flex flex-column">
+{{--                                <img src="{{  }}">--}}
+                            </div>
                             <ul class="ride-location-listing">
                                 <li class="border-0 shadow-none box-background">
                                     <div class="location-box bg-transparent">
@@ -373,7 +376,7 @@
                                                     <img class="star" src="/assets/images/svg/star.svg" alt="star">
                                                     <h5 class="fw-normal title-color p-0">4.8</h5>
                                                 </div>
-                                                <h5 class="fw-mediun theme-color price ps-2 pe-0">$${ride.fare}</h5>
+                                                <h5 class="fw-mediun theme-color price ps-2 pe-0">${ride.fare_currency} ${ride.fare}</h5>
                                             </div>
                                         </div>
                                     </div>

@@ -131,6 +131,21 @@ class AuthController extends Controller
         ]);
     }
 
+    public function login_with_number(Request $request)
+    {
+        $user = User::where('phone', $request->phone)->first();
+
+        if ($user) {
+            Auth::guard('user')->login($user);
+            return redirect('/user/home');
+        }
+        else {
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ]);
+        }
+    }
+
     public function sendotp(Request $request)
     {
         $user = User::where('phone', $request->phone)->first();

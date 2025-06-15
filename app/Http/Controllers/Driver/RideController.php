@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Driver;
 
 use App\Http\Controllers\Controller;
+use App\Models\Driver;
 use App\Models\Ridesbooked;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -51,6 +52,12 @@ class RideController extends Controller
 
     public function driver_location_update(Request $request)
     {
+
+        $driver = Driver::find(Auth::guard('driver')->id());
+        $driver->latitude = $request->lat;
+        $driver->longitude = $request->lng;
+        $driver->save();
+
         $ride = Ridesbooked::where('driver_id', Auth::guard('driver')->id())
             ->where('status', 'active')
             ->where('departure_date', '>=', Carbon::now())

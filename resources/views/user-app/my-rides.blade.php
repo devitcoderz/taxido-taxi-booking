@@ -78,7 +78,16 @@
                                             <img class="img-fluid profile-img" src="{{ $active_ride->driver->profile ? asset('storage/'.$active_ride->driver->profile) : asset('assets/images/profile/p5.png')}}"
                                                  alt="p5">
                                         </div>
-
+                                        <div class="flex-align-center gap-2">
+                                            <a href="{{url('driver/chatting')}}">
+                                                <img class="img-fluid communication-icon"
+                                                     src="{{asset('assets/images/svg/messages-fill.svg')}}" alt="messages">
+                                            </a>
+                                            <a href="tel:{{ $active_ride->driver->phone }}">
+                                                <img class="img-fluid communication-icon"
+                                                     src="{{asset('assets/images/svg/call-fill.svg')}}" alt="call">
+                                            </a>
+                                        </div>
                                         <ul class="ride-location-listing mt-3">
                                             <li class="location-box">
                                                 <img class="icon" src="{{asset('assets/images/svg/location-fill.svg')}}"
@@ -124,7 +133,7 @@
                                             </div>
                                             <div class="flex-spacing  mt-2">
                                                 <h6 class="fw-mediun success-color">{{ $pending_ride->fare_currency}} {{ $pending_ride->fare }}</h6>
-                                                <h6 class="fw-normal content-color">{{ $pending_ride->delivery_date }}</h6>
+                                                <h6 class="fw-normal content-color">{{ $pending_ride->departure_date }}</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -144,6 +153,16 @@
                                             </div>
                                             <img class="img-fluid profile-img" src="{{ $pending_ride->driver->profile ? asset('storage/'. $pending_ride->driver->profile) : asset('assets/images/profile/p6.png')}}"
                                                  alt="p5">
+                                        </div>
+                                        <div class="flex-align-center gap-2">
+                                            <a href="{{url('driver/chatting')}}">
+                                                <img class="img-fluid communication-icon"
+                                                     src="{{asset('assets/images/svg/messages-fill.svg')}}" alt="messages">
+                                            </a>
+                                            <a href="tel:{{ $pending_ride->driver->phone }}">
+                                                <img class="img-fluid communication-icon"
+                                                     src="{{asset('assets/images/svg/call-fill.svg')}}" alt="call">
+                                            </a>
                                         </div>
                                         <ul class="ride-location-listing mt-3">
                                             <li class="location-box">
@@ -212,6 +231,16 @@
                                             <img class="img-fluid profile-img" src="{{ $completed_ride->driver->profile ? asset('storage/'.$completed_ride->driver->profile) : asset('assets/images/profile/p2.png')}}"
                                                  alt="p5">
                                         </div>
+                                        <div class="flex-align-center gap-2">
+                                            <a href="{{url('driver/chatting')}}">
+                                                <img class="img-fluid communication-icon"
+                                                     src="{{asset('assets/images/svg/messages-fill.svg')}}" alt="messages">
+                                            </a>
+                                            <a href="tel:{{ $completed_ride->driver->phone }}">
+                                                <img class="img-fluid communication-icon"
+                                                     src="{{asset('assets/images/svg/call-fill.svg')}}" alt="call">
+                                            </a>
+                                        </div>
                                         <ul class="ride-location-listing mt-3">
                                             <li class="location-box">
                                                 <img class="icon" src="{{asset('assets/images/svg/location-fill.svg')}}"
@@ -278,6 +307,16 @@
                                             </div>
                                             <img class="img-fluid profile-img" src="{{ $cancelled_ride->driver->profile ? asset('storage/'.$cancelled_ride->driver->profile) : asset('assets/images/profile/p8.png')}}"
                                                  alt="p5">
+                                        </div>
+                                        <div class="flex-align-center gap-2">
+                                            <a href="{{url('driver/chatting')}}">
+                                                <img class="img-fluid communication-icon"
+                                                     src="{{asset('assets/images/svg/messages-fill.svg')}}" alt="messages">
+                                            </a>
+                                            <a href="tel:{{ $cancelled_ride->driver->phone }}">
+                                                <img class="img-fluid communication-icon"
+                                                     src="{{asset('assets/images/svg/call-fill.svg')}}" alt="call">
+                                            </a>
                                         </div>
                                         <ul class="ride-location-listing mt-3">
                                             <li class="location-box">
