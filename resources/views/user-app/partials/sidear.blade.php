@@ -39,15 +39,15 @@
             <li>
                 <a href="{{url('user/setting')}}" class="pages">
                     <i class="iconsax sidebar-icon" data-icon="user-1"> </i>
-                    <h3>Setting</h3>
+                    <h3>Account</h3>
                 </a>
             </li>
-            <li>
-                <a href="{{url('user/page-listing')}}" class="pages">
-                    <i class="iconsax sidebar-icon" data-icon="book-closed"> </i>
-                    <h3>Template Pages</h3>
-                </a>
-            </li>
+{{--            <li>--}}
+{{--                <a href="{{url('user/page-listing')}}" class="pages">--}}
+{{--                    <i class="iconsax sidebar-icon" data-icon="book-closed"> </i>--}}
+{{--                    <h3>Template Pages</h3>--}}
+{{--                </a>--}}
+{{--            </li>--}}
 
             {{--<li>--}}
             {{--<a href="../elements/elements-page.html" class="pages">--}}

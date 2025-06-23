@@ -59,6 +59,7 @@
                                                 <h6 class="fw-mediun success-color">{{ $active_ride->fare_currency}} {{ $active_ride->fare }}</h6>
                                                 <h6 class="fw-normal content-color">{{ $active_ride->departure_date }}</h6>
                                             </div>
+                                            <a href="{{ url('user/track-ride') }}" class="btn theme-btn w-100 auth-btn mt-3">Track Ride</a>
                                         </div>
                                     </div>
 

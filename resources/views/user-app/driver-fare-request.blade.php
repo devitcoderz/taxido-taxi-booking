@@ -28,6 +28,9 @@
 
     <!-- driver request section starts -->
     <section class="pt-0 driver-request section-b-space" style="position: absolute; top: 165px; z-index: 1000; width: 100%">
+        <div class="alert alert-success" role="alert">
+            we are looking for a carrier, please wait,
+        </div>
         <div class="custom-container">
             <ul class="driver-list" id="driverFareList">
 {{--                <li>--}}
