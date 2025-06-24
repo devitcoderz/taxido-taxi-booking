@@ -87,6 +87,7 @@ class RidesbookedController extends Controller
         $ridesbooked->payment_method      = $userriderequest->payment_method;
         $ridesbooked->expiry = $userriderequest->expiry;
         $ridesbooked->status = 'pending';
+        $ridesbooked->message = 'Your transport offer has been accepted by the carrier ( '.Auth::guard('driver')->user()->name;
         $ridesbooked->save();
 
         $userriderequest->status = 'accepted';
