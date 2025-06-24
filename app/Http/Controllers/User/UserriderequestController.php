@@ -64,6 +64,7 @@ class UserriderequestController extends Controller
         $userriderequest->fare_currency               = $request->fare_currency;
 //        $userriderequest->travel_company      = $request->travel_company;
         $userriderequest->comments            = $request->comments;
+        $userriderequest->message            = 'we are looking for a carrier, please wait';
 
         if ($request->hasFile('parcel_pictures')) {
             $imagePaths = [];

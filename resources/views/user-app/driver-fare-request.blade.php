@@ -28,11 +28,14 @@
 
     <!-- driver request section starts -->
     <section class="pt-0 driver-request section-b-space" style="position: absolute; top: 165px; z-index: 1000; width: 100%">
-        <div class="alert alert-success" role="alert">
-            we are looking for a carrier, please wait,
-        </div>
         <div class="custom-container">
+            @php
+            $userriderequest = \App\Models\Userriderequest::find($userriderequest_id);
+            @endphp
             <ul class="driver-list" id="driverFareList">
+                <div class="alert alert-success" role="alert">
+                    {{ $userriderequest->message }}
+                </div>
 {{--                <li>--}}
 {{--                    <div class="driver-box">--}}
 {{--                        <div class="profile-head">--}}
@@ -277,7 +280,7 @@
 
                                 $('#driverFareList').html(html);
                             } else {
-                                // $('#driverFareList').html('<li><p>No fare requests available.</p></li>');
+                                $('#driverFareList').html('<li><p><div class="alert alert-success" role="alert">we are looking for a carrier, please wait</div></p></li>');
                             }
                         },
                         error: function(xhr) {

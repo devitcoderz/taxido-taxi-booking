@@ -181,7 +181,7 @@
 
             let waypoints = stopInputs.map(id => encodeURIComponent($(`#${id}`).val())).join('|');
 
-            const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving${waypoints ? `&waypoints=${waypoints}` : ''}`;
+            const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving${waypoints ? `&waypoints=${waypoints}` : ''}&dir_action=navigate`;
 
             window.location.href = mapsUrl;
         }
