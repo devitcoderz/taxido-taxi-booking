@@ -14,6 +14,26 @@ class DriverfarerequestController extends Controller
 {
     public function home()
     {
+
+//       webhook secret token CEAtRB9r2CymSAUFbGhefT8QNjufecjD
+
+//        $mollie = new \Mollie\Api\MollieApiClient();
+//        $mollie->setApiKey("test_RVMhQjNtAFGt8Q8JSK9AtdpqFnEfce");
+//
+//        $payment = $mollie->payments->create([
+//            "amount" => [
+//                "currency" => "EUR",
+//                "value" => "10.00"
+//            ],
+//            "description" => "My first API payment",
+//            "redirectUrl" => "https://webshop.example.org/order/453/",
+//            "webhookUrl"  => "https://webshop.example.org/mollie-webhook/",
+//        ]);
+//
+//        $getpayment = $mollie->payments->get($payment->id);
+//
+//        dd($getpayment);
+
         $userriderequests = Userriderequest::with('user','packagetype','packagesubtype')
 //            ->where('expiry', '>', Carbon::now())
             ->where('status', 'waiting')
