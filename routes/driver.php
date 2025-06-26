@@ -145,4 +145,6 @@ Route::group(['prefix' => 'driver', 'as' => 'driver.'], function (){
         return view('driver-app.withdraw');
     });
 
+    Route::post('/mollie-webhook', [\App\Http\Controllers\Driver\MolliewebhookController::class,'mollie_webhook'])->name('mollie_webhook');
+
 });
