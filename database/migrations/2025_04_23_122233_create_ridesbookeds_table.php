@@ -41,6 +41,7 @@ return new class extends Migration
             $table->string('status')->default('pending');
             $table->string('driver_lat')->nullable();
             $table->string('driver_lng')->nullable();
+            $table->text('route_polyline')->nullable();
             $table->text('parcel_pictures')->nullable();
             $table->timestamps();
         });
