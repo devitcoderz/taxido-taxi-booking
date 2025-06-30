@@ -108,9 +108,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
         return view('user-app.coupon');
     });
 
-    Route::get('/date-time-schedule', function (){
-        return view('user-app.date-time-schedule');
-    });
+    Route::get('/targeted-transport-route',[\App\Http\Controllers\User\RideController::class,'targeted_transport_route']);
 
     Route::get('/driver-details', function (){
         return view('user-app.driver-details');
@@ -186,7 +184,8 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
     });
 
     Route::get('/search-location', function (){
-        return view('user-app.search-location');
+        $ridebookeds = \App\Models\Ridesbooked::where('user_id', \Illuminate\Support\Facades\Auth::guard('user')->user()->id)->where('status','completed')->get();
+        return view('user-app.search-location', compact('ridebookeds'));
     });
 
     Route::get('/nearby-drivers', [\App\Http\Controllers\User\RideController::class, 'getNearbyDrivers']);

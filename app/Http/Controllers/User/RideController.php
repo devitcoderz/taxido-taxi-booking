@@ -155,4 +155,11 @@ class RideController extends Controller
 
         return response()->json($drivers);
     }
+
+    public function targeted_transport_route(Request $request)
+    {
+        dd($request->all());
+        return view('user-app.date-time-schedule');
+    }
+
 }

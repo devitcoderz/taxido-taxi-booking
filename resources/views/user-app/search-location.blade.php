@@ -29,10 +29,10 @@
                         <i class="iconsax icon-btn" data-icon="chevron-left"> </i>
                     </a>
 
-                    <select class="form-select rider-options">
-                        <option selected>Switch Rider</option>
-                        <option value="1">My Self</option>
-                    </select>
+{{--                    <select class="form-select rider-options">--}}
+{{--                        <option selected>Switch Rider</option>--}}
+{{--                        <option value="1">My Self</option>--}}
+{{--                    </select>--}}
                 </div>
             </div>
         </div>
@@ -66,24 +66,24 @@
     <!-- location section starts -->
 
     <!-- categories place list starts -->
-    <section class="category-place-section">
-        <div class="custom-container">
-            <ul class="categories-place-list">
-                <li>
-                    <a href="#" class="categories-place-box">
-                        <img class="place-icon" src="{{asset('assets/images/svg/home-fill.svg')}}" alt="home">
-                        <h5>Home</h5>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="categories-place-box">
-                        <img class="place-icon" src="{{asset('assets/images/svg/work-fill.svg')}}" alt="home">
-                        <h5>Work</h5>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </section>
+{{--    <section class="category-place-section">--}}
+{{--        <div class="custom-container">--}}
+{{--            <ul class="categories-place-list">--}}
+{{--                <li>--}}
+{{--                    <a href="#" class="categories-place-box">--}}
+{{--                        <img class="place-icon" src="{{asset('assets/images/svg/home-fill.svg')}}" alt="home">--}}
+{{--                        <h5>Home</h5>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
+{{--                <li>--}}
+{{--                    <a href="#" class="categories-place-box">--}}
+{{--                        <img class="place-icon" src="{{asset('assets/images/svg/work-fill.svg')}}" alt="home">--}}
+{{--                        <h5>Work</h5>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
+{{--            </ul>--}}
+{{--        </div>--}}
+{{--    </section>--}}
     <!-- categories place list end -->
 
     <!-- recent search list starts -->
@@ -91,67 +91,30 @@
         <div class="custom-container">
             <h3 class="title-color fw-medium mb-2">Recent</h3>
             <ul class="recent-place-list">
-                <li>
-                    <div class="recent-box">
-                        <div class="recent-icon">
-                            <img class="icon" src="{{asset('assets/images/svg/history.svg')}}" alt="history">
+                @foreach($ridebookeds as $ridebooked)
+                    <li>
+                        <div class="recent-box">
+                            <div class="recent-icon">
+                                <img class="icon" src="{{asset('assets/images/svg/history.svg')}}" alt="history">
+                            </div>
+                            <div>
+                                <h5>{{ $ridebooked->pickup_location }}</h5>
+                                @php
+                                $destinations = json_decode($ridebooked->destination_location);
+                                @endphp
+                                @foreach($destinations as $destination)
+                                    <p>{{ $destination }}</p>
+                                @endforeach
+                            </div>
                         </div>
-                        <div>
-                            <h5>Koramangala</h5>
-                            <p>17600 Yonge St., Toronto, L3Y 4Z1</p>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="recent-box">
-                        <div class="recent-icon">
-                            <img class="icon" src="{{asset('assets/images/svg/history.svg')}}" alt="history">
-                        </div>
-                        <div>
-                            <h5>Purdys Chocolatier</h5>
-                            <p> 149 St. John Street, Oshawa, L1H 7M3</p>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="recent-box">
-                        <div class="recent-icon">
-                            <img class="icon" src="{{asset('assets/images/svg/history.svg')}}" alt="history">
-                        </div>
-                        <div>
-                            <h5>Toronto Eaton Centre</h5>
-                            <p>1222 Ross Street, Toronto, H3B 4W8</p>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="recent-box">
-                        <div class="recent-icon">
-                            <img class="icon" src="{{asset('assets/images/svg/history.svg')}}" alt="history">
-                        </div>
-                        <div>
-                            <h5>Toronto PATH</h5>
-                            <p> 486 Eglinton Avenue, Montreal, M4P 1A6</p>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="recent-box">
-                        <div class="recent-icon">
-                            <img class="icon" src="{{asset('assets/images/svg/history.svg')}}" alt="history">
-                        </div>
-                        <div>
-                            <h5>Purdys Chocolatier</h5>
-                            <p> 659 Tanner Street, Vancouver, V5R 2T4</p>
-                        </div>
-                    </div>
-                </li>
+                    </li>
+                @endforeach
             </ul>
         </div>
 
         <div class="fixed-btn">
             <div class="custom-container">
-                <button type="submit" class="btn theme-btn w-100">Done</button>
+                <button type="submit" class="btn theme-btn w-100">Continue</button>
             </div>
         </div>
     </section>
@@ -174,7 +137,6 @@
                     <h5>Choose another contact</h5>
                 </div>
                 <i class="iconsax icon-btn" data-icon="chevron-right"> </i>
-
             </a>
         </div>
         <div class="offcanvas-footer flex-align-center flex-nowrap gap-3 border-0 pt-3 px-0 pb-0">
@@ -190,7 +152,7 @@
 
     @endsection
 
-    @section('script')
+@section('script')
 
         <script>
             let stopCounter = 1;

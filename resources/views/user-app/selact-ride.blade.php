@@ -25,7 +25,7 @@
                         <i class="iconsax icon-btn" data-icon="chevron-left"> </i>
                     </a>
 
-                    <h3 class="fw-medium title-color">Out Station</h3>
+                    <h3 class="fw-medium title-color">Fill in the information of votre</h3>
                     <a href="{{url('user/chatting')}}">
                         <i class="iconsax icon-btn" data-icon="messages-2"> </i>
                     </a>
@@ -123,7 +123,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="custom-container">
+                    <div class="form-group mt-3">
                         <ul class="auth-form">
                             <li class="form-group mt-0">
                                 <h5 class="fw-medium title-color mb-2">Parcel Pictures (1 * front, 1 * back, 1 * top)</h5>
@@ -179,7 +179,7 @@
                                 <input class="form-check-input" type="radio" name="payment_method" checked value="online" id="fixed469" />
                                 <label class="form-check-label" for="fixed469">
                                     <span class="check-box"></span>
-                                    <span class="name">Online-Payment</span>
+                                    <span class="name">Online-Payment (After Delivery)</span>
                                 </label>
                             </div>
                         </div>
