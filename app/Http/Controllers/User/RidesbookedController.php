@@ -12,6 +12,7 @@ use App\Models\Userriderequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -55,7 +56,18 @@ class RidesbookedController extends Controller
 //        $ridesbooked->comments            = $userriderequest->comments;
         $ridesbooked->payment_method      = $userriderequest->payment_method;
         $ridesbooked->expiry = $userriderequest->expiry;
+        $ridesbooked->driver_lat = $driverfarerequest->driver_location_longitude;
+        $ridesbooked->driver_lng = $driverfarerequest->driver_location_latitude;
         $ridesbooked->status = 'pending';
+
+        $directions = $this->getRoutePolyline(
+            $userriderequest->pickup_location,
+            $userriderequest->destination_location
+        );
+        if ($directions && isset($directions['overview_polyline']['points'])) {
+            $ridesbooked->route_polyline = $directions['overview_polyline']['points'];
+        }
+
         $ridesbooked->save();
 
         $driverfarerequest->status = 'accepted';
@@ -75,6 +87,26 @@ class RidesbookedController extends Controller
         }
 
         return view('user-app.accept-ride-details',['ridesbooked' => $ridesbooked])->with(['success' => 'Ride booked successfully']);
+    }
+
+    private function getRoutePolyline($origin, $destination)
+    {
+        $apiKey = env('GOOGLE_MAPS_API_KEY');
+        $url = "https://maps.googleapis.com/maps/api/directions/json";
+
+        $response = Http::get($url, [
+            'origin' => $origin,
+            'destination' => $destination,
+            'key' => $apiKey,
+        ]);
+
+        $json = $response->json();
+
+        if (!empty($json['routes'][0])) {
+            return $json['routes'][0]; // contains 'overview_polyline'
+        }
+
+        return null;
     }
 
     public function reject_ride_details(Request $request)
