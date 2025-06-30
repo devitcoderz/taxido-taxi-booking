@@ -43,6 +43,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
         Route::post('/update_profile',[\App\Http\Controllers\User\AuthController::class,'update_profile'])->name('update_profile');
 
         Route::get('/selact-ride', [\App\Http\Controllers\User\UserriderequestController::class, 'selact_ride'])->name('selact_ride');
+        Route::post('/select-ride-targetted', [\App\Http\Controllers\User\UserriderequestController::class, 'selact_ride_targetted_transport_route'])->name('selact_ride_targetted');
 
         Route::get('/setting', function (){
             return view('user-app.setting');

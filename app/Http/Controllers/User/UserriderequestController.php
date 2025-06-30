@@ -18,6 +18,11 @@ class UserriderequestController extends Controller
         return view('user-app.selact-ride', ['request' => $request]);
     }
 
+    public function selact_ride_targetted_transport_route(Request $request)
+    {
+        return view('user-app.selact-ride-targetted-trensport-route', ['request' => $request]);
+    }
+
     public function driver_fare_request(Request $request)
     {
 //        dd($request->all());

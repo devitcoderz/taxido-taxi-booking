@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -168,30 +169,46 @@ class RideController extends Controller
             return back()->with('error', 'Could not determine pickup or destination location.');
         }
 
-        $toleranceMeters = 1000; // 1 km radius
+        $toleranceMeters = 20000; // 1 km radius
         $matches = [];
 
-        $rides = Ridesbooked::whereNotNull('route_polyline')->get();
+        $rides = Ridesbooked::whereNotNull('route_polyline')
+            ->groupBy('driver_id')
+            ->selectRaw('MIN(id) as id, driver_id, MAX(route_polyline) as route_polyline') // select one ride per driver
+            ->get();
 
         foreach ($rides as $ride) {
             $routeCoords = $this->decodePolyline($ride->route_polyline);
 
-            $pickupMatch = $this->isPointNearRoute($pickupCoords['lat'], $pickupCoords['lng'], $routeCoords, $toleranceMeters);
-            $destinationMatch = $this->isPointNearRoute($destinationCoords['lat'], $destinationCoords['lng'], $routeCoords, $toleranceMeters);
+            $pickupMatch = $this->isPointNearRoute(
+                $pickupCoords['lat'], $pickupCoords['lng'], $routeCoords, $toleranceMeters, 'Pickup'
+            );
+            $destinationMatch = $this->isPointNearRoute(
+                $destinationCoords['lat'], $destinationCoords['lng'], $routeCoords, $toleranceMeters, 'Destination'
+            );
+
+            Log::info("Pickup: ", $pickupCoords);
+            Log::info("Destination: ", $destinationCoords);
+            Log::info("Decoded route has " . count($routeCoords) . " points");
 
             if ($pickupMatch && $destinationMatch) {
+                $ride->match_type = 'both';
+                $matches[] = $ride;
+            } elseif ($pickupMatch) {
+                $ride->match_type = 'pickup_only';
+                $matches[] = $ride;
+            } elseif ($destinationMatch) {
+                $ride->match_type = 'destination_only';
                 $matches[] = $ride;
             }
         }
 
-        dd($matches);
-
-        return view('user-app.date-time-schedule');
+        return view('user-app.date-time-schedule', compact('matches','pickupAddress','destinationAddress'));
     }
 
     private function geocodeAddress($address)
     {
-        $apiKey = env('GOOGLE_MAPS_API_KEY');
+        $apiKey = 'AIzaSyBKqq-XxVccy3MdBiolKZOJ601LNqvFPaE';
         $url = "https://maps.googleapis.com/maps/api/geocode/json?address=" . urlencode($address) . "&key=$apiKey";
 
         $response = Http::get($url)->json();
@@ -215,8 +232,8 @@ class RideController extends Controller
                 $result |= ($b & 0x1f) << $shift;
                 $shift += 5;
             } while ($b >= 0x20);
-            $dlat = (($result & 1) ? ~($result >> 1) : ($result >> 1));
-            $lat += $dlat;
+            $deltaLat = (($result & 1) ? ~($result >> 1) : ($result >> 1));
+            $lat += $deltaLat;
 
             $shift = $result = 0;
             do {
@@ -224,38 +241,80 @@ class RideController extends Controller
                 $result |= ($b & 0x1f) << $shift;
                 $shift += 5;
             } while ($b >= 0x20);
-            $dlng = (($result & 1) ? ~($result >> 1) : ($result >> 1));
-            $lng += $dlng;
+            $deltaLng = (($result & 1) ? ~($result >> 1) : ($result >> 1));
+            $lng += $deltaLng;
 
-            $points[] = ['lat' => $lat / 1E5, 'lng' => $lng / 1E5];
+            $points[] = [
+                'lat' => $lat * 1e-5,
+                'lng' => $lng * 1e-5
+            ];
         }
 
         return $points;
     }
 
-    private function haversineDistance($lat1, $lon1, $lat2, $lon2)
+    private function isPointNearRoute($pointLat, $pointLng, array $routeCoords, $toleranceMeters = 20000, $pointLabel = '')
     {
-        $earthRadius = 6371000; // meters
-        $dLat = deg2rad($lat2 - $lat1);
-        $dLon = deg2rad($lon2 - $lon1);
+        $minDistance = INF;
 
-        $a = sin($dLat / 2) ** 2 +
-            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
-            sin($dLon / 2) ** 2;
+        for ($i = 0; $i < count($routeCoords) - 1; $i++) {
+            $start = $routeCoords[$i];
+            $end = $routeCoords[$i + 1];
+            $distance = $this->distanceToSegment($pointLat, $pointLng, $start, $end);
 
-        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-        return $earthRadius * $c;
-    }
+            if ($distance < $minDistance) {
+                $minDistance = $distance;
+            }
 
-    private function isPointNearRoute($pointLat, $pointLng, $routeCoords, $toleranceMeters)
-    {
-        foreach ($routeCoords as $coord) {
-            $distance = $this->haversineDistance($pointLat, $pointLng, $coord['lat'], $coord['lng']);
             if ($distance <= $toleranceMeters) {
+                \Log::info("✅ $pointLabel is near the route. Distance: {$distance} m");
                 return true;
             }
         }
+
+        \Log::warning("❌ $pointLabel is NOT near the route. Closest distance: {$minDistance} m");
         return false;
+    }
+
+
+    private function distanceToSegment($px, $py, $start, $end)
+    {
+        $earthRadius = 6371000;
+
+        $lat1 = deg2rad($start['lat']);
+        $lng1 = deg2rad($start['lng']);
+        $lat2 = deg2rad($end['lat']);
+        $lng2 = deg2rad($end['lng']);
+        $plat = deg2rad($px);
+        $plng = deg2rad($py);
+
+        $dx = $lng2 - $lng1;
+        $dy = $lat2 - $lat1;
+
+        $u = (($plat - $lat1) * $dy + ($plng - $lng1) * $dx) / ($dy * $dy + $dx * $dx);
+        $u = max(min($u, 1), 0);
+
+        $closestLat = $lat1 + $u * $dy;
+        $closestLng = $lng1 + $u * $dx;
+
+        return $this->haversineDistance(rad2deg($plat), rad2deg($plng), rad2deg($closestLat), rad2deg($closestLng));
+    }
+
+
+    private function haversineDistance($lat1, $lng1, $lat2, $lng2)
+    {
+        $earthRadius = 6371000; // meters
+
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLng = deg2rad($lng2 - $lng1);
+
+        $a = sin($dLat / 2) ** 2 +
+            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+            sin($dLng / 2) ** 2;
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        return $earthRadius * $c;
     }
 
 }

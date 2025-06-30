@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -88,6 +89,21 @@ class RidesbookedController extends Controller
         $ridesbooked->expiry = $userriderequest->expiry;
         $ridesbooked->status = 'pending';
         $ridesbooked->message = 'Your transport offer has been accepted by the carrier ( '.Auth::guard('driver')->user()->name;
+
+        $pickup = $userriderequest->pickup_location;
+        $destination = $userriderequest->destination_location;
+        if (is_string($destination) && $this->isJson($destination)) {
+            $decoded = json_decode($destination, true);
+            if (is_array($decoded) && isset($decoded[0])) {
+                $destination = $decoded[0];
+            }
+        }
+
+        $directions = $this->getRoutePolyline($pickup, $destination);
+        if ($directions && isset($directions['overview_polyline']['points'])) {
+            $ridesbooked->route_polyline = $directions['overview_polyline']['points'];
+        }
+
         $ridesbooked->save();
 
         $userriderequest->status = 'accepted';
@@ -104,6 +120,32 @@ class RidesbookedController extends Controller
         }
 
         return redirect()->route('driver.home')->with(['success' => 'Ride booked Successfully']);
+    }
+
+    private function isJson($string)
+    {
+        json_decode($string);
+        return (json_last_error() === JSON_ERROR_NONE);
+    }
+
+    private function getRoutePolyline($origin, $destination)
+    {
+        $apiKey = 'AIzaSyBKqq-XxVccy3MdBiolKZOJ601LNqvFPaE';
+        $url = "https://maps.googleapis.com/maps/api/directions/json";
+
+        $response = Http::get($url, [
+            'origin' => $origin,
+            'destination' => $destination,
+            'key' => $apiKey,
+        ]);
+
+        $json = $response->json();
+
+        if (!empty($json['routes'][0])) {
+            return $json['routes'][0]; // contains 'overview_polyline'
+        }
+
+        return null;
     }
 
     public function start_ride($ride_id)
