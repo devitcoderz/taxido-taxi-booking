@@ -6,7 +6,7 @@
                     <img class="unactive" src="{{asset('assets/images/svg/home.svg')}}" alt="home">
                     <img class="active" src="{{asset('assets/images/svg/home-fill.svg')}}" alt="home">
                 </div>
-                <span class="active">Home</span>
+                <span class="active">Home Page</span>
             </a>
         </li>
 
@@ -26,7 +26,7 @@
                     <img class="unactive" src="{{asset('assets/images/svg/car.svg')}}" alt="car">
                     <img class="active" src="{{asset('assets/images/svg/car-fill.svg')}}" alt="car">
                 </div>
-                <span>My Rides</span>
+                <span>My Transports</span>
             </a>
         </li>
 
@@ -46,7 +46,7 @@
                     <img class="unactive" src="{{asset('assets/images/svg/setting.svg')}}" alt="setting">
                     <img class="active" src="{{asset('assets/images/svg/setting-fill.svg')}}" alt="setting">
                 </div>
-                <span>Account</span>
+                <span>My Account</span>
             </a>
         </li>
     </ul>

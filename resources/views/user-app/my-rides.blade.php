@@ -19,20 +19,19 @@
         <ul class="nav nav-pills my-ride-tab w-100 border-0 m-0" id="Tab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="pill-active-tab" data-bs-toggle="pill"
-                    data-bs-target="#active-tab">Active Ride</button>
+                    data-bs-target="#active-tab">My current transports</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link " id="pill-pending-tab" data-bs-toggle="pill"
-                    data-bs-target="#pending-tab">Pending Ride</button>
+                    data-bs-target="#pending-tab">My transport on hold</button>
             </li>
 
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="pill-complete-tab" data-bs-toggle="pill" data-bs-target="#complete-tab">
-                    Complete Ride</button>
+                    My Completed Transfers</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pill-cancel-tab" data-bs-toggle="pill" data-bs-target="#cancel-tab">Cancel
-                    Ride</button>
+                <button class="nav-link" id="pill-cancel-tab" data-bs-toggle="pill" data-bs-target="#cancel-tab">My cancelled transports</button>
             </li>
         </ul>
         <div class="custom-container">
