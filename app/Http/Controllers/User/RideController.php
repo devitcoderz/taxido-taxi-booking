@@ -158,8 +158,104 @@ class RideController extends Controller
 
     public function targeted_transport_route(Request $request)
     {
-        dd($request->all());
+        $pickupAddress = $request->pickup_location;
+        $destinationAddress = $request->desination_location;
+
+        $pickupCoords = $this->geocodeAddress($pickupAddress);
+        $destinationCoords = $this->geocodeAddress($destinationAddress);
+
+        if (!$pickupCoords || !$destinationCoords) {
+            return back()->with('error', 'Could not determine pickup or destination location.');
+        }
+
+        $toleranceMeters = 1000; // 1 km radius
+        $matches = [];
+
+        $rides = Ridesbooked::whereNotNull('route_polyline')->get();
+
+        foreach ($rides as $ride) {
+            $routeCoords = $this->decodePolyline($ride->route_polyline);
+
+            $pickupMatch = $this->isPointNearRoute($pickupCoords['lat'], $pickupCoords['lng'], $routeCoords, $toleranceMeters);
+            $destinationMatch = $this->isPointNearRoute($destinationCoords['lat'], $destinationCoords['lng'], $routeCoords, $toleranceMeters);
+
+            if ($pickupMatch && $destinationMatch) {
+                $matches[] = $ride;
+            }
+        }
+
+        dd($matches);
+
         return view('user-app.date-time-schedule');
+    }
+
+    private function geocodeAddress($address)
+    {
+        $apiKey = env('GOOGLE_MAPS_API_KEY');
+        $url = "https://maps.googleapis.com/maps/api/geocode/json?address=" . urlencode($address) . "&key=$apiKey";
+
+        $response = Http::get($url)->json();
+
+        if (!empty($response['results'][0]['geometry']['location'])) {
+            return $response['results'][0]['geometry']['location']; // ['lat' => ..., 'lng' => ...]
+        }
+
+        return null;
+    }
+
+    private function decodePolyline($encoded)
+    {
+        $points = [];
+        $index = $lat = $lng = 0;
+
+        while ($index < strlen($encoded)) {
+            $b = $shift = $result = 0;
+            do {
+                $b = ord($encoded[$index++]) - 63;
+                $result |= ($b & 0x1f) << $shift;
+                $shift += 5;
+            } while ($b >= 0x20);
+            $dlat = (($result & 1) ? ~($result >> 1) : ($result >> 1));
+            $lat += $dlat;
+
+            $shift = $result = 0;
+            do {
+                $b = ord($encoded[$index++]) - 63;
+                $result |= ($b & 0x1f) << $shift;
+                $shift += 5;
+            } while ($b >= 0x20);
+            $dlng = (($result & 1) ? ~($result >> 1) : ($result >> 1));
+            $lng += $dlng;
+
+            $points[] = ['lat' => $lat / 1E5, 'lng' => $lng / 1E5];
+        }
+
+        return $points;
+    }
+
+    private function haversineDistance($lat1, $lon1, $lat2, $lon2)
+    {
+        $earthRadius = 6371000; // meters
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+
+        $a = sin($dLat / 2) ** 2 +
+            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+            sin($dLon / 2) ** 2;
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        return $earthRadius * $c;
+    }
+
+    private function isPointNearRoute($pointLat, $pointLng, $routeCoords, $toleranceMeters)
+    {
+        foreach ($routeCoords as $coord) {
+            $distance = $this->haversineDistance($pointLat, $pointLng, $coord['lat'], $coord['lng']);
+            if ($distance <= $toleranceMeters) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

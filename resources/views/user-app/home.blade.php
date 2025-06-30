@@ -35,7 +35,7 @@
                 <div class="form-input">
                     <input type="search" name="desination_location" class="form-control with-icon"
                            placeholder="Search for a targeted transport route" id="pac-input1">
-                    <input type="hidden" name="pickup_location" class="form-control with-icon" id="pac-input2">
+                    <input type="hidden" name="pickup_location" class="form-control with-icon" id="pac-input2" value="Sargodha Bus Stand, General Bus Stand Road, Jinnah colony, Sargodha, Pakistan">
                     <button type="submit" class="search-button">
                         <i class="iconsax search-icon" data-icon="search-normal-2"></i>
                     </button>
@@ -242,28 +242,28 @@
             });
 
             // Autofill Pickup Location using Geolocation + Geocoder
-            const pickupInput = document.getElementById("pac-input2");
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition((position) => {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-
-                    const geocoder = new google.maps.Geocoder();
-                    const latlng = { lat, lng };
-
-                    geocoder.geocode({ location: latlng }, (results, status) => {
-                        if (status === "OK" && results[0]) {
-                            pickupInput.value = results[0].formatted_address;
-                        } else {
-                            console.warn("Geocoder failed due to: " + status);
-                        }
-                    });
-                }, (error) => {
-                    console.warn("Geolocation error:", error.message);
-                });
-            } else {
-                console.warn("Geolocation is not supported by this browser.");
-            }
+            // const pickupInput = document.getElementById("pac-input2");
+            // navigator.geolocation.getCurrentPosition((position) => {
+            //     const lat = position.coords.latitude;
+            //     const lng = position.coords.longitude;
+            //
+            //     const geocoder = new google.maps.Geocoder();
+            //     const latlng = { lat, lng };
+            //
+            //     geocoder.geocode({ location: latlng }, (results, status) => {
+            //         if (status === "OK" && results[0]) {
+            //             pickupInput.value = results[0].formatted_address;
+            //         } else {
+            //             console.warn("Geocoder failed due to: " + status);
+            //         }
+            //     });
+            // }, (error) => {
+            //     console.warn("Geolocation error:", error.message);
+            // }, {
+            //     enableHighAccuracy: true,
+            //     timeout: 10000,
+            //     maximumAge: 0
+            // });
 
         }
     </script>
