@@ -20,30 +20,101 @@
                     <i class="iconsax icon-btn" data-icon="chevron-left"> </i>
                 </a>
 
-                <h3 class="fw-medium  title-color">Date Time Schedule</h3>
+                <h3 class="fw-medium  title-color">Targeted Transport Routes</h3>
             </div>
         </div>
     </header>
     <!-- header end -->
 
-    <!-- date-time section starts -->
-    <section class="date-time-section section-b-space">
-        <div class="heading-part white-background p-3">
-            <h4 class="text-center mx-auto fw-500 title-color w-75">What time would you want to be picked up?</h4>
-        </div>
+    <!-- active offer section starts -->
+    <section class="upcoming-ride-section">
         <div class="custom-container">
-            <div id="calendar" class="w-100"></div>
-            <div id="time" class="w-100"></div>
-
-        </div>
-
-        <div class="fixed-btn">
-            <div class="custom-container">
-                <a href="{{url('user/search-location')}}" class="btn theme-btn download-btn w-100">Done</a>
+            <div class="title">
+                <h4>Carrier's Routes</h4>
             </div>
+            <ul class="my-ride-list driver-ride-list mt-0" id="userRideList">
+                @forelse($matches as $match)
+                    <li>
+                        <div class="my-ride-box">
+                            <form action="{{ url('user/select-ride-targetted') }}" method="post">
+                                @csrf
+                                <input type="text" value="{{ $pickupAddress ? $pickupAddress : '' }}" name="pickup_location">
+                                <input type="text" value="{{ $destinationAddress ? $destinationAddress : '' }}" name="destination_location">
+                                <input type="text" value="{{ $match->driver_id }}" name="driver_id">
+                                <div class="my-ride-head">
+                                    <button type="submit" class="my-ride-img">
+                                        <img class="img-fluid profile-img" src="{{ $match->user->profile ? asset('storage/'.$userriderequest->user->profile) : asset('assets/images/profile/p5.png') }}" alt="p5">
+                                    </button>
+
+                                    <div class="my-ride-content flex-column">
+                                        <div class="flex-spacing">
+                                            <button type="submit">
+                                                <h5 class="title-color fw-medium">{{ $match->user->name }}</h5>
+                                            </button>
+                                            <div class="flex-align-center">
+                                                <div class="flex-align-center gap-1 pe-2">
+                                                    <img class="star" src="{{asset('assets/images/svg/star.svg')}}" alt="star">
+                                                    <h5 class="fw-normal title-color p-0">4.8</h5>
+                                                </div>
+                                                {{--                                            <h5 class="fw-mediun theme-color price ps-2 pe-0">{{ $match->fare_currency }} {{ $match->fare }}</h5>--}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="my-ride-details">
+                                <div class="ride-info">
+                                    <div class="flex-align-center gap-1">
+                                        <img class="icon img-fluid" src="{{asset('assets/images/svg/location-fill.svg')}}"
+                                             alt="location">
+                                        <h6 class="fw-normal title-color">{{ $match->distance }} km</h6>
+                                    </div>
+                                    <h6 class="fw-normal title-color">{{ $match->departure_date }}</h6>
+                                </div>
+                                <div class="d-flex flex-row">
+                                    @php
+                                        $parcel_pictures = $match->parcel_pictures ? json_decode($match->parcel_pictures) : '';
+                                    @endphp
+                                    @if($parcel_pictures)
+                                        @foreach($parcel_pictures as $parcel_picture)
+                                            <img src="{{ asset('storage/'. $parcel_picture) }}" class="me-1" width="50" height="50" alt="loading">
+                                        @endforeach
+                                    @endif
+                                </div>
+                                <ul class="ride-location-listing">
+                                    <li class="border-0 shadow-none box-background">
+                                        <div class="location-box bg-transparent">
+                                            <img class="icon" src="{{asset('assets/images/svg/location-fill.svg')}}"
+                                                 alt="location">
+                                            <h5 class="fw-light title-color">{{ $match->pickup_location }}</h5>
+                                        </div>
+                                    </li>
+
+                                    @php
+                                        $locations = json_decode($match->destination_location, true); // returns array
+                                    @endphp
+
+                                    @foreach($locations as $location)
+                                        <li class="border-0 shadow-none box-background">
+                                            <div class="location-box bg-transparent">
+                                                <img class="icon" src="{{asset('assets/images/svg/gps.svg')}}" alt="gps">
+                                                <h5 class="fw-light title-color border-0">{{ $location }}</h5>
+                                            </div>
+                                        </li>
+                                    @endforeach
+
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                @empty
+                    <p>No Ride requests available.</p>
+                @endforelse
+            </ul>
         </div>
     </section>
-    <!-- date-time section starts -->
+    <!-- active offer section end -->
 
     <!-- panel-space start -->
     <section class="panel-space"></section>

@@ -60,10 +60,16 @@ class RidesbookedController extends Controller
         $ridesbooked->driver_lng = $driverfarerequest->driver_location_latitude;
         $ridesbooked->status = 'pending';
 
-        $directions = $this->getRoutePolyline(
-            $userriderequest->pickup_location,
-            $userriderequest->destination_location
-        );
+        $pickup = $userriderequest->pickup_location;
+        $destination = $userriderequest->destination_location;
+        if (is_string($destination) && $this->isJson($destination)) {
+            $decoded = json_decode($destination, true);
+            if (is_array($decoded) && isset($decoded[0])) {
+                $destination = $decoded[0];
+            }
+        }
+
+        $directions = $this->getRoutePolyline($pickup, $destination);
         if ($directions && isset($directions['overview_polyline']['points'])) {
             $ridesbooked->route_polyline = $directions['overview_polyline']['points'];
         }
@@ -89,9 +95,15 @@ class RidesbookedController extends Controller
         return view('user-app.accept-ride-details',['ridesbooked' => $ridesbooked])->with(['success' => 'Ride booked successfully']);
     }
 
+    private function isJson($string)
+    {
+        json_decode($string);
+        return (json_last_error() === JSON_ERROR_NONE);
+    }
+
     private function getRoutePolyline($origin, $destination)
     {
-        $apiKey = env('GOOGLE_MAPS_API_KEY');
+        $apiKey = 'AIzaSyBKqq-XxVccy3MdBiolKZOJ601LNqvFPaE';
         $url = "https://maps.googleapis.com/maps/api/directions/json";
 
         $response = Http::get($url, [
