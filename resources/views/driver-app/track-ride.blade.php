@@ -175,16 +175,36 @@
             }, 8000);
         }
 
+        // function redirectToGoogleMaps() {
+        //     const origin = encodeURIComponent($('#origin').val());
+        //     const destination = encodeURIComponent($('#destination').val());
+        //
+        //     let waypoints = stopInputs.map(id => encodeURIComponent($(`#${id}`).val())).join('|');
+        //
+        //     const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving${waypoints ? `&waypoints=${waypoints}` : ''}&dir_action=navigate`;
+        //
+        //     window.location.href = mapsUrl;
+        // }
+
         function redirectToGoogleMaps() {
             const origin = encodeURIComponent($('#origin').val());
-            const destination = encodeURIComponent($('#destination').val());
+            const encodedDest = encodeURIComponent($('#destination').val());
 
-            let waypoints = stopInputs.map(id => encodeURIComponent($(`#${id}`).val())).join('|');
+            const isAndroid = /android/i.test(navigator.userAgent);
+            const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
 
-            const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving${waypoints ? `&waypoints=${waypoints}` : ''}&dir_action=navigate`;
-
-            window.location.href = mapsUrl;
+            if (isAndroid) {
+                // Android: open in navigation mode using intent
+                window.location.href = `intent://maps.google.com/maps?daddr=${encodedDest}&dirflg=d#Intent;scheme=https;package=com.google.android.apps.maps;end`;
+            } else if (isIOS) {
+                // iOS: try to open in Google Maps app
+                window.location.href = `comgooglemaps://?daddr=${encodedDest}&directionsmode=driving`;
+            } else {
+                // Fallback for desktop or unknown devices
+                window.location.href = `https://www.google.com/maps/dir/?api=1&destination=${encodedDest}&travelmode=driving`;
+            }
         }
+
 
     </script>
 

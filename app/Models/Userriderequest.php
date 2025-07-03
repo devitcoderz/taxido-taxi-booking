@@ -35,6 +35,9 @@ class Userriderequest extends Model
         'quantity_of_package',
         'comments',
         'status',
+        'means_of_transport',
+        'is_targetted',
+        'targetted_driver_id'
 
     ];
 

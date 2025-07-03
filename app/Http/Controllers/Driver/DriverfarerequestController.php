@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Driver;
 
 use App\Http\Controllers\Controller;
+use App\Models\Driver;
 use App\Models\Driverfarerequest;
 use App\Models\Ridesbooked;
 use App\Models\Userriderequest;
@@ -34,11 +35,18 @@ class DriverfarerequestController extends Controller
 //
 //        dd($getpayment);
 
-        $userriderequests = Userriderequest::with('user','packagetype','packagesubtype')
-//            ->where('expiry', '>', Carbon::now())
+        $driver = Driver::find(Auth::guard('driver')->user()->id);
+        $driverTransports = json_decode($driver->means_of_transport ?? '[]', true);
+
+        $userriderequests = Userriderequest::with(['user', 'packagetype', 'packagesubtype'])
             ->where('status', 'waiting')
-            ->orderBy('id', 'desc')
-            ->get();
+            ->whereNull('is_targetted')
+            ->orderByDesc('id')
+            ->get()
+            ->filter(function ($request) use ($driverTransports) {
+                $requestTransports = json_decode($request->means_of_transport ?? '[]', true);
+                return !empty(array_intersect($driverTransports, $requestTransports));
+            });
         return view('driver-app.home', compact('userriderequests'));
     }
 

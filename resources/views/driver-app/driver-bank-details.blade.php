@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Facades\Auth; @endphp
 @extends('driver-app.layout')
 @section('title')
     <title>Taxido - Driver App </title>
@@ -15,7 +16,7 @@
     <header id="header" class="auth-header inner-page-header white-background pb-3">
         <div class="custom-container">
             <div class="header-panel">
-                <a href="{{url('driver/vehicle-registration')}}">
+                <a href="{{url('driver/vehicle-registeration')}}">
                     <i class="iconsax icon-btn" data-icon="chevron-left"> </i>
                 </a>
                 <img class="img-fluid logo" src="{{asset('assets/images/logo/driver/driver-logo.png')}}" alt="logo">
@@ -45,6 +46,9 @@
                 @endphp
 
                 @if($user_id)
+                    @php
+                    $user = Auth::guard('driver')->user();
+                    @endphp
                     <input type="hidden" name="user_id" value="{{ $user_id }}">
                 @else
                     <script>window.location.href = "{{ url('driver/signup') }}";</script>
@@ -54,7 +58,7 @@
                     <label class="form-label mb-2" for="Inputname">Bank Name</label>
                     <div class="position-relative">
                         <input type="text" class="form-control white-background" name="bank_name" id="Inputname"
-                            placeholder="Enter bank name">
+                            placeholder="Enter bank name" value="{{ $user->bank_name }}">
                         <i class="iconsax icon" data-icon="bank"></i>
                     </div>
                 </div>
@@ -62,7 +66,7 @@
                     <label class="form-label mb-2" for="Inputholder">Holder Name</label>
                     <div class="position-relative">
                         <input type="text" class="form-control white-background" name="holder_name" id="Inputholder"
-                            placeholder="Enter holder name">
+                            placeholder="Enter holder name" value="{{ $user->holder_name }}">
                         <i class="iconsax icon" data-icon="user-1"></i>
                     </div>
                 </div>
@@ -70,7 +74,7 @@
                     <label class="form-label mb-2" for="Inputnumner">Account No.</label>
                     <div class="position-relative">
                         <input type="number" class="form-control white-background" name="account_number" id="Inputnumner"
-                            placeholder="Enter your account no">
+                            placeholder="Enter your account no" value="{{ $user->account_number }}">
                         <i class="iconsax icon" data-icon="wallet-2"></i>
                     </div>
                 </div>
@@ -79,7 +83,7 @@
                     <label class="form-label mb-2" for="Inputbranch">Branch Name</label>
                     <div class="position-relative">
                         <input type="text" class="form-control white-background" name="branch_name" id="Inputbranch"
-                            placeholder="Enter branch name">
+                            placeholder="Enter branch name" value="{{ $user->branch_name }}">
                         <i class="iconsax icon" data-icon="building-1"></i>
                     </div>
                 </div>
@@ -88,7 +92,7 @@
                     <label class="form-label mb-2" for="Inputcode">IFSC code</label>
                     <div class="position-relative">
                         <input type="email" class="form-control white-background" name="ifsc_code" id="Inputcode"
-                            placeholder="Enter ifsc code">
+                            placeholder="Enter ifsc code" value="{{ $user->ifsc_code }}">
                         <i class="iconsax icon" data-icon="code-2"></i>
                     </div>
                 </div>

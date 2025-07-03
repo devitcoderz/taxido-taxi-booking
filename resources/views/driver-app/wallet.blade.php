@@ -27,7 +27,7 @@
             <div class="balance-details">
                 <div>
                     <h6>Total Balance</h6>
-                    <h4 class="mt-2">$ {{ Auth::guard('driver')->user()->balance }}</h4>
+                    <h4 class="mt-2">$ {{ Auth::guard('driver')->user()->available_balance }}</h4>
                 </div>
                 <a href="{{url('driver/topup-wallet')}}" class="btn theme-btn balance-btn mt-0">Topup Wallet</a>
             </div>

@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
            ParcelCategorySeeder::class,
-            ParcelSubCategorySeeder::class
+            ParcelSubCategorySeeder::class,
+            Mean_of_transport::class
         ]);
 
 

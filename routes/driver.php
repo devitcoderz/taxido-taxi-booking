@@ -20,7 +20,7 @@ Route::group(['prefix' => 'driver', 'as' => 'driver.'], function (){
 
         Route::get('/driver-bank-details', function (){
             return view('driver-app.driver-bank-details');
-        });
+        })->name('driver_bank_detail_view');
         Route::post('driver-bank-details', [\App\Http\Controllers\Driver\AuthController::class, 'driver_bank_details'])->name('driver_bank_details');
 
         Route::get('/driver-document-verify', function (){
@@ -41,6 +41,8 @@ Route::group(['prefix' => 'driver', 'as' => 'driver.'], function (){
             return view('driver-app.vehicle-registration');
         });
 
+        Route::get('my-rides',[\App\Http\Controllers\Driver\RideController::class,'my_rides'])->name('my_rides');
+
     });
 
     Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
@@ -50,7 +52,6 @@ Route::group(['prefix' => 'driver', 'as' => 'driver.'], function (){
         return view('driver-app.accept-ride-details');
     });
 
-    Route::get('active-ride',[\App\Http\Controllers\Driver\RideController::class,'active_rides'])->name('active_rides');
     Route::get('track-ride',[\App\Http\Controllers\Driver\RideController::class,'track_ride'])->name('track_ride');
     Route::post('driver-location-update',[\App\Http\Controllers\Driver\RideController::class,'driver_location_update'])->name('driver-location-update');
 
@@ -95,8 +96,6 @@ Route::group(['prefix' => 'driver', 'as' => 'driver.'], function (){
     Route::get('/index', function (){
         return view('driver-app.index');
     });
-
-    Route::get('my-rides',[\App\Http\Controllers\Driver\RideController::class,'my_rides'])->name('my_rides');
 
     Route::get('/notification', function (){
         return view('driver-app.notification');

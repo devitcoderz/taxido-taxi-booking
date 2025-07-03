@@ -24,6 +24,8 @@ class Driver extends Authenticatable
         'registeration_date',
         'vehicle_type',
         'vehicle_color',
+        'vehicle_pictures',
+        'means_of_transport',
         'max_seats',
         'rules',
         'bank_name',
@@ -34,7 +36,9 @@ class Driver extends Authenticatable
         'profile',
         'latitude',
         'longitude',
-        'google_id'
+        'google_id',
+        'available_balance',
+        'total_balance'
     ];
 
     protected $hidden = [

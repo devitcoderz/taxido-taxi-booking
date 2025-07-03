@@ -84,8 +84,28 @@ class RideController extends Controller
 
     public function get_user_ride_request()
     {
+        $driver = Driver::find(Auth::guard('driver')->user()->id);
+        $driverTransports = json_decode($driver->means_of_transport ?? '[]', true);
+
         $driverFareRequests = Userriderequest::with('user','packagetype','packagesubtype') // if you have these relationships
         ->where('status', 'waiting')
+            ->whereNull('is_targetted')
+//            ->where('expiry', '>', Carbon::now())
+            ->orderBy('id', 'desc')
+            ->get()
+            ->filter(function ($request) use ($driverTransports) {
+                $requestTransports = json_decode($request->means_of_transport ?? '[]', true);
+                return !empty(array_intersect($driverTransports, $requestTransports));
+            });
+        return response()->json($driverFareRequests);
+    }
+
+    public function get_personal_ride_request()
+    {
+        $driverFareRequests = Userriderequest::with('user','packagetype','packagesubtype') // if you have these relationships
+        ->where('status', 'waiting')
+            ->where('targetted_driver_id', Auth::guard('driver')->user()->id)
+            ->where('is_targetted','1')
 //            ->where('expiry', '>', Carbon::now())
             ->orderBy('id', 'desc')
             ->get();
@@ -172,10 +192,14 @@ class RideController extends Controller
         $toleranceMeters = 20000; // 1 km radius
         $matches = [];
 
-        $rides = Ridesbooked::whereNotNull('route_polyline')
+        $minRideIds = Ridesbooked::whereNotNull('route_polyline')
+            ->where('status','active')
             ->groupBy('driver_id')
-            ->selectRaw('MIN(id) as id, driver_id, MAX(route_polyline) as route_polyline') // select one ride per driver
-            ->get();
+            ->selectRaw('MIN(id) as id')
+            ->pluck('id');
+
+// Step 2: Fetch full ride records for those IDs
+        $rides = Ridesbooked::whereIn('id', $minRideIds)->get();
 
         foreach ($rides as $ride) {
             $routeCoords = $this->decodePolyline($ride->route_polyline);
