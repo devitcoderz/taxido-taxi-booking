@@ -36,6 +36,9 @@ return new class extends Migration
             $table->string('weight_of_package');
             $table->string('quantity_of_package');
             $table->string('comments')->nullable();
+            $table->string('means_of_transport')->nullable();
+            $table->boolean('is_targetted')->nullable();
+            $table->integer('targetted_driver_id')->nullable();
             $table->text('parcel_pictures')->nullable();
             $table->string('status')->default('waiting');
             $table->timestamps();

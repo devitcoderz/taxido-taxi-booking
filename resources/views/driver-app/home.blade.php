@@ -35,72 +35,6 @@
     </header>
     <!-- header end -->
 
-    <!-- earning section starts -->
-    <section>
-        <div class="custom-container">
-            <ul class="total-ride-list mt-0 p-0">
-                <li>
-                    <a href="{{url('driver/wallet')}}" class="ride-box">
-                        <div class="flex-spacing gap-1">
-                            <h4>$3100</h4>
-                            <div class="ride-icon">
-                                <i class="iconsax icon" data-icon="wallet-open"> </i>
-                            </div>
-                        </div>
-                        <div class="flex-spacing gap-1 mt-1">
-                            <h6 class="d-flex flex-wrap">Total Earnings</h6>
-                            <i class="iconsax arrow-icon" data-icon="arrow-right"> </i>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{url('driver/my-rides')}}" class="ride-box">
-                        <div class="flex-spacing gap-1">
-                            <h4>16</h4>
-                            <div class="ride-icon">
-                                <i class="iconsax icon" data-icon="smart-car"> </i>
-                            </div>
-                        </div>
-                        <div class="flex-spacing gap-1 mt-1">
-                            <h6 class="d-flex flex-wrap">Complete Ride</h6>
-                            <i class="iconsax arrow-icon" data-icon="arrow-right"> </i>
-                        </div>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{url('driver/my-rides')}}" class="ride-box">
-                        <div class="flex-spacing gap-1">
-                            <h4>02</h4>
-                            <div class="ride-icon">
-                                <i class="iconsax icon" data-icon="car"> </i>
-                            </div>
-                        </div>
-                        <div class="flex-spacing gap-1 mt-1">
-                            <h6 class="d-flex flex-wrap">Pending Ride</h6>
-                            <i class="iconsax arrow-icon" data-icon="arrow-right"> </i>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{url('driver/my-rides')}}" class="ride-box">
-                        <div class="flex-spacing gap-1">
-                            <h4>04</h4>
-                            <div class="ride-icon">
-                                <i class="iconsax icon" data-icon="driving"> </i>
-                            </div>
-                        </div>
-                        <div class="flex-spacing gap-1 mt-1">
-                            <h6 class="d-flex flex-wrap">Cancel Ride</h6>
-                            <i class="iconsax arrow-icon" data-icon="arrow-right"> </i>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </section>
-    <!-- earning section end -->
-
     <!-- upcoming ride section starts -->
     <section class="upcoming-ride-section d-none">
         <div class="custom-container">
@@ -257,6 +191,9 @@
                                 </div>
                                 <h6 class="fw-normal title-color">{{ $userriderequest->departure_date }}</h6>
                             </div>
+                            @php
+                                $means = json_decode($userriderequest->means_of_transport, true);
+                            @endphp
                             <div class="d-flex flex-column">
                                 <p>Type of Package :- {{ $userriderequest->packagetype->title }}</p>
                                 <p>Sub Type of Package :- {{ $userriderequest->packagesubtype->title }}</p>
@@ -264,6 +201,7 @@
                                 <p>Width of Package :- {{ $userriderequest->width_of_package }}</p>
                                 <p>Weight of Package :- {{ $userriderequest->weight_of_package }}</p>
                                 <p>Quantity of Package :- {{ $userriderequest->quantity_of_package }}</p>
+                                <p>Mean of Transports :- {{ is_array($means) ? implode(', ', $means) : '' }}</p>
                                 <p>Comments :- {{ $userriderequest->comments }}</p>
                             </div>
                             <div class="d-flex flex-row">
@@ -369,6 +307,17 @@
                                 }
                             }
 
+                            let transportData = ride.means_of_transport; // e.g. '["1","7"]'
+                            let transportArray = [];
+
+                            try {
+                                transportArray = JSON.parse(transportData);
+                            } catch (e) {
+                                console.error("Invalid JSON:", transportData);
+                            }
+
+                            let displayText = Array.isArray(transportArray) ? transportArray.join(', ') : '';
+
                             let profileImg = ride.user.profile
                                 ? `/storage/${ride.user.profile}`
                                 : '/assets/images/profile/p5.png';
@@ -412,6 +361,7 @@
                                     <p>Width of Package :- ${ride.width_of_package}</p>
                                     <p>Weight of Package :- ${ride.weight_of_package}</p>
                                     <p>Quantity of Package :- ${ride.quantity_of_package}</p>
+                                    <p>Mean of Transports :- ${displayText}</p>
                                     <p>Comments :- ${ride.comments}</p>
                                 </div>
 

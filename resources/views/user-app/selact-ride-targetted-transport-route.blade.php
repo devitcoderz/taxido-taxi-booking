@@ -48,8 +48,10 @@
                 </div>
             @endif
 {{--                theme-form--}}
-                <form class="mt-0" method="post" action="{{ route('user.driver_fare_request') }}" enctype="multipart/form-data">
+                <form class="mt-0" method="post" action="{{ route('user.targetted_driver_fare_request') }}" enctype="multipart/form-data">
                     @csrf
+                    <input type="hidden" value="1" name="is_targetted">
+                    <input type="hidden" value="{{ $request->driver_id }}" name="driver_id">
                     <input type="hidden" name="pickup_location" value="{{ $request->pickup_location }}">
                     <input type="hidden" name="pickup_location_latitude" id="pickup_location_latitude">
                     <input type="hidden" name="pickup_location_longitude" id="pickup_location_longitude">
@@ -59,11 +61,7 @@
                         <label class="form-label mb-2" for="departure_date">Date and time of Departure</label>
                         <input type="text" class="form-control white-background" name="departure_date" id="departure_date">
                     </div>
-{{--                    <div class="form-group mt-3">--}}
-{{--                        <label class="form-label mb-2" for="Inputpassenger">Distance of Route</label>--}}
-{{--                        <input type="number" class="form-control white-background" id="Inputpassenger" name="distance"--}}
-{{--                               placeholder="Enter Distance in Km">--}}
-{{--                    </div>--}}
+
                     <div class="form-group mt-3">
                         <label class="form-label mb-2" for="type_of_package">Select Type of Package</label>
                         <select class="form-control white-background" id="type_of_package" name="type_of_package">
@@ -89,11 +87,6 @@
                         <input type="text" class="form-control white-background" id="width_of_package" name="width_of_package"
                                placeholder="Enter Package Width">
                     </div>
-{{--                    <div class="form-group mt-3">--}}
-{{--                        <label class="form-label mb-2" for="volume_of_package">Enter Volume of Package (Meters)</label>--}}
-{{--                        <input type="number" class="form-control white-background" id="volume_of_package" name="volume_of_package"--}}
-{{--                               placeholder="Enter Package Volume">--}}
-{{--                    </div>--}}
                     <div class="form-group mt-3">
                         <label class="form-label mb-2" for="weight_of_package">Enter Weight of Package</label>
                         <input type="text" class="form-control white-background" id="weight_of_package" name="weight_of_package"
@@ -115,8 +108,6 @@
                             <label class="form-label mb-2" for="currency_offerrate">Select your fare currency</label>
                             <select class="form-control white-background" id="currency_offerrate" name="fare_currency">
                                 <option value="dollar">United State Dollar</option>
-{{--                                <option value="dirham">Dirham</option>--}}
-{{--                                <option value="ryal">Ryal</option>--}}
                                 <option value="euro" selected>Euro</option>
                             </select>
                         </div>

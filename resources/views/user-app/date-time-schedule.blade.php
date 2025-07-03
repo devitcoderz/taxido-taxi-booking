@@ -6,8 +6,8 @@
 
 @section('style')
 
-    <!-- calendar css -->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/calendar.min.css')}}">
+    <!-- swiper css -->
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/swiper-bundle.min.css')}}">
 
 @endsection
 
@@ -38,18 +38,21 @@
                         <div class="my-ride-box">
                             <form action="{{ url('user/select-ride-targetted') }}" method="post">
                                 @csrf
-                                <input type="text" value="{{ $pickupAddress ? $pickupAddress : '' }}" name="pickup_location">
-                                <input type="text" value="{{ $destinationAddress ? $destinationAddress : '' }}" name="destination_location">
-                                <input type="text" value="{{ $match->driver_id }}" name="driver_id">
+                                <input type="hidden" value="{{ $pickupAddress ? $pickupAddress : '' }}" id="pickupAddress" name="pickup_location">
+                                <input type="hidden" value="{{ $destinationAddress ? $destinationAddress : '' }}" id="destinationAddress" name="destination_location">
+                                <input type="hidden" id="distance" name="distance">
+                                <input type="hidden" value="{{ $match->driver_id }}" name="driver_id">
                                 <div class="my-ride-head">
-                                    <button type="submit" class="my-ride-img">
-                                        <img class="img-fluid profile-img" src="{{ $match->user->profile ? asset('storage/'.$userriderequest->user->profile) : asset('assets/images/profile/p5.png') }}" alt="p5">
+                                    <button type="submit" class="my-ride-img btn btn-outline-none">
+                                        <img class="img-fluid profile-img"
+                                             src="{{ $match->user?->profile ? asset('storage/' . $match->user->profile) : asset('assets/images/profile/p5.png') }}"
+                                             alt="p5">
                                     </button>
 
                                     <div class="my-ride-content flex-column">
                                         <div class="flex-spacing">
-                                            <button type="submit">
-                                                <h5 class="title-color fw-medium">{{ $match->user->name }}</h5>
+                                            <button type="submit" class="btn btn-outline-none">
+                                                <h5 class="title-color fw-medium">{{ $match->user?->name }}</h5>
                                             </button>
                                             <div class="flex-align-center">
                                                 <div class="flex-align-center gap-1 pe-2">
@@ -109,7 +112,7 @@
                         </div>
                     </li>
                 @empty
-                    <p>No Ride requests available.</p>
+                    <p>No Carrier Available for This Route.</p>
                 @endforelse
             </ul>
         </div>
@@ -124,8 +127,55 @@
 
     @section('script')
 
-        <!-- calendar js -->
-        <script src="{{asset('assets/js/calendar.min.js')}}"></script>
-        <script src="{{asset('assets/js/custom-calendar.js')}}"></script>
+        <!-- swiper js -->
+        <script src="{{asset('assets/js/swiper-bundle.min.js')}}"></script>
+        <script src="{{asset('assets/js/custom-swiper.js')}}"></script>
+
+        <script>
+            function initMap() {
+                const pickupAddress = document.getElementById('pickupAddress').value;
+                const destinationAddress = document.getElementById('destinationAddress').value;
+
+                if (!pickupAddress || !destinationAddress) return;
+
+                const geocoder = new google.maps.Geocoder();
+                const directionsService = new google.maps.DirectionsService();
+
+                geocoder.geocode({ address: pickupAddress }, function (pickupResults, pickupStatus) {
+                    if (pickupStatus === "OK") {
+                        geocoder.geocode({ address: destinationAddress }, function (destResults, destStatus) {
+                            if (destStatus === "OK") {
+                                const request = {
+                                    origin: pickupResults[0].formatted_address,
+                                    destination: destResults[0].formatted_address,
+                                    travelMode: 'DRIVING'
+                                };
+
+                                directionsService.route(request, function (result, status) {
+                                    if (status === 'OK') {
+                                        let totalDistance = 0;
+                                        result.routes[0].legs.forEach(leg => {
+                                            totalDistance += leg.distance.value; // in meters
+                                        });
+
+                                        const distanceInKm = (totalDistance / 1000).toFixed(2);
+                                        console.log(`Distance: ${distanceInKm} km`);
+                                        document.getElementById('distance').value = distanceInKm;
+                                    } else {
+                                        console.error("Route request failed:", status);
+                                    }
+                                });
+                            } else {
+                                console.error("Destination geocoding failed:", destStatus);
+                            }
+                        });
+                    } else {
+                        console.error("Pickup geocoding failed:", pickupStatus);
+                    }
+                });
+            }
+        </script>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKqq-XxVccy3MdBiolKZOJ601LNqvFPaE&libraries=places,geometry&callback=initMap" async defer></script>
 
 @endsection

@@ -33,6 +33,10 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
 
         Route::post('/driver-fare-request', [\App\Http\Controllers\User\UserriderequestController::class, 'driver_fare_request'])->name('driver_fare_request');
         Route::get('/get-driver-fare-request', [\App\Http\Controllers\User\UserriderequestController::class, 'get_driver_fare_request'])->name('get_driver_fare_request');
+        Route::get('/get-targetted-driver-fare-request', [\App\Http\Controllers\User\UserriderequestController::class, 'get_targetted_driver_fare_request'])->name('get_targetted_driver_fare_request');
+
+        Route::post('/targetted-driver-fare-request', [\App\Http\Controllers\User\UserriderequestController::class, 'targetted_driver_fare_request'])->name('targetted_driver_fare_request');
+//        Route::get('/get-targetted-driver-fare-request', [\App\Http\Controllers\User\UserriderequestController::class, 'get_targetted_driver_fare_request'])->name('get_targetted_driver_fare_request');
 
         Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -104,12 +108,13 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function (){
 
     Route::get('ride-details',[\App\Http\Controllers\User\RideController::class,'ride_details'])->name('ride_details');
     Route::get('/get-user-ride-request', [\App\Http\Controllers\User\RideController::class, 'get_user_ride_request'])->name('get_user_ride_request');
+    Route::get('/get-personal-ride-request', [\App\Http\Controllers\User\RideController::class, 'get_personal_ride_request'])->name('get_personal_ride_request');
 
     Route::get('/coupon', function (){
         return view('user-app.coupon');
     });
 
-    Route::get('/targeted-transport-route',[\App\Http\Controllers\User\RideController::class,'targeted_transport_route']);
+    Route::post('/targeted-transport-route',[\App\Http\Controllers\User\RideController::class,'targeted_transport_route']);
 
     Route::get('/driver-details', function (){
         return view('user-app.driver-details');

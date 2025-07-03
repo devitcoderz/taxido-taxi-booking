@@ -100,10 +100,31 @@ class AuthController extends Controller
         $driver->registeration_date = $request->registeration_date;
         $driver->vehicle_type = $request->vehicle_type;
         $driver->vehicle_color = $request->vehicle_color;
+        $driver->means_of_transport = json_encode($request->input('means_of_transport',[]));
         $driver->max_seats = $request->max_seats;
         $driver->rules = json_encode($request->input('rule', []));
+
+        if ($request->hasFile('vehicle_pictures')) {
+            $imagePaths = [];
+            $files = $request->file('vehicle_pictures');
+
+            if (!is_array($files)) {
+                $files = [$files];
+            }
+            foreach ($files as $image) {
+                try {
+                    $path = $image->store('documents/vehicle_pictures', 'public');
+                    $imagePaths[] = $path;
+                } catch (\Exception $e) {
+                    dd($e->getMessage());
+                }
+            }
+
+            $driver->vehicle_pictures = json_encode($imagePaths);
+        }
+
         $driver->save();
-        return redirect('driver/driver-bank-details', ['user_id' => $request->user_id]);
+        return redirect()->route('driver.driver_bank_detail_view', ['user_id' => $driver->id]);
     }
 
     public function driver_bank_details(Request $request)

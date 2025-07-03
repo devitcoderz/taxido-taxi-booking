@@ -1,3 +1,4 @@
+@php use App\Models\Ridesbooked;use Illuminate\Support\Carbon;use Illuminate\Support\Facades\Auth; @endphp
 @extends('driver-app.layout')
 @section('title')
     <title>Taxido - Driver App </title>
@@ -23,13 +24,15 @@
     @php
         $driver = \Illuminate\Support\Facades\Auth::guard('driver')->user();
     @endphp
-    <!-- profile section starts -->
+        <!-- profile section starts -->
     <section class="setting-section">
         <div class="custom-container">
             <div class="profile-section white-background rounded-2 p-3">
                 <div class="flex-align-center gap-2">
                     <div class="profile-image m-0">
-                        <img class="img-fluid profile-pic" src="{{ $driver->profile ? asset('storage/'.$driver->profile) : asset('assets/images/profile/p8.png') }}" alt="p8">
+                        <img class="img-fluid profile-pic"
+                             src="{{ $driver->profile ? asset('storage/'.$driver->profile) : asset('assets/images/profile/p8.png') }}"
+                             alt="p8">
                     </div>
                     <div class="profile-content">
                         <h3 class="profile-name">{{ $driver->name }}</h3>
@@ -38,11 +41,91 @@
                 </div>
                 <div class="wallet-part">
                     <h6>My Wallet Balance</h6>
-                    <h5>${{ $driver->balance }} </h5>
+                    <h5>${{ $driver->available_balance }} </h5>
 
                 </div>
             </div>
         </div>
+
+        <!-- earning section starts -->
+        <section>
+            <div class="custom-container">
+                @php
+                    $pending_rides = Ridesbooked::where('driver_id', Auth::guard('driver')->id())
+                        ->where('status', 'pending')
+                        ->with('driver', 'user')
+                        ->count();
+                    $completed_rides = Ridesbooked::where('driver_id', Auth::guard('driver')->id())
+                        ->where('status', 'completed')
+                        ->with('driver', 'user')
+                        ->count();
+                    $cancelled_rides = Ridesbooked::where('driver_id', Auth::guard('driver')->id())
+                        ->where('status', 'cancelled')
+                        ->where('departure_date', '>=', Carbon::now())
+                        ->count();
+                @endphp
+                <ul class="total-ride-list mt-0 p-0">
+                    <li>
+                        <a href="{{url('driver/wallet')}}" class="ride-box">
+                            <div class="flex-spacing gap-1">
+                                <h4>${{ \Illuminate\Support\Facades\Auth::guard('driver')->user()->total_balance }}</h4>
+                                <div class="ride-icon">
+                                    <i class="iconsax icon" data-icon="wallet-open"> </i>
+                                </div>
+                            </div>
+                            <div class="flex-spacing gap-1 mt-1">
+                                <h6 class="d-flex flex-wrap">Total Earnings</h6>
+                                <i class="iconsax arrow-icon" data-icon="arrow-right"> </i>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url('driver/my-rides')}}" class="ride-box">
+                            <div class="flex-spacing gap-1">
+                                <h4>{{ $completed_rides }}</h4>
+                                <div class="ride-icon">
+                                    <i class="iconsax icon" data-icon="smart-car"> </i>
+                                </div>
+                            </div>
+                            <div class="flex-spacing gap-1 mt-1">
+                                <h6 class="d-flex flex-wrap">My Transports Made</h6>
+                                <i class="iconsax arrow-icon" data-icon="arrow-right"> </i>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{url('driver/my-rides')}}" class="ride-box">
+                            <div class="flex-spacing gap-1">
+                                <h4>{{ $pending_rides }}</h4>
+                                <div class="ride-icon">
+                                    <i class="iconsax icon" data-icon="car"> </i>
+                                </div>
+                            </div>
+                            <div class="flex-spacing gap-1 mt-1">
+                                <h6 class="d-flex flex-wrap">My Current Transports</h6>
+                                <i class="iconsax arrow-icon" data-icon="arrow-right"> </i>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url('driver/my-rides')}}" class="ride-box">
+                            <div class="flex-spacing gap-1">
+                                <h4>{{ $cancelled_rides }}</h4>
+                                <div class="ride-icon">
+                                    <i class="iconsax icon" data-icon="driving"> </i>
+                                </div>
+                            </div>
+                            <div class="flex-spacing gap-1 mt-1">
+                                <h6 class="d-flex flex-wrap"> My Transport on Hold</h6>
+                                <i class="iconsax arrow-icon" data-icon="arrow-right"> </i>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <!-- earning section end -->
 
 
         <div class="custom-container">
@@ -189,7 +272,7 @@
 
     <!-- delete account modal starts -->
     <div class="modal delete-modal fade" id="delete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
@@ -198,7 +281,8 @@
                     <p>You will lost your data By delete your account.</p>
                 </div>
                 <div class="modal-footer">
-                    <a href="{{url('driver/setting')}}" class="btn gray-btn w-50 m-0" data-bs-dismiss="modal">No, Keep it</a>
+                    <a href="{{url('driver/setting')}}" class="btn gray-btn w-50 m-0" data-bs-dismiss="modal">No, Keep
+                        it</a>
                     <a href="{{url('driver/login')}}" class="btn theme-btn w-50 m-0">Yes, Delete</a>
                 </div>
             </div>
@@ -208,7 +292,7 @@
 
     <!-- logout modal starts -->
     <div class="modal delete-modal fade" id="logout" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
@@ -217,8 +301,9 @@
                     <p>Are you sure You want to Logout?</p>
                 </div>
                 <div class="modal-footer">
-                    <a href="{{url('driver/setting')}}" class="btn gray-btn w-50 m-0" data-bs-dismiss="modal">Stay, logged in</a>
-                    <a href="{{url('driver/logout')}}"  class="btn theme-btn w-50 m-0">Yes, Logout </a>
+                    <a href="{{url('driver/setting')}}" class="btn gray-btn w-50 m-0" data-bs-dismiss="modal">Stay,
+                        logged in</a>
+                    <a href="{{url('driver/logout')}}" class="btn theme-btn w-50 m-0">Yes, Logout </a>
                 </div>
             </div>
         </div>

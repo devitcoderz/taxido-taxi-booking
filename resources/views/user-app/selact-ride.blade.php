@@ -5,6 +5,7 @@
 @endsection
 
 @section('style')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         .flatpickr-calendar{
@@ -13,9 +14,57 @@
             right: 0px !important;
         }
     </style>
+    <style>
+        .form-step {
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-step.active {
+            display: block;
+            border-left: 4px solid #007bff;
+            padding-left: 10px;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+    </style>
+
 @endsection
 
 @section('content')
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const steps = document.querySelectorAll('.form-step');
+            let current = 0;
+
+            function showStep(index) {
+                steps.forEach((el, i) => {
+                    el.classList.toggle('active', i === index);
+                });
+            }
+
+            function setupStepLogic() {
+                steps.forEach((step, i) => {
+                    const input = step.querySelector('input, select, textarea');
+                    if (input) {
+                        input.addEventListener('change', () => {
+                            if (input.value.trim() !== '' && steps[i + 1]) {
+                                showStep(i + 1);
+                            }
+                        });
+                    }
+                });
+            }
+
+            showStep(0);
+            setupStepLogic();
+        });
+    </script>
+
     <!-- header starts -->
     <header id="header" class="main-header inner-page-header">
         <div class="custom-container">
@@ -36,8 +85,8 @@
     <!-- header end -->
 
     <!-- option section starts -->
-    <section class="pt-0 section-b-space">
-        <div class="px-1 pt-5">
+    <section class="pt-0 section-b-space d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 80px);">
+        <div class="px-1 pt-5 w-100" style="max-width: 600px;">
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul class="mb-0">
@@ -57,17 +106,29 @@
                         <input type="hidden" name="destination_location[]" value="{{ $location }}">
                     @endforeach
                     <input type="hidden" name="distance" value="{{ $request->distance }}">
-                    <div class="form-group mt-0">
-                        <label class="form-label mb-2" for="departure_date">Date and time of Departure</label>
+                    <!-- Step 1 -->
+                    <div class="form-group mt-0 form-step">
+                        <label for="departure_date">Date and time of Departure</label>
                         <input type="text" class="form-control white-background" name="departure_date" id="departure_date">
                     </div>
-{{--                    <div class="form-group mt-3">--}}
+{{--                    <div class="form-group form-step mt-3">--}}
 {{--                        <label class="form-label mb-2" for="Inputpassenger">Distance of Route</label>--}}
 {{--                        <input type="number" class="form-control white-background" id="Inputpassenger" name="distance"--}}
 {{--                               placeholder="Enter Distance in Km">--}}
 {{--                    </div>--}}
-                    <div class="form-group mt-3">
-                        <label class="form-label mb-2" for="type_of_package">Select Type of Package</label>
+                    <!-- Step 2 -->
+                    <div class="form-group mt-0 form-step">
+                        <label for="means_of_transport">Mean Of Transport</label>
+                        <select class="form-control white-background" multiple="multiple" name="means_of_transport[]" id="means_of_transport">
+                            <option>Select Means of Transport</option>
+                            @foreach(\App\Models\Mean_of_transport::where('status','1')->get() as $mean_of_transport)
+                                <option value="{{ $mean_of_transport->id }}">{{ $mean_of_transport->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="form-group mt-3 form-step">
+                        <label for="type_of_package">Select Type of Package</label>
                         <select class="form-control white-background" id="type_of_package" name="type_of_package">
                             <option>Please select package category</option>
                             @foreach(\App\Models\ParcelCategory::all() as $parcel_category)
@@ -75,116 +136,107 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group mt-3">
-                        <label class="form-label mb-2" for="sub_type_of_package">Select Type of Package</label>
+                    <!-- Step 3 -->
+                    <div class="form-group mt-3 form-step">
+                        <label for="sub_type_of_package">Select Type of Package</label>
                         <select class="form-control white-background" id="sub_type_of_package" name="sub_type_of_package">
                             <option>Please select package sub category</option>
                         </select>
                     </div>
-                    <div class="form-group mt-3">
-                        <label class="form-label mb-2" for="length_of_package">Enter Length of Package</label>
+                    <!-- Step 4 -->
+                    <div class="form-group mt-3 form-step">
+                        <label for="length_of_package">Enter Length of Package</label>
                         <input type="text" class="form-control white-background" id="length_of_package" name="length_of_package"
                                placeholder="Enter Package Length">
                     </div>
-                    <div class="form-group mt-3">
+                    <div class="form-group form-step mt-3">
                         <label class="form-label mb-2" for="width_of_package">Enter Width of Package</label>
                         <input type="text" class="form-control white-background" id="width_of_package" name="width_of_package"
                                placeholder="Enter Package Width">
                     </div>
-{{--                    <div class="form-group mt-3">--}}
+{{--                    <div class="form-group form-step mt-3">--}}
 {{--                        <label class="form-label mb-2" for="volume_of_package">Enter Volume of Package (Meters)</label>--}}
 {{--                        <input type="number" class="form-control white-background" id="volume_of_package" name="volume_of_package"--}}
 {{--                               placeholder="Enter Package Volume">--}}
 {{--                    </div>--}}
-                    <div class="form-group mt-3">
+                    <div class="form-group form-step mt-3">
                         <label class="form-label mb-2" for="weight_of_package">Enter Weight of Package</label>
                         <input type="text" class="form-control white-background" id="weight_of_package" name="weight_of_package"
                                placeholder="Enter Package Weight">
                     </div>
-                    <div class="form-group mt-3">
+                    <div class="form-group form-step mt-3">
                         <label class="form-label mb-2" for="quantity_of_package">Enter Quantity of Package</label>
                         <input type="number" class="form-control white-background" id="quantity_of_package" name="quantity_of_package"
                                placeholder="Enter Package Quantity">
                     </div>
 
                     <div class="row">
-                        <div class="form-group mt-3 col-8 d-inline-block">
-                            <label class="form-label mb-2" for="Inputofferrate">Enter your offer rate</label>
+                        <!-- Step 5 -->
+                        <div class="form-group mt-3 form-step">
+                            <label for="Inputofferrate">Enter your offer rate</label>
                             <input type="number" class="form-control white-background" id="Inputofferrate" name="fare" value=""
                                    placeholder="Estimated fare is {{ $request->distance * 2 }}, you can change it">
                         </div>
-                        <div class="form-group mt-3 col-4 d-inline-block">
-                            <label class="form-label mb-2" for="currency_offerrate">Select your fare currency</label>
+                        <!-- Step 6 -->
+                        <div class="form-group mt-3 form-step">
+                            <label for="currency_offerrate">Select your fare currency</label>
                             <select class="form-control white-background" id="currency_offerrate" name="fare_currency">
                                 <option value="dollar">United State Dollar</option>
-{{--                                <option value="dirham">Dirham</option>--}}
-{{--                                <option value="ryal">Ryal</option>--}}
                                 <option value="euro" selected>Euro</option>
                             </select>
                         </div>
                     </div>
-                    <div class="form-group mt-3">
-                        <ul class="auth-form">
-                            <li class="form-group mt-0">
-                                <h5 class="fw-medium title-color mb-2">Parcel Pictures (1 * front, 1 * back, 1 * top)</h5>
-                                <div id="output" class="upload-image">
-                                    <input id="file" class="form-control upload-file" type="file" name="parcel_pictures[]" id="formFileLg" multiple>
-                                    <i class="iconsax upload-icon" data-icon="logout-2"> </i>
-                                    <h5>Upload</h5>
-                                </div>
-                            </li>
-                        </ul>
+                    <div class="form-group form-step mt-3">
+                        <h5 class="fw-medium title-color mb-2">Parcel Pictures (1 * front, 1 * back, 1 * top)</h5>
+                        <div id="output" class="upload-image">
+                            <input id="file" class="form-control upload-file" type="file" name="parcel_pictures[]" multiple>
+                            <i class="iconsax upload-icon" data-icon="logout-2"> </i>
+                            <h5>Upload</h5>
+                        </div>
                     </div>
 
-{{--                    <div class="form-group mt-3">--}}
+{{--                    <div class="form-group form-step mt-3">--}}
 {{--                        <label class="form-label mb-2" for="travel_company">Enter Travel Company</label>--}}
 {{--                        <input type="text" class="form-control white-background" id="travel_company" name="travel_company"--}}
 {{--                               placeholder="Enter Travel Company">--}}
 {{--                    </div>--}}
-                    <div class="form-group mt-3">
+                    <div class="form-group form-step mt-3">
                         <label class="form-label mb-2" for="comments">Comments</label>
                         <textarea class="form-control white-background" id="comments" name="comments"
                                   placeholder="Enter comments" rows="3"></textarea>
                     </div>
-                    <div class="form-group mt-3">
+                    <div class="form-group form-step mt-3">
                         <label class="form-label mb-2">Receiver Details</label>
                         <br>
                         <label class="form-label mb-2" for="receiver_name">Name</label>
                         <input type="text" class="form-control white-background" id="receiver_name" name="receiver_name"
                                placeholder="Enter Receiver Name">
                     </div>
-                    <div class="form-group mt-3">
+                    <div class="form-group form-step mt-3">
                         <label class="form-label mb-2" for="receiver_email">Email</label>
                         <input type="email" class="form-control white-background" id="receiver_email" name="receiver_email"
                                placeholder="Enter Receiver Email">
                     </div>
-                    <div class="form-group mt-3">
+                    <div class="form-group form-step mt-3">
                         <label class="form-label mb-2" for="receiver_phone">Phone</label>
                         <input type="number" class="form-control white-background" id="receiver_phone" name="receiver_phone"
                                placeholder="Enter Receiver Phone">
                     </div>
-                    <h5 class="p-0 mt-3 mb-2 fw-medium title-color">Payment Method</h5>
-                    <div class="order-type">
-                        <div class="flex-spacing gap-3 w-100">
-{{--                            <div class="form-check form-check3">--}}
-{{--                                <input class="form-check-input" type="radio" value="cash" name="payment_method" id="fixed45"--}}
-{{--                                       checked />--}}
-{{--                                <label class="form-check-label" for="fixed45">--}}
-{{--                                    <span class="check-box"></span>--}}
-{{--                                    <span class="name">Cash</span>--}}
-{{--                                </label>--}}
-{{--                            </div>--}}
-
-                            <div class="form-check form-check3">
-                                <input class="form-check-input" type="radio" name="payment_method" checked value="online" id="fixed469" />
-                                <label class="form-check-label" for="fixed469">
-                                    <span class="check-box"></span>
-                                    <span class="name">Online-Payment (After Delivery)</span>
-                                </label>
-                            </div>
+                    <!-- Step 7 -->
+                    <div class="form-group mt-3 form-step">
+                        <label class="form-label mb-2">Payment Method</label>
+                        <div class="form-check form-check3">
+                            <input class="form-check-input" type="radio" name="payment_method" checked value="online" id="fixed469" />
+                            <label class="form-check-label" for="fixed469">
+                                <span class="check-box"></span>
+                                <span class="name">Online-Payment (After Delivery)</span>
+                            </label>
                         </div>
                     </div>
-                    <button type="submit" class="btn theme-btn w-100 mt-3 auth-btn">Book Ride</button>
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">Previous</button>
+                        <button type="button" class="btn theme-btn w-100 auth-btn" id="nextBtn">Next</button>
+                    </div>
                 </form>
         </div>
     </section>
@@ -259,4 +311,44 @@
             });
         })
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const steps = document.querySelectorAll('.form-step');
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            let currentStep = 0;
+
+            function showStep(step) {
+                steps.forEach((el, i) => {
+                    el.style.display = i === step ? 'block' : 'none';
+                });
+
+                prevBtn.style.display = step > 0 ? 'inline-block' : 'none';
+                nextBtn.textContent = step === steps.length - 1 ? 'Book Ride' : 'Next';
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentStep < steps.length - 1) {
+                    currentStep++;
+                    showStep(currentStep);
+                } else {
+                    // Submit the form
+                    nextBtn.closest('form').submit();
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentStep > 0) {
+                    currentStep--;
+                    showStep(currentStep);
+                }
+            });
+
+            showStep(currentStep);
+
+            $('#means_of_transport').select2({
+            });
+        });
+    </script>
+
 @endsection

@@ -30,7 +30,7 @@
     <!-- search section starts -->
     <section class="home-profile-section section-b-space pt-0">
         <div class="custom-container">
-            <form action="{{url('user/targeted-transport-route')}}" method="get">
+            <form action="{{url('user/targeted-transport-route')}}" method="post">
                 @csrf
                 <div class="form-input">
                     <input type="search" name="desination_location" class="form-control with-icon"
@@ -114,7 +114,7 @@
                                 <a href="{{url('user/accept-ride-details')}}" class="coupon-name">
                                     <img class="img-fluid coupon-img" src="{{asset('assets/images/profile/p6.png')}}" alt="c1">
                                     <div>
-                                        <h5 class="fw-normal title-color">Johnson Smith</h5>
+                                        <h5 class="title-color fw-medium">Johnson Smith</h5>
                                     </div>
                                 </a>
                                 <div class="rating">

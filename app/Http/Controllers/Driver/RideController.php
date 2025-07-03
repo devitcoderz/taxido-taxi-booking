@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Driver;
 use App\Http\Controllers\Controller;
 use App\Models\Driver;
 use App\Models\Ridesbooked;
+use App\Models\Userriderequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,11 @@ use Illuminate\Support\Facades\Auth;
 class RideController extends Controller
 {
     public function my_rides(){
+        $active_rides = Ridesbooked::where('driver_id', Auth::guard('driver')->id())
+            ->where('status', 'active')
+            ->where('departure_date', '>=', Carbon::now())
+            ->with('driver', 'user')
+            ->get();
         $pending_rides = Ridesbooked::where('driver_id', Auth::guard('driver')->id())
             ->where('status', 'pending')
             ->where('departure_date', '>=', Carbon::now())
@@ -19,15 +25,22 @@ class RideController extends Controller
             ->get();
         $completed_rides = Ridesbooked::where('driver_id', Auth::guard('driver')->id())
             ->where('status', 'completed')
-            ->where('departure_date', '>=', Carbon::now())
             ->with('driver', 'user')
             ->get();
         $cancelled_rides = Ridesbooked::where('driver_id', Auth::guard('driver')->id())
             ->where('status', 'cancelled')
-            ->where('departure_date', '>=', Carbon::now())
             ->with('driver', 'user')
             ->get();
-        return view('driver-app.my-rides', compact('pending_rides', 'completed_rides', 'cancelled_rides'));
+
+        $personal_offers = Userriderequest::with('user','packagetype','packagesubtype')
+//            ->where('expiry', '>', Carbon::now())
+            ->where('status', 'waiting')
+            ->where('targetted_driver_id', Auth::guard('driver')->user()->id)
+            ->where('is_targetted','1')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return view('driver-app.my-rides', compact('active_rides','personal_offers','pending_rides', 'completed_rides', 'cancelled_rides'));
     }
 
     public function active_rides()

@@ -13,7 +13,7 @@
     <header id="header" class="main-header inner-page-header">
         <div class="custom-container">
             <div class="header-panel">
-                <a href="{{url('user/search-location')}}">
+                <a href="{{url('user/selact-ride')}}">
                     <i class="iconsax icon-btn" data-icon="chevron-left"> </i>
                 </a>
                 <a href="#alert" data-bs-toggle="offcanvas">
@@ -218,7 +218,7 @@
                 // Your existing AJAX function, unchanged except for logging improvements
                 function getDriverFareRequest() {
                     $.ajax({
-                        url: `/user/get-driver-fare-request?userriderequest_id=${userRequestId}`,
+                        url: `/user/get-targetted-driver-fare-request?userriderequest_id=${userRequestId}`,
                         method: 'GET',
                         success: function(response) {
                             if (response.ridebooked) {

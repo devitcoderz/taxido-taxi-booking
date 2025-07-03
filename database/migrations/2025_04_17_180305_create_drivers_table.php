@@ -27,6 +27,8 @@ return new class extends Migration
             $table->string('registeration_date')->nullable();
             $table->string('vehicle_type')->nullable();
             $table->string('vehicle_color')->nullable();
+            $table->text('vehicle_pictures')->nullable();
+            $table->integer('means_of_transport')->nullable();
             $table->string('max_seats')->nullable();
             $table->string('rules')->nullable();
             $table->string('bank_name')->nullable();
@@ -37,6 +39,8 @@ return new class extends Migration
             $table->string('profile')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
+            $table->string('available_balance')->default('0');
+            $table->string('total_balance')->default('0');
             $table->rememberToken();
             $table->timestamps();
         });
